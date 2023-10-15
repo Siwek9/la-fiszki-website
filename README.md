@@ -1,4 +1,4 @@
-# la-fiszki-cardboard-creator
+# la-fiszki-website
 
 ## Project setup
 ```
