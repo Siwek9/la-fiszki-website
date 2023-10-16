@@ -5,7 +5,7 @@
 <script>
 export default {
   methods: {
-    exportCardboards: function() {
+    exportCardboards: function () {
       if (this.name === "") return;
       if (this.author === "") return;
       if (this.sideName.front === "") return;
@@ -18,14 +18,14 @@ export default {
         }
       });
       if (empty) return;
-      
+
       let objectToExport = {
         name: this.name,
         author: this.author,
         sideName: {
           ...this.sideName
         },
-        cardboards: 
+        cardboards:
           this.cardboards.map(cardboard => {
             return {
               front: cardboard.front,
@@ -34,16 +34,16 @@ export default {
           })
       }
 
-      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(objectToExport));
       var downloadAnchorNode = document.createElement('a');
-      downloadAnchorNode.setAttribute("href", dataStr);
-      downloadAnchorNode.setAttribute("download", this.name + ".json");
+      const file = new Blob([JSON.stringify(objectToExport)], { type: "text/plain" });
+      downloadAnchorNode.href = URL.createObjectURL(file);
+      downloadAnchorNode.download = objectToExport.name += ".json";
       document.body.appendChild(downloadAnchorNode); // required for firefox
       downloadAnchorNode.click();
       downloadAnchorNode.remove();
     }
   },
-  props:[
+  props: [
     'name',
     'author',
     'sideName',
@@ -53,7 +53,6 @@ export default {
 </script>
 
 <style>
-
 .text-button {
   all: unset;
   margin: 20px;
@@ -66,5 +65,4 @@ export default {
 .text-button:hover {
   cursor: pointer;
 }
-
 </style>
