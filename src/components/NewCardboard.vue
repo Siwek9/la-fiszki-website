@@ -3,91 +3,90 @@
     <div class="cardboard">
       <div class="row center-middle">
         <div class="cardboard-input">
-          <span class="input-name">{{sideName.front}}:</span>
+          <span class="input-name">{{ sideName.front }}:</span>
           <div class="input-field-background">
-            <input 
-              type="text" 
-              class="input-field" 
+            <input
+              type="text"
+              class="input-field"
               placeholder="Text Here"
               ref="front"
-              :value="cardboardData.front" 
+              :value="cardboardData.front"
               @input="inputFrontChanged"
               @focus="inputFocus"
               @keyup.enter="frontSideMoveTab"
               @keyup.tab.prevent="frontSideMoveTab"
-            >
+            />
           </div>
         </div>
         <span class="fields-divider">-></span>
         <div class="cardboard-input">
-          <span class="input-name">{{sideName.back}}:</span>
+          <span class="input-name">{{ sideName.back }}:</span>
           <div class="input-field-background">
-            <input 
-              type="text" 
-              class="input-field" 
+            <input
+              type="text"
+              class="input-field"
               placeholder="Text Here"
               ref="back"
-              :value="cardboardData.back" 
+              :value="cardboardData.back"
               @input="inputBackChanged"
               @focus="inputFocus"
               @keyup.enter.prevent="backSideMoveTab"
               @keydown.tab.prevent="backSideMoveTab"
-              >
+            />
           </div>
         </div>
       </div>
     </div>
-    <span class="delete-button material-symbols-outlined" @click="deleteCardboard">delete</span>
+    <span
+      class="delete-button"
+      @click="deleteCardboard"
+    ></span>
   </div>
 </template>
 
 <script>
-  export default {
-    methods: {
-      inputFocus: function(e) {
-        // console.log("siema")
-        e.target.select();
-      },
-      frontSideMoveTab: function(e) {
-        if (e.target.value != "") {
-          this.$refs['back'].focus();
-        }
-      },
-      backSideMoveTab: function(e) {
-        if (e.target.value != "") {
-          this.$emit("nextCardboard", this.cardboardData.id)
-        }
-        // browser.tabs.move()
-      },
-      deleteCardboard: function() {
-        this.$emit("deleteCardboard", this.cardboardData.id);
-      },
-      inputFrontChanged: function(e) {
-        this.$emit("inputFrontChanged", e.target.value, this.cardboardData.id)
-      },
-      inputBackChanged: function(e) {
-        this.$emit("inputBackChanged", e.target.value, this.cardboardData.id)
-      },
+export default {
+  methods: {
+    inputFocus: function (e) {
+      // console.log("siema")
+      e.target.select();
     },
-    props: [
-      'cardboardData',
-      'sideName'
-    ],
-    mounted() {
-      // if (this.cardboardData.id = 1) {
-        this.$refs["front"].focus();
-      // }
-      // console.log("witam");
-    }
-  }
+    frontSideMoveTab: function (e) {
+      if (e.target.value != '') {
+        this.$refs['back'].focus();
+      }
+    },
+    backSideMoveTab: function (e) {
+      if (e.target.value != '') {
+        this.$emit('nextCardboard', this.cardboardData.id);
+      }
+      // browser.tabs.move()
+    },
+    deleteCardboard: function () {
+      this.$emit('deleteCardboard', this.cardboardData.id);
+    },
+    inputFrontChanged: function (e) {
+      this.$emit('inputFrontChanged', e.target.value, this.cardboardData.id);
+    },
+    inputBackChanged: function (e) {
+      this.$emit('inputBackChanged', e.target.value, this.cardboardData.id);
+    },
+  },
+  props: ['cardboardData', 'sideName'],
+  mounted() {
+    // if (this.cardboardData.id = 1) {
+    this.$refs['front'].focus();
+    // }
+    // console.log("witam");
+  },
+};
 </script>
 
 <style>
-
 .fields-divider {
   font-weight: bold;
   font-size: 2em;
-  margin: min(15px, 2vw); 
+  margin: min(15px, 2vw);
 }
 
 .cardboard-input .input-field::placeholder {
@@ -107,13 +106,13 @@
 }
 
 .cardboard-input .input-name {
-  margin: 0 0 1vh 1vw; 
+  margin: 0 0 1vh 1vw;
 }
 
 .cardboard-input .input-field-background {
-  padding: max(.5em, 1vw);
+  padding: max(0.5em, 1vw);
   border-radius: 1.5em;
-  background-color: #512B81;
+  background-color: #512b81;
 }
 
 .cardboard-input {
@@ -134,12 +133,16 @@
 
 .cardboard {
   border-radius: 15px;
-  background-color: #35155D;
+  background-color: #35155d;
   padding: 2vh 2vw;
   margin: 10px;
 }
 
 .delete-button {
+  background-image: url(../assets/delete.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 90%;
   user-select: none;
   display: flex;
   justify-content: center;
@@ -156,7 +159,6 @@
 }
 
 .cardboard-top {
-  margin-left:40px;
+  margin-left: 40px;
 }
-
 </style>

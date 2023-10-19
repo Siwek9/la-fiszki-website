@@ -1,20 +1,25 @@
 <template>
-  <button class="text-button" @click="exportCardboards">Export Cardboard</button>
+  <button
+    class="text-button"
+    @click="exportCardboards"
+  >
+    Export Cardboard
+  </button>
 </template>
 
 <script>
 export default {
   methods: {
     exportCardboards: function () {
-      if (this.name === "") return;
-      if (this.author === "") return;
-      if (this.sideName.front === "") return;
-      if (this.sideName.back === "") return;
+      if (this.name === '') return;
+      if (this.author === '') return;
+      if (this.sideName.front === '') return;
+      if (this.sideName.back === '') return;
       let empty = false;
       this.cardboards.forEach(cardboard => {
-        if (cardboard.front === "" || cardboard.back === "") {
+        if (cardboard.front === '' || cardboard.back === '') {
           empty = true;
-          return
+          return;
         }
       });
       if (empty) return;
@@ -23,33 +28,27 @@ export default {
         name: this.name,
         author: this.author,
         sideName: {
-          ...this.sideName
+          ...this.sideName,
         },
-        cardboards:
-          this.cardboards.map(cardboard => {
-            return {
-              front: cardboard.front,
-              back: cardboard.back
-            };
-          })
-      }
+        cardboards: this.cardboards.map(cardboard => {
+          return {
+            front: cardboard.front,
+            back: cardboard.back,
+          };
+        }),
+      };
 
       var downloadAnchorNode = document.createElement('a');
-      const file = new Blob([JSON.stringify(objectToExport)], { type: "text/plain" });
+      const file = new Blob([JSON.stringify(objectToExport)], {type: 'text/plain'});
       downloadAnchorNode.href = URL.createObjectURL(file);
-      downloadAnchorNode.download = objectToExport.name += ".json";
+      downloadAnchorNode.download = objectToExport.name += '.json';
       document.body.appendChild(downloadAnchorNode); // required for firefox
       downloadAnchorNode.click();
       downloadAnchorNode.remove();
-    }
+    },
   },
-  props: [
-    'name',
-    'author',
-    'sideName',
-    'cardboards'
-  ]
-}
+  props: ['name', 'author', 'sideName', 'cardboards'],
+};
 </script>
 
 <style>
@@ -58,7 +57,7 @@ export default {
   margin: 20px;
   padding: 1vw;
   font: inherit;
-  background-color: #35155D;
+  background-color: #35155d;
   border-radius: 25px;
 }
 
