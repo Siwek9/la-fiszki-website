@@ -23,15 +23,16 @@ export default {
 
 <style>
 .add-button {
-  margin-top: 10px;
+  margin-top: 20px;
   user-select: none;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #35155d;
-  width: 3vw;
+  width: clamp(70px, 5vw, 90px);
+  height: clamp(70px, 5vw, 90px);
+  font-size: 35px;
   border-radius: 50%;
-  aspect-ratio: 1/1;
 }
 
 .add-button:hover {

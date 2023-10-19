@@ -55,8 +55,7 @@ export default {
 .text-button {
   all: unset;
   margin: 20px;
-  padding: 1vw;
-  font: inherit;
+  padding: clamp(15px, 3vw, 25px);
   background-color: #35155d;
   border-radius: 25px;
 }

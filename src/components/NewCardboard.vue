@@ -1,5 +1,5 @@
 <template>
-  <div class="cardboard-top row center-middle">
+  <div class="center-center cardboard-and-delete">
     <div class="cardboard">
       <div class="row center-middle">
         <div class="cardboard-input">
@@ -18,7 +18,7 @@
             />
           </div>
         </div>
-        <span class="fields-divider">-></span>
+        <span class="fields-divider center-center">-></span>
         <div class="cardboard-input">
           <span class="input-name">{{ sideName.back }}:</span>
           <div class="input-field-background">
@@ -48,7 +48,6 @@
 export default {
   methods: {
     inputFocus: function (e) {
-      // console.log("siema")
       e.target.select();
     },
     frontSideMoveTab: function (e) {
@@ -60,7 +59,6 @@ export default {
       if (e.target.value != '') {
         this.$emit('nextCardboard', this.cardboardData.id);
       }
-      // browser.tabs.move()
     },
     deleteCardboard: function () {
       this.$emit('deleteCardboard', this.cardboardData.id);
@@ -74,10 +72,7 @@ export default {
   },
   props: ['cardboardData', 'sideName'],
   mounted() {
-    // if (this.cardboardData.id = 1) {
     this.$refs['front'].focus();
-    // }
-    // console.log("witam");
   },
 };
 </script>
@@ -85,8 +80,9 @@ export default {
 <style>
 .fields-divider {
   font-weight: bold;
-  font-size: 2em;
-  margin: min(15px, 2vw);
+  font-size: min(2em, 3vw);
+  margin: min(15px, 1.5vw);
+  white-space: nowrap;
 }
 
 .cardboard-input .input-field::placeholder {
@@ -94,19 +90,17 @@ export default {
 }
 
 .cardboard-input .input-field {
-  min-width: 200px;
-  /* width: unset; */
-  font: inherit;
-  font-size: max(1em, 1vw);
+  width: 200px;
+  max-width: 36vw;
+  font-size: max(1.2em, 1.5vw);
   outline: none;
   border: none;
   color: white;
-  /* border-bottom: white 2px solid; */
   background-color: transparent;
 }
 
 .cardboard-input .input-name {
-  margin: 0 0 1vh 1vw;
+  margin: 0 0 10px 1vw;
 }
 
 .cardboard-input .input-field-background {
@@ -120,45 +114,44 @@ export default {
   flex-direction: column;
 }
 
-.center-middle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
 .cardboard {
   border-radius: 15px;
   background-color: #35155d;
-  padding: 2vh 2vw;
-  margin: 10px;
+  padding: 15px 3vw;
+  margin: 10px min(10px, 2vw);
 }
 
 .delete-button {
   background-image: url(../assets/delete.svg);
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: 90%;
+  background-size: 85%;
   user-select: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #fd000066;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   aspect-ratio: 1/1;
 }
 
+@media only screen and (min-width: 600px) {
+  .cardboard-and-delete {
+    flex-direction: row;
+    margin-left: 40px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .cardboard-and-delete {
+    flex-direction: column;
+    margin-left: 0;
+  }
+}
 .delete-button:hover {
   cursor: pointer;
 }
 
-.cardboard-top {
-  margin-left: 40px;
+.cardboard-and-delete {
+  display: flex;
 }
 </style>

@@ -2,6 +2,7 @@
   <div class="text-input-body">
     <span class="text-input-name">{{ name }}:</span>
     <input
+      @focus="focusText"
       @input="inputValue"
       :value="value"
       class="text-input-field"
@@ -18,6 +19,9 @@ export default {
   methods: {
     inputValue: function (e) {
       this.$emit('valueChanged', e.target.value);
+    },
+    focusText: function (e) {
+      e.target.select();
     },
   },
   props: ['name', 'value'],
@@ -42,7 +46,7 @@ export default {
 .text-input-body {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   margin: 10px;
 }
 </style>

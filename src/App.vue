@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ name }}</h1>
+  <h1 class="center-text">{{ name }}</h1>
   <h3>by: {{ author }}</h3>
   <TextInput
     name="Cardboard Name"
@@ -11,7 +11,7 @@
     :value="author"
     @valueChanged="setAuthor"
   />
-  <div class="row">
+  <div class="center-center row flex-wrap">
     <TextInput
       name="Front Side"
       :value="side_name.front"
@@ -127,10 +127,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  min-width: 100%;
+  max-width: 100%;
   min-height: 100%;
   background-color: #512b81;
   color: white;
+  overflow-x: hidden;
 }
 
 #app {
@@ -138,5 +139,32 @@ body {
   flex-direction: column;
   align-items: center;
   font-family: Mooli, sans-serif;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.center-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+input,
+select,
+option,
+button {
+  font: inherit;
 }
 </style>
