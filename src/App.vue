@@ -1,6 +1,11 @@
 <template>
   <h1 class="center-text">{{ name }}</h1>
   <h3>by: {{ author }}</h3>
+  <AutoSaveButton
+    @autoSave="toggleAutoSave"
+    ref="AutoSave"
+    :isAutoSaveOn="autoSave"
+  />
   <TextInput
     name="Cardboard Name"
     :value="name"
@@ -14,12 +19,12 @@
   <div class="center-center row flex-wrap">
     <TextInput
       name="Front Side"
-      :value="side_name.front"
+      :value="sideName.front"
       @valueChanged="setFrontSide"
     />
     <TextInput
       name="Back Side"
-      :value="side_name.back"
+      :value="sideName.back"
       @valueChanged="setBackSide"
     />
   </div>
@@ -30,7 +35,7 @@
     @nextCardboard="moveToNextCardboard"
     @inputFrontChanged="inputFrontChanged"
     @inputBackChanged="inputBackChanged"
-    :side-name="side_name"
+    :side-name="sideName"
     :key="cardboard.id"
     :cardboard-data="cardboard"
   />
@@ -38,8 +43,9 @@
   <ExportButton
     :name="name"
     :author="author"
-    :side-name="side_name"
+    :side-name="sideName"
     :cardboards="cardboards"
+    ref="Export"
   />
 </template>
 
@@ -48,14 +54,16 @@ import TextInput from './components/TextInput.vue';
 import NewCardboard from './components/NewCardboard.vue';
 import AddButton from './components/AddButton.vue';
 import ExportButton from './components/ExportButton.vue';
+import AutoSaveButton from './components/AutoSaveButton.vue';
 
 export default {
   name: 'App',
   data() {
     return {
+      autoSave: false,
       name: 'New Cardboard',
       author: 'Unknown',
-      side_name: {
+      sideName: {
         front: 'Default',
         back: 'Default',
       },
@@ -69,12 +77,35 @@ export default {
     };
   },
   methods: {
+    toggleAutoSave: function (e) {
+      this.autoSave = e;
+      if (this.autoSave) {
+        this.$refs['AutoSave'].setCookie(
+          'last_save',
+          JSON.stringify(
+            this.$refs['Export'].createFlashcardObject(this.name, this.author, this.sideName, this.cardboards)
+          ),
+          7
+        );
+      } else {
+        this.$refs['AutoSave'].deleteCookie('last_save');
+      }
+    },
     createNewCardboard: function () {
       this.cardboards[this.cardboards.length] = {
         id: this.cardboards.length,
         front: '',
         back: '',
       };
+      if (this.autoSave) {
+        this.$refs['AutoSave'].setCookie(
+          'last_save',
+          JSON.stringify(
+            this.$refs['Export'].createFlashcardObject(this.name, this.author, this.sideName, this.cardboards)
+          ),
+          7
+        );
+      }
     },
     moveToNextCardboard: function (id) {
       if (id < this.cardboards.length - 1) {
@@ -99,10 +130,10 @@ export default {
       this.name = name;
     },
     setFrontSide: function (frontSide) {
-      this.side_name.front = frontSide;
+      this.sideName.front = frontSide;
     },
     setBackSide: function (backSide) {
-      this.side_name.back = backSide;
+      this.sideName.back = backSide;
     },
     inputFrontChanged: function (value, id) {
       this.cardboards[id].front = value;
@@ -111,11 +142,36 @@ export default {
       this.cardboards[id].back = value;
     },
   },
+  mounted() {
+    var data;
+    if ((data = this.$refs['AutoSave'].getCookie('last_save')) != null) {
+      this.autoSave = true;
+      data = JSON.parse(data);
+      if (data.name != undefined) this.name = data.name;
+      if (data.author != undefined) this.author = data.author;
+      if (data.sideName != undefined) {
+        if (data.sideName.front != undefined) this.sideName.front = data.sideName.front;
+        if (data.sideName.back != undefined) this.sideName.back = data.sideName.back;
+      }
+      if (data.cardboards != undefined) {
+        if (Array.isArray(data.cardboards)) {
+          data.cardboards.forEach((value, index) => {
+            this.cardboards[index] = {
+              id: index,
+              front: value.front != undefined ? value.front : '',
+              back: value.back != undefined ? value.back : '',
+            };
+          });
+        }
+      }
+    }
+  },
   components: {
     NewCardboard,
     AddButton,
     ExportButton,
     TextInput,
+    AutoSaveButton,
   },
 };
 </script>

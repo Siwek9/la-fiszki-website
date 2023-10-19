@@ -24,19 +24,7 @@ export default {
       });
       if (empty) return;
 
-      let objectToExport = {
-        name: this.name,
-        author: this.author,
-        sideName: {
-          ...this.sideName,
-        },
-        cardboards: this.cardboards.map(cardboard => {
-          return {
-            front: cardboard.front,
-            back: cardboard.back,
-          };
-        }),
-      };
+      let objectToExport = this.createFlashcardObject(this.name, this.author, this.sideName, this.cardboards);
 
       var downloadAnchorNode = document.createElement('a');
       const file = new Blob([JSON.stringify(objectToExport)], {type: 'text/plain'});
@@ -45,6 +33,21 @@ export default {
       document.body.appendChild(downloadAnchorNode); // required for firefox
       downloadAnchorNode.click();
       downloadAnchorNode.remove();
+    },
+    createFlashcardObject: function (name, author, sideName, cardboards) {
+      return {
+        name: name,
+        author: author,
+        sideName: {
+          ...sideName,
+        },
+        cardboards: cardboards.map(cardboard => {
+          return {
+            front: cardboard.front,
+            back: cardboard.back,
+          };
+        }),
+      };
     },
   },
   props: ['name', 'author', 'sideName', 'cardboards'],
