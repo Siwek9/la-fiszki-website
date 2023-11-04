@@ -4,13 +4,17 @@
       <div class="row center-middle">
         <div class="cardboard-input">
           <span class="input-name">{{ sideName.front }}:</span>
-          <div class="input-field-background">
+          <div
+            class="input-field-background"
+            v-for="(frontValues, index) in cardboardData.front"
+            :key="index"
+          >
             <input
               type="text"
               class="input-field"
               placeholder="Text Here"
               ref="front"
-              :value="cardboardData.front"
+              :value="frontValues"
               @input="inputFrontChanged"
               @focus="inputFocus"
               @keyup.enter="frontSideMoveTab"
@@ -21,7 +25,24 @@
         <span class="fields-divider center-center">-></span>
         <div class="cardboard-input">
           <span class="input-name">{{ sideName.back }}:</span>
-          <div class="input-field-background">
+          <div
+            class="input-field-background"
+            v-for="(backValues, index) in cardboardData.back"
+            :key="index"
+          >
+            <input
+              type="text"
+              class="input-field"
+              placeholder="Text Here"
+              ref="back"
+              :value="backValues"
+              @input="inputBackChanged"
+              @focus="inputFocus"
+              @keyup.enter.prevent="backSideMoveTab"
+              @keydown.tab.prevent="backSideMoveTab"
+            />
+          </div>
+          <!-- <div class="input-field-background">
             <input
               type="text"
               class="input-field"
@@ -33,7 +54,7 @@
               @keyup.enter.prevent="backSideMoveTab"
               @keydown.tab.prevent="backSideMoveTab"
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -47,6 +68,9 @@
 <script>
 export default {
   methods: {
+    // watchBackChanges: function (e) {
+    //   // console.log(e);
+    // },
     inputFocus: function (e) {
       e.target.select();
     },
@@ -67,12 +91,13 @@ export default {
       this.$emit('inputFrontChanged', e.target.value, this.cardboardData.id);
     },
     inputBackChanged: function (e) {
+      // console.log(e);
       this.$emit('inputBackChanged', e.target.value, this.cardboardData.id);
     },
   },
   props: ['cardboardData', 'sideName'],
   mounted() {
-    this.$refs['front'].focus();
+    this.$refs['front'][0].focus();
   },
 };
 </script>
@@ -107,6 +132,7 @@ export default {
   padding: max(0.5em, 1vw);
   border-radius: 1.5em;
   background-color: #512b81;
+  margin-bottom: 1.25em;
 }
 
 .cardboard-input {

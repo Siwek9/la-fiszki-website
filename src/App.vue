@@ -70,8 +70,8 @@ export default {
       cardboards: [
         {
           id: 0,
-          front: '',
-          back: '',
+          front: [''],
+          back: [''],
         },
       ],
     };
@@ -136,10 +136,11 @@ export default {
       this.sideName.back = backSide;
     },
     inputFrontChanged: function (value, id) {
-      this.cardboards[id].front = value;
+      this.cardboards[id].front[0] = value;
     },
     inputBackChanged: function (value, id) {
-      this.cardboards[id].back = value;
+      // if (value.endsWith )
+      this.cardboards[id].back[0] = value;
     },
   },
   mounted() {
