@@ -32,6 +32,8 @@
     v-for="cardboard in cardboards"
     ref="cardboardArrayObject"
     @deleteCardboard="deleteCardboard"
+    @deleteFrontField="deleteFrontField"
+    @deleteBackField="deleteBackField"
     @nextCardboard="moveToNextCardboard"
     @inputFrontChanged="inputFrontChanged"
     @inputBackChanged="inputBackChanged"
@@ -77,6 +79,14 @@ export default {
     };
   },
   methods: {
+    deleteFrontField: function (cardboardID, fieldID) {
+      if (this.cardboards[cardboardID].front.length <= 1) return;
+      this.cardboards[cardboardID].front.splice(fieldID, 1);
+    },
+    deleteBackField: function (cardboardID, fieldID) {
+      if (this.cardboards[cardboardID].back.length <= 1) return;
+      this.cardboards[cardboardID].back.splice(fieldID, 1);
+    },
     toggleAutoSave: function (e) {
       this.autoSave = e;
       if (this.autoSave) {
@@ -94,8 +104,8 @@ export default {
     createNewCardboard: function () {
       this.cardboards[this.cardboards.length] = {
         id: this.cardboards.length,
-        front: '',
-        back: '',
+        front: [''],
+        back: [''],
       };
       if (this.autoSave) {
         this.$refs['AutoSave'].setCookie(
@@ -136,11 +146,20 @@ export default {
       this.sideName.back = backSide;
     },
     inputFrontChanged: function (value, id) {
-      this.cardboards[id].front[0] = value;
+      if (value.slice(-1) == '/' && value.length > 1) {
+        this.cardboards[id].front.push('');
+      } else if (value.slice(-1) != '/') {
+        let lastIndex = this.cardboards[id].front.length - 1;
+        this.cardboards[id].front[lastIndex] = value;
+      }
     },
     inputBackChanged: function (value, id) {
-      // if (value.endsWith )
-      this.cardboards[id].back[0] = value;
+      if (value.slice(-1) == '/' && value.length > 1) {
+        this.cardboards[id].back.push('');
+      } else if (value.slice(-1) != '/') {
+        let lastIndex = this.cardboards[id].back.length - 1;
+        this.cardboards[id].back[lastIndex] = value;
+      }
     },
   },
   mounted() {

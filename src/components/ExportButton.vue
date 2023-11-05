@@ -43,8 +43,8 @@ export default {
         },
         cardboards: cardboards.map(cardboard => {
           return {
-            front: cardboard.front,
-            back: cardboard.back,
+            front: [...cardboard.front],
+            back: [...cardboard.back],
           };
         }),
       };

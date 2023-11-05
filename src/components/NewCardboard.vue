@@ -13,13 +13,17 @@
               type="text"
               class="input-field"
               placeholder="Text Here"
-              ref="front"
+              :ref="refsForFront"
               :value="frontValues"
               @input="inputFrontChanged"
               @focus="inputFocus"
               @keyup.enter="frontSideMoveTab"
               @keyup.tab.prevent="frontSideMoveTab"
             />
+            <div
+              class="delete-input-field"
+              @click="deleteFrontField(index)"
+            ></div>
           </div>
         </div>
         <span class="fields-divider center-center">-></span>
@@ -34,27 +38,18 @@
               type="text"
               class="input-field"
               placeholder="Text Here"
-              ref="back"
+              :ref="refsForBack"
               :value="backValues"
               @input="inputBackChanged"
               @focus="inputFocus"
               @keyup.enter.prevent="backSideMoveTab"
               @keydown.tab.prevent="backSideMoveTab"
             />
+            <div
+              class="delete-input-field"
+              @click="deleteBackField(index)"
+            ></div>
           </div>
-          <!-- <div class="input-field-background">
-            <input
-              type="text"
-              class="input-field"
-              placeholder="Text Here"
-              ref="back"
-              :value="cardboardData.back"
-              @input="inputBackChanged"
-              @focus="inputFocus"
-              @keyup.enter.prevent="backSideMoveTab"
-              @keydown.tab.prevent="backSideMoveTab"
-            />
-          </div> -->
         </div>
       </div>
     </div>
@@ -67,16 +62,34 @@
 
 <script>
 export default {
+  data() {
+    return {
+      frontRefs: [],
+      backRefs: [],
+      frontElementNumber: 1,
+      backElementNumber: 1,
+    };
+  },
   methods: {
-    // watchBackChanges: function (e) {
-    //   // console.log(e);
-    // },
+    deleteFrontField: function (index) {
+      // console.log(index);
+      this.$emit('deleteFrontField', this.cardboardData.id, index);
+    },
+    deleteBackField: function (index) {
+      this.$emit('deleteBackField', this.cardboardData.id, index);
+    },
+    refsForFront: function (e) {
+      this.frontRefs.push(e);
+    },
+    refsForBack: function (e) {
+      this.backRefs.push(e);
+    },
     inputFocus: function (e) {
       e.target.select();
     },
     frontSideMoveTab: function (e) {
       if (e.target.value != '') {
-        this.$refs['back'].focus();
+        this.backRefs[0].focus();
       }
     },
     backSideMoveTab: function (e) {
@@ -91,13 +104,26 @@ export default {
       this.$emit('inputFrontChanged', e.target.value, this.cardboardData.id);
     },
     inputBackChanged: function (e) {
-      // console.log(e);
+      e.preventDefault();
       this.$emit('inputBackChanged', e.target.value, this.cardboardData.id);
     },
   },
   props: ['cardboardData', 'sideName'],
   mounted() {
-    this.$refs['front'][0].focus();
+    this.frontRefs[0].focus();
+  },
+  beforeUpdate() {
+    this.frontRefs = [];
+    this.backRefs = [];
+  },
+  updated() {
+    if (this.frontRefs.length > this.frontElementNumber) {
+      this.frontRefs[this.frontRefs.length - 1].focus();
+      this.frontElementNumber++;
+    } else if (this.backRefs.length > this.backElementNumber) {
+      this.backRefs[this.backRefs.length - 1].focus();
+      this.backElementNumber++;
+    }
   },
 };
 </script>
@@ -112,6 +138,21 @@ export default {
 
 .cardboard-input .input-field::placeholder {
   color: #8f7da7;
+}
+
+.cardboard-input .delete-input-field {
+  background-color: white;
+  height: 100%;
+  width: min(50px, 10vw);
+  background-color: #fd000066;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-image: url(../assets/delete.svg);
+  background-repeat: no-repeat;
+  background-position: 33% center;
+  background-size: 65%;
+  /* transition: 0.5s; */
 }
 
 .cardboard-input .input-field {
@@ -133,11 +174,16 @@ export default {
   border-radius: 1.5em;
   background-color: #512b81;
   margin-bottom: 1.25em;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
 }
 
 .cardboard-input {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .cardboard {
