@@ -1,4 +1,5 @@
 <template>
+  <ImportDialog v-if="importDialogOpen" />
   <h1 class="center-text">{{ name }}</h1>
   <h3>by: {{ author }}</h3>
   <AutoSaveButton
@@ -6,6 +7,7 @@
     ref="AutoSave"
     :isAutoSaveOn="autoSave"
   />
+  <ImportButton />
   <TextInput
     name="Cardboard Name"
     :value="name"
@@ -57,11 +59,14 @@ import NewCardboard from './components/NewCardboard.vue';
 import AddButton from './components/AddButton.vue';
 import ExportButton from './components/ExportButton.vue';
 import AutoSaveButton from './components/AutoSaveButton.vue';
+import ImportButton from './components/ImportButton.vue';
+import ImportDialog from './components/ImportDialog.vue';
 
 export default {
   name: 'App',
   data() {
     return {
+      importDialogOpen: false,
       autoSave: false,
       name: 'New Cardboard',
       author: 'Unknown',
@@ -192,12 +197,13 @@ export default {
     ExportButton,
     TextInput,
     AutoSaveButton,
+    ImportButton,
+    ImportDialog,
   },
 };
 </script>
 
 <style>
-
 html,
 body {
   padding: 0;
