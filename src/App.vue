@@ -197,7 +197,6 @@ export default {
 </script>
 
 <style>
-@import url(fonts/Mooli/mooli.css);
 
 html,
 body {
