@@ -1,16 +1,16 @@
 <template>
-  <dialog>Siema</dialog>
+    <dialog>Siema</dialog>
 </template>
 
 <script>
-export default {
-  methods: {},
-  props: [],
-};
+    export default {
+        methods: {},
+        props: [],
+    };
 </script>
 
 <style>
-/* .dialog-background {
+    /* .dialog-background {
   position: absolute;
   top: 50%;
   left: 50%;
