@@ -7,24 +7,26 @@
     </button>
 </template>
 
-<script>
+<script setup lang="ts">
+    import type Flashcard from '@/utils/Flashcard';
+
     function exportFlashcards() {
-        if (this.name === '') return;
-        if (this.author === '') return;
-        if (this.sideName.front === '') return;
-        if (this.sideName.back === '') return;
+        if (name === '') return;
+        if (author === '') return;
+        if (sideName.front === '') return;
+        if (sideName.back === '') return;
         let empty = false;
-        this.flashcards.forEach((cardboard) => {
-            if (cardboard.front === '' || cardboard.back === '') {
+        flashcards.forEach((flashcard) => {
+            if (flashcard.front.length === 0 || flashcard.back.length === 0) {
                 empty = true;
                 return;
             }
         });
         if (empty) return;
 
-        let objectToExport = this.createFlashcardObject(this.name, this.author, this.sideName, this.flashcards);
+        const objectToExport = createFlashcardObject(name, author, sideName, flashcards);
 
-        var downloadAnchorNode = document.createElement('a');
+        const downloadAnchorNode = document.createElement('a');
         const file = new Blob([JSON.stringify(objectToExport)], {type: 'text/plain'});
         downloadAnchorNode.href = URL.createObjectURL(file);
         downloadAnchorNode.download = objectToExport.name += '.json';
@@ -32,7 +34,12 @@
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
     }
-    function createFlashcardObject(name, author, sideName, flashcards) {
+    function createFlashcardObject(
+        name: string,
+        author: string,
+        sideName: {front: string; back: string},
+        flashcards: Array<Flashcard>
+    ) {
         return {
             name: name,
             author: author,
@@ -40,15 +47,25 @@
                 ...sideName,
             },
             version: '0.1',
-            flashcards: flashcards.map((cardboard) => {
+            flashcards: flashcards.map((flashcard) => {
                 return {
-                    front: [...cardboard.front],
-                    back: [...cardboard.back],
+                    front: [...flashcard.front],
+                    back: [...flashcard.back],
                 };
             }),
         };
     }
-    const props = defineProps(['name', 'author', 'sideName', 'flashcards']);
+    const {name, author, sideName, flashcards} = defineProps<{
+        name: string;
+        author: string;
+        sideName: {front: string; back: string};
+        flashcards: Array<Flashcard>;
+    }>();
+
+    defineExpose({
+        createFlashcardObject,
+        exportFlashcards,
+    });
 </script>
 
 <style>

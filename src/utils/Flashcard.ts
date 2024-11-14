@@ -1,10 +1,8 @@
 export default class Flashcard {
-    constructor(id: number, front: Array<string>, back: Array<string>) {
-        this.id = id;
+    constructor(front: Array<string>, back: Array<string>) {
         this.front = front;
         this.back = back;
     }
-    id: number;
     front: Array<string>;
     back: Array<string>;
 }

@@ -2,12 +2,7 @@
     <dialog>Siema</dialog>
 </template>
 
-<script>
-    export default {
-        methods: {},
-        props: [],
-    };
-</script>
+<script setup lang="ts"></script>
 
 <style>
     /* .dialog-background {

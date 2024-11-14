@@ -11,21 +11,17 @@
     </div>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {};
-        },
-        methods: {
-            inputValue: function (e) {
-                this.$emit('valueChanged', e.target.value);
-            },
-            focusText: function (e) {
-                e.target.select();
-            },
-        },
-        props: ['name', 'value'],
-    };
+<script setup lang="ts">
+    import type {InputHTMLAttributes} from 'vue';
+
+    function inputValue(event: Event) {
+        emit('valueChanged', (event.target as InputHTMLAttributes).value);
+    }
+    function focusText(e: FocusEvent) {
+        (e.target as HTMLInputElement).select();
+    }
+    const emit = defineEmits<{valueChanged: [value: string]}>();
+    const {name, value} = defineProps<{name: string; value: string}>();
 </script>
 
 <style>

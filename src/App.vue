@@ -31,7 +31,7 @@
         />
     </div>
     <NewCardboard
-        v-for="cardboard in flashcards"
+        v-for="(flashcard, index) in flashcards"
         ref="flashcard_array_object"
         @deleteCardboard="deleteFlashcard"
         @deleteFrontField="deleteFrontField"
@@ -40,8 +40,8 @@
         @inputFrontChanged="inputFrontChanged"
         @inputBackChanged="inputBackChanged"
         :side-name="sideName"
-        :key="cardboard.id"
-        :cardboard-data="cardboard"
+        :key="index"
+        :flashcard-element="{data: flashcard, id: index}"
     />
     <AddButton @newCardboard="createNewFlashcard" />
     <ExportButton
@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-    import {onMounted, useTemplateRef} from 'vue';
+    import {onMounted, ref, useTemplateRef} from 'vue';
 
     import TextInput from './components/TextInput.vue';
     import NewCardboard from './components/NewCardboard.vue';
@@ -64,18 +64,22 @@
     // import ImportButton from './components/ImportButton.vue';
     // import ImportDialog from './components/ImportDialog.vue';
     import Flashcard from './utils/Flashcard';
+    import SetOfFlashcardsVersion from './utils/SetOfFlashcardsVersion';
+    import calculateVersion from './utils/CalculateVersion';
 
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
     type ExportButtonType = InstanceType<typeof ExportButton>;
+    type NewFlashcardType = InstanceType<typeof NewCardboard>;
 
     const autoSaveRef = useTemplateRef<AutoSaveButtonType>('auto_save');
     const exportRef = useTemplateRef<ExportButtonType>('export');
+    const newFlashcardRef = useTemplateRef<Array<NewFlashcardType>>('flashcard_array_object');
 
-    let autoSave: boolean = false;
+    const autoSave = ref(false);
     let name: string = 'New Set of Flashcards';
     let author: string = 'Unknown';
-    let sideName: {front: string; back: string} = {front: 'Default', back: 'Default'};
-    const flashcards: Array<Flashcard> = [];
+    const sideName: {front: string; back: string} = {front: 'Default', back: 'Default'};
+    const flashcards: Array<Flashcard> = [new Flashcard([''], [''])];
 
     function deleteFrontField(flashcardID: number, fieldID: number) {
         if (flashcards[flashcardID].front.length <= 1) return;
@@ -87,8 +91,11 @@
         flashcards[cardboardID].back.splice(fieldID, 1);
     }
     function toggleAutoSave(toggle: boolean) {
-        autoSave = toggle;
-        if (autoSave) {
+        console.log('gupi');
+        autoSave.value = toggle;
+        console.log(toggle);
+        if (autoSave.value) {
+            console.log('jestem');
             autoSaveRef.value?.setCookie(
                 'last_save',
                 JSON.stringify(exportRef.value?.createFlashcardObject(name, author, sideName, flashcards)),
@@ -99,12 +106,10 @@
         }
     }
     function createNewFlashcard() {
-        flashcards[flashcards.length] = {
-            id: flashcards.length,
-            front: [''],
-            back: [''],
-        };
-        if (autoSave) {
+        console.log('siema');
+        flashcards.push(new Flashcard([''], ['']));
+        if (autoSave.value) {
+            console.log('zapisujemy');
             autoSaveRef.value?.setCookie(
                 'last_save',
                 JSON.stringify(exportRef.value?.createFlashcardObject(name, author, sideName, flashcards)),
@@ -114,7 +119,9 @@
     }
     function moveToNextFlashcard(id: number) {
         if (id < flashcards.length - 1) {
-            // this.$refs['cardboardArrayObject'][id + 1].$refs['front'].focus();
+            if (newFlashcardRef.value != null) {
+                // newFlashcardRef.value[id + 1].$refs['front'].focus();
+            }
         } else {
             createNewFlashcard();
         }
@@ -122,11 +129,6 @@
     function deleteFlashcard(id: number) {
         if (flashcards.length <= 1) return;
         flashcards.splice(id, 1);
-        var i = 0;
-        flashcards.forEach((flashcard) => {
-            flashcard.id = i;
-            i++;
-        });
     }
     function setAuthor(author_a: string) {
         author = author_a;
@@ -144,7 +146,7 @@
         if (value.slice(-1) == '/' && value.length > 1) {
             flashcards[id].front.push('');
         } else if (value.slice(-1) != '/') {
-            let lastIndex = flashcards[id].front.length - 1;
+            const lastIndex = flashcards[id].front.length - 1;
             flashcards[id].front[lastIndex] = value;
         }
     }
@@ -152,31 +154,51 @@
         if (value.slice(-1) == '/' && value.length > 1) {
             flashcards[id].back.push('');
         } else if (value.slice(-1) != '/') {
-            let lastIndex = flashcards[id].back.length - 1;
+            const lastIndex = flashcards[id].back.length - 1;
             flashcards[id].back[lastIndex] = value;
         }
     }
 
+    const currentVersion: SetOfFlashcardsVersion = SetOfFlashcardsVersion.Version0_1;
+
     onMounted(() => {
-        var data;
-        if ((data = autoSaveRef.value?.getCookie('last_save')) != null) {
-            autoSave = true;
-            data = JSON.parse(data);
-            if (data.name != undefined) name = data.name;
-            if (data.author != undefined) author = data.author;
-            if (data.sideName != undefined) {
-                if (data.sideName.front != undefined) sideName.front = data.sideName.front;
-                if (data.sideName.back != undefined) sideName.back = data.sideName.back;
+        console.log(flashcards);
+        const data = autoSaveRef.value?.getCookie('last_save');
+        if (data != null) {
+            autoSave.value = true;
+            const dataJSON = JSON.parse(data);
+
+            const version = calculateVersion(data);
+
+            console.log(version?.toString());
+
+            if (version != currentVersion) {
+                autoSaveRef.value?.deleteCookie('last_save');
+                autoSaveRef.value?.setCookie(
+                    'last_save',
+                    JSON.stringify(exportRef.value?.createFlashcardObject(name, author, sideName, flashcards)),
+                    7
+                );
             }
-            if (data.cardboards != undefined) {
-                if (Array.isArray(data.cardboards)) {
-                    data.cardboards.forEach((value: {front: Array<string>; back: Array<string>}, index: number) => {
-                        flashcards[index] = {
-                            id: index,
-                            front: value.front != undefined ? value.front : [],
-                            back: value.back != undefined ? value.back : [],
-                        };
-                    });
+
+            if (dataJSON.name != undefined) name = dataJSON.name;
+            if (dataJSON.author != undefined) author = dataJSON.author;
+            if (dataJSON.sideName != undefined) {
+                if (dataJSON.sideName.front != undefined) sideName.front = dataJSON.sideName.front;
+                if (dataJSON.sideName.back != undefined) sideName.back = dataJSON.sideName.back;
+            }
+            if (dataJSON.flashcards != undefined) {
+                if (Array.isArray(dataJSON.flashcards)) {
+                    dataJSON.flashcards.forEach(
+                        (value: {front: Array<string> | undefined; back: Array<string> | undefined}) => {
+                            flashcards.push(
+                                new Flashcard(
+                                    value.front != undefined ? value.front : [],
+                                    value.back != undefined ? value.back : []
+                                )
+                            );
+                        }
+                    );
                 }
             }
         }

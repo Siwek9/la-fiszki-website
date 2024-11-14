@@ -13,39 +13,39 @@
 </template>
 
 <script setup lang="ts">
-    function toggle(e: any) {
-        if (e.target.checked) {
-            onChecked();
-        } else {
-            onUnchecked();
-        }
-    }
-    function onChecked() {
-        // this.$emit('autoSave', true);
-    }
-    function onUnchecked() {
-        // this.$emit('autoSave', false);
+    function toggle(event: Event) {
+        const target = event.currentTarget as HTMLInputElement;
+        console.log('target ' + target.checked);
+        emit('autoSave', target.checked);
     }
     function setCookie(cookieName: string, cookieValue: object | string | number, expirationDays: number) {
         const d = new Date();
         d.setTime(d.getTime() + expirationDays * 24 * 60 * 60 * 1000);
-        let expires = 'expires=' + d.toUTCString();
+        const expires = 'expires=' + d.toUTCString();
         document.cookie = cookieName + '=' + cookieValue + ';' + expires + ';path=/';
     }
     function deleteCookie(cookieName: string) {
         setCookie(cookieName, '', -1);
     }
     function getCookie(cookieName: string) {
-        var nameEQ = cookieName + '=';
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
+        const nameEQ = cookieName + '=';
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
             while (c.charAt(0) == ' ') c = c.substring(1, c.length);
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
         }
         return null;
     }
-    const props = defineProps({isAutoSaveOn: Boolean});
+    defineExpose({
+        setCookie,
+        deleteCookie,
+        getCookie,
+    });
+
+    const emit = defineEmits<{autoSave: [status: boolean]}>();
+
+    const {isAutoSaveOn} = defineProps<{isAutoSaveOn: boolean}>();
 </script>
 <style>
     .auto-save-label {

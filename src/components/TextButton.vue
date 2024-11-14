@@ -7,13 +7,9 @@
     </button>
 </template>
 
-<script>
-    export default {
-        methods: {
-            OpenImportDialog: function () {},
-            props: ['name', 'author', 'sideName', 'cardboards'],
-        },
-    };
+<script setup lang="ts">
+    function OpenImportDialog() {}
+    // props: ['name', 'author', 'sideName', 'cardboards'],
 </script>
 
 <style>
