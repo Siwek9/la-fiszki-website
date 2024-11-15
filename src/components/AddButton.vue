@@ -9,10 +9,10 @@
 </template>
 
 <script setup lang="ts">
-    const emit = defineEmits<{newCardboard: []}>();
+    const emit = defineEmits<{newFlashcard: []}>();
 
     function addButton() {
-        emit('newCardboard');
+        emit('newFlashcard');
     }
 </script>
 

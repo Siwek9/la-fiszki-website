@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
     function OpenImportDialog() {}
-    // props: ['name', 'author', 'sideName', 'cardboards'],
+    // props: ['name', 'author', 'sideName', 'flashcards'],
 </script>
 
 <style>

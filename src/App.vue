@@ -30,20 +30,20 @@
             @valueChanged="setBackSide"
         />
     </div>
-    <NewCardboard
+    <NewFlashcard
         v-for="(flashcard, index) in flashcards"
         ref="flashcard_array_object"
-        @deleteCardboard="deleteFlashcard"
+        @deleteFlashcard="deleteFlashcard"
         @deleteFrontField="deleteFrontField"
         @deleteBackField="deleteBackField"
-        @nextCardboard="moveToNextFlashcard"
+        @nextFlashcard="moveToNextFlashcard"
         @inputFrontChanged="inputFrontChanged"
         @inputBackChanged="inputBackChanged"
         :side-name="sideName"
         :key="index"
         :flashcard-element="{data: flashcard, id: index}"
     />
-    <AddButton @newCardboard="createNewFlashcard" />
+    <AddButton @newFlashcard="createNewFlashcard" />
     <ExportButton
         :name="name"
         :author="author"
@@ -57,7 +57,7 @@
     import {onMounted, ref, useTemplateRef} from 'vue';
 
     import TextInput from './components/TextInput.vue';
-    import NewCardboard from './components/NewCardboard.vue';
+    import NewFlashcard from './components/NewFlashcard.vue';
     import AddButton from './components/AddButton.vue';
     import ExportButton from './components/ExportButton.vue';
     import AutoSaveButton from './components/AutoSaveButton.vue';
@@ -69,7 +69,7 @@
 
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
     type ExportButtonType = InstanceType<typeof ExportButton>;
-    type NewFlashcardType = InstanceType<typeof NewCardboard>;
+    type NewFlashcardType = InstanceType<typeof NewFlashcard>;
 
     const autoSaveRef = useTemplateRef<AutoSaveButtonType>('auto_save');
     const exportRef = useTemplateRef<ExportButtonType>('export');
@@ -86,9 +86,9 @@
         flashcards.value[flashcardID].front.splice(fieldID, 1);
     }
 
-    function deleteBackField(cardboardID: number, fieldID: number) {
-        if (flashcards.value[cardboardID].back.length <= 1) return;
-        flashcards.value[cardboardID].back.splice(fieldID, 1);
+    function deleteBackField(flashcardID: number, fieldID: number) {
+        if (flashcards.value[flashcardID].back.length <= 1) return;
+        flashcards.value[flashcardID].back.splice(fieldID, 1);
     }
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;

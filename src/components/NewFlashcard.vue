@@ -1,8 +1,8 @@
 <template>
-    <div class="center-center cardboard-and-delete">
-        <div class="cardboard">
+    <div class="center-center flashcard-and-delete">
+        <div class="flashcard">
             <div class="row center-middle">
-                <div class="cardboard-input">
+                <div class="flashcard-input">
                     <span class="input-name">{{ sideName.front }}:</span>
                     <div
                         class="input-field-background"
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <span class="fields-divider center-center">-></span>
-                <div class="cardboard-input">
+                <div class="flashcard-input">
                     <span class="input-name">{{ sideName.back }}:</span>
                     <div
                         class="input-field-background"
@@ -55,7 +55,7 @@
         </div>
         <span
             class="delete-button"
-            @click="deleteCardboard"
+            @click="deleteFlashcard"
         ></span>
     </div>
 </template>
@@ -91,11 +91,11 @@
         console.log('lolololololololololo');
         if ((event.currentTarget as HTMLInputElement).value != '') {
             console.log('siema10');
-            emit('nextCardboard', flashcardElement.id);
+            emit('nextFlashcard', flashcardElement.id);
         }
     }
-    function deleteCardboard() {
-        emit('deleteCardboard', flashcardElement.id);
+    function deleteFlashcard() {
+        emit('deleteFlashcard', flashcardElement.id);
     }
     function inputFrontChanged(event: Event) {
         emit('inputFrontChanged', (event.currentTarget as HTMLInputElement).value, flashcardElement.id);
@@ -105,12 +105,12 @@
         emit('inputBackChanged', (event.currentTarget as HTMLInputElement).value, flashcardElement.id);
     }
     const emit = defineEmits<{
-        nextCardboard: [cardboardID: number];
-        deleteCardboard: [cardboardID: number];
-        inputFrontChanged: [value: string, cardboardID: number];
-        inputBackChanged: [value: string, cardboardID: number];
-        deleteFrontField: [cardboardID: number, fieldID: number];
-        deleteBackField: [cardboardID: number, fieldID: number];
+        nextFlashcard: [flashcardID: number];
+        deleteFlashcard: [flashcardID: number];
+        inputFrontChanged: [value: string, flashcardID: number];
+        inputBackChanged: [value: string, flashcardID: number];
+        deleteFrontField: [flashcardID: number, fieldID: number];
+        deleteBackField: [flashcardID: number, fieldID: number];
     }>();
     const {flashcardElement, sideName} = defineProps<{
         flashcardElement: {data: Flashcard; id: number};
@@ -153,11 +153,11 @@
         white-space: nowrap;
     }
 
-    .cardboard-input .input-field::placeholder {
+    .flashcard-input .input-field::placeholder {
         color: #8f7da7;
     }
 
-    .cardboard-input .delete-input-field {
+    .flashcard-input .delete-input-field {
         background-color: white;
         height: 100%;
         width: min(50px, 10vw);
@@ -172,7 +172,7 @@
         /* transition: 0.5s; */
     }
 
-    .cardboard-input .input-field {
+    .flashcard-input .input-field {
         padding: max(0.5em, 1vw);
         width: 150px;
         max-width: 36vw;
@@ -183,11 +183,11 @@
         background-color: transparent;
     }
 
-    .cardboard-input .input-name {
+    .flashcard-input .input-name {
         margin: 0 0 10px 1vw;
     }
 
-    .cardboard-input .input-field-background {
+    .flashcard-input .input-field-background {
         /* padding: max(0.5em, 1vw); */
         border-radius: 1.5em;
         background-color: #512b81;
@@ -198,13 +198,13 @@
         position: relative;
     }
 
-    .cardboard-input {
+    .flashcard-input {
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
-    .cardboard {
+    .flashcard {
         border-radius: 15px;
         background-color: #35155d;
         padding: 15px 3vw;
@@ -225,14 +225,14 @@
     }
 
     @media only screen and (min-width: 600px) {
-        .cardboard-and-delete {
+        .flashcard-and-delete {
             flex-direction: row;
             margin-left: 40px;
         }
     }
 
     @media only screen and (max-width: 600px) {
-        .cardboard-and-delete {
+        .flashcard-and-delete {
             flex-direction: column;
             margin-left: 0;
         }
@@ -241,7 +241,7 @@
         cursor: pointer;
     }
 
-    .cardboard-and-delete {
+    .flashcard-and-delete {
         display: flex;
     }
 </style>
