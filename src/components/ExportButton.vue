@@ -17,7 +17,8 @@
         if (!st.use(ReadyToBeExported, flashcardsSet).ok) {
             return;
         }
-        const objectToExport = createFlashcardObject(flashcardsSet);
+        const objectToExport = ReadyToBeExported(createFlashcardObject(flashcardsSet));
+        console.log(objectToExport);
 
         const downloadAnchorNode = document.createElement('a');
         const file = new Blob([JSON.stringify(objectToExport)], {type: 'text/plain'});

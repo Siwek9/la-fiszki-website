@@ -14,6 +14,7 @@
                             type="text"
                             class="input-field"
                             placeholder="Text Here"
+                            maxlength="300"
                             :value="frontValues"
                             @input="inputFrontChanged"
                             @focus="inputFocus"
@@ -39,6 +40,7 @@
                             type="text"
                             class="input-field"
                             placeholder="Text Here"
+                            maxlength="300"
                             :value="backValues"
                             @input="inputBackChanged"
                             @focus="inputFocus"
@@ -174,10 +176,11 @@
 
     .flashcard-input .input-name {
         margin: 0 0 10px 1vw;
+        max-width: min(200px, 40vw);
+        overflow-wrap: break-word;
     }
 
     .flashcard-input .input-field-background {
-        /* padding: max(0.5em, 1vw); */
         border-radius: 1.5em;
         background-color: #512b81;
         margin-bottom: 1.25em;

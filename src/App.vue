@@ -9,22 +9,26 @@
     <ImportButton />
     <!-- <ImportDialog v-if="importDialogOpen" /> -->
     <TextInput
+        :max-length="70"
         name="Set Name"
         :value="flashcardsSet.name"
         @valueChanged="setName"
     />
     <TextInput
+        :max-length="50"
         name="Set Author"
         :value="flashcardsSet.author"
         @valueChanged="setAuthor"
     />
     <div class="center-center row flex-wrap">
         <TextInput
+            :max-length="30"
             name="Front Side"
             :value="flashcardsSet.sideName.front"
             @valueChanged="setFrontSide"
         />
         <TextInput
+            :max-length="30"
             name="Back Side"
             :value="flashcardsSet.sideName.back"
             @valueChanged="setBackSide"

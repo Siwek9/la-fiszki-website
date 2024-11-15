@@ -2,6 +2,7 @@
     <div class="text-input-body">
         <span class="text-input-name">{{ name }}:</span>
         <input
+            :maxlength="maxLength"
             @focus="focusText"
             @input="inputValue"
             :value="value"
@@ -21,7 +22,7 @@
         (e.target as HTMLInputElement).select();
     }
     const emit = defineEmits<{valueChanged: [value: string]}>();
-    const {name, value} = defineProps<{name: string; value: string}>();
+    const {name, value, maxLength} = defineProps<{name: string; value: string; maxLength: number}>();
 </script>
 
 <style>
