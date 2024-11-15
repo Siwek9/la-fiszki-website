@@ -116,7 +116,7 @@
     }>();
     defineExpose({frontRefs, backRefs});
     onMounted(() => {
-        if (frontRefs.value != null) {
+        if (frontRefs.value != null && flashcardElement.id != 0) {
             (frontRefs.value[0].firstChild! as HTMLDivElement).focus();
         }
     });
