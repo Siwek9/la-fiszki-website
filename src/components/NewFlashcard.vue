@@ -70,11 +70,9 @@
     let backElementNumber = 1;
 
     function deleteFrontField(index: number) {
-        console.log(index);
         emit('deleteFrontField', flashcardElement.id, index);
     }
     function deleteBackField(index: number) {
-        console.log(index);
         emit('deleteBackField', flashcardElement.id, index);
     }
     function inputFocus(event: FocusEvent) {
@@ -88,9 +86,7 @@
         }
     }
     function backSideMoveTab(event: Event) {
-        console.log('lolololololololololo');
         if ((event.currentTarget as HTMLInputElement).value != '') {
-            console.log('siema10');
             emit('nextFlashcard', flashcardElement.id);
         }
     }
@@ -118,10 +114,7 @@
     }>();
     defineExpose({frontRefs, backRefs});
     onMounted(() => {
-        console.log('powstalem lol');
         if (frontRefs.value != null) {
-            console.log('hhahahah');
-            console.log(frontRefs.value[0].firstChild! as HTMLDivElement);
             (frontRefs.value[0].firstChild! as HTMLDivElement).focus();
         }
     });

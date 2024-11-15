@@ -6,7 +6,6 @@ export default function calculateVersion(set_of_flashcards: string): SetOfFlashc
     let dataJSON;
     try {
         dataJSON = JSON.parse(set_of_flashcards);
-        console.log(dataJSON);
     } catch (e: unknown) {
         if (e instanceof SyntaxError) {
             console.error(e.message);

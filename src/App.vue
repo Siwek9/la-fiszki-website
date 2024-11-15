@@ -92,7 +92,6 @@
     }
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;
-        console.log(toggle);
         if (autoSave.value) {
             autoSaveRef.value?.setCookie(
                 'last_save',
@@ -106,7 +105,6 @@
     function createNewFlashcard() {
         flashcardsSet.value.flashcards.push(new Flashcard([''], ['']));
         if (autoSave.value) {
-            console.log('zapisujemy');
             autoSaveRef.value?.setCookie(
                 'last_save',
                 JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
@@ -115,16 +113,10 @@
         }
     }
     function moveToNextFlashcard(id: number) {
-        console.log('siema11');
-        console.log(id);
-        console.log(flashcardsSet.value.flashcards.length - 1);
         if (id < flashcardsSet.value.flashcards.length - 1) {
-            console.log('siema12');
             if (newFlashcardRef.value != null) {
-                console.log('siema13');
                 const frontRef = newFlashcardRef.value[id + 1].frontRefs;
                 if (frontRef != null) {
-                    console.log('siema14');
                     frontRef[0].focus();
                 }
             }
@@ -168,16 +160,12 @@
     const currentVersion: SetOfFlashcardsVersion = SetOfFlashcardsVersion.Version0_1;
 
     onMounted(() => {
-        console.log('siemaneczko');
-        console.log(flashcardsSet.value.flashcards);
         const data = autoSaveRef.value?.getCookie('last_save');
         if (data != null) {
             autoSave.value = true;
             const dataJSON = JSON.parse(data);
 
             const version = calculateVersion(data);
-
-            console.log(version?.toString());
 
             if (version != currentVersion) {
                 autoSaveRef.value?.deleteCookie('last_save');
@@ -205,7 +193,6 @@
                                     value.back != undefined ? value.back : []
                                 )
                             );
-                            console.log('dodatkowe gowno');
                         }
                     );
                 }

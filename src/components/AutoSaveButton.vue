@@ -15,7 +15,6 @@
 <script setup lang="ts">
     function toggle(event: Event) {
         const target = event.currentTarget as HTMLInputElement;
-        console.log('target ' + target.checked);
         emit('autoSave', target.checked);
     }
     function setCookie(cookieName: string, cookieValue: object | string | number, expirationDays: number) {
