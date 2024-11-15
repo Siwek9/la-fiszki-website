@@ -1,37 +1,37 @@
 <template>
-    <!-- <ImportDialog v-if="importDialogOpen" /> -->
-    <h1 class="center-text">{{ name }}</h1>
-    <h3>by: {{ author }}</h3>
+    <h1 class="center-text">{{ flashcardsSet.name }}</h1>
+    <h3>by: {{ flashcardsSet.author }}</h3>
     <AutoSaveButton
         @autoSave="toggleAutoSave"
         ref="auto_save"
         :isAutoSaveOn="autoSave"
     />
     <ImportButton />
+    <!-- <ImportDialog v-if="importDialogOpen" /> -->
     <TextInput
         name="Set Name"
-        :value="name"
+        :value="flashcardsSet.name"
         @valueChanged="setName"
     />
     <TextInput
         name="Set Author"
-        :value="author"
+        :value="flashcardsSet.author"
         @valueChanged="setAuthor"
     />
     <div class="center-center row flex-wrap">
         <TextInput
             name="Front Side"
-            :value="sideName.front"
+            :value="flashcardsSet.sideName.front"
             @valueChanged="setFrontSide"
         />
         <TextInput
             name="Back Side"
-            :value="sideName.back"
+            :value="flashcardsSet.sideName.back"
             @valueChanged="setBackSide"
         />
     </div>
     <NewFlashcard
-        v-for="(flashcard, index) in flashcards"
+        v-for="(flashcard, index) in flashcardsSet.flashcards"
         ref="flashcard_array_object"
         @deleteFlashcard="deleteFlashcard"
         @deleteFrontField="deleteFrontField"
@@ -39,16 +39,13 @@
         @nextFlashcard="moveToNextFlashcard"
         @inputFrontChanged="inputFrontChanged"
         @inputBackChanged="inputBackChanged"
-        :side-name="sideName"
+        :side-name="flashcardsSet.sideName"
         :key="index"
         :flashcard-element="{data: flashcard, id: index}"
     />
     <AddButton @newFlashcard="createNewFlashcard" />
     <ExportButton
-        :name="name"
-        :author="author"
-        :side-name="sideName"
-        :flashcards="flashcards"
+        :flashcards-set="flashcardsSet"
         ref="export"
     />
 </template>
@@ -61,11 +58,12 @@
     import AddButton from './components/AddButton.vue';
     import ExportButton from './components/ExportButton.vue';
     import AutoSaveButton from './components/AutoSaveButton.vue';
-    // import ImportButton from './components/ImportButton.vue';
+    import ImportButton from './components/ImportButton.vue';
     // import ImportDialog from './components/ImportDialog.vue';
     import Flashcard from './utils/Flashcard';
     import SetOfFlashcardsVersion from './utils/SetOfFlashcardsVersion';
     import calculateVersion from './utils/CalculateVersion';
+    import type {FlashcardsSet} from './utils/FlashcardsSet';
 
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
     type ExportButtonType = InstanceType<typeof ExportButton>;
@@ -76,19 +74,21 @@
     const newFlashcardRef = useTemplateRef<Array<NewFlashcardType>>('flashcard_array_object');
 
     const autoSave = ref(false);
-    const name = ref('New Set of Flashcards');
-    const author = ref('Unknown');
-    const sideName = ref({front: 'Default', back: 'Default'});
-    const flashcards = ref([new Flashcard([''], [''])]);
+    const flashcardsSet = ref<FlashcardsSet>({
+        name: 'New Set of Flashcards',
+        author: 'Unknown',
+        sideName: {front: 'Unknown', back: 'Unknown'},
+        flashcards: [{front: [''], back: ['']}],
+    });
 
     function deleteFrontField(flashcardID: number, fieldID: number) {
-        if (flashcards.value[flashcardID].front.length <= 1) return;
-        flashcards.value[flashcardID].front.splice(fieldID, 1);
+        if (flashcardsSet.value.flashcards[flashcardID].front.length <= 1) return;
+        flashcardsSet.value.flashcards[flashcardID].front.splice(fieldID, 1);
     }
 
     function deleteBackField(flashcardID: number, fieldID: number) {
-        if (flashcards.value[flashcardID].back.length <= 1) return;
-        flashcards.value[flashcardID].back.splice(fieldID, 1);
+        if (flashcardsSet.value.flashcards[flashcardID].back.length <= 1) return;
+        flashcardsSet.value.flashcards[flashcardID].back.splice(fieldID, 1);
     }
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;
@@ -96,9 +96,7 @@
         if (autoSave.value) {
             autoSaveRef.value?.setCookie(
                 'last_save',
-                JSON.stringify(
-                    exportRef.value?.createFlashcardObject(name.value, author.value, sideName.value, flashcards.value)
-                ),
+                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
                 7
             );
         } else {
@@ -106,14 +104,12 @@
         }
     }
     function createNewFlashcard() {
-        flashcards.value.push(new Flashcard([''], ['']));
+        flashcardsSet.value.flashcards.push(new Flashcard([''], ['']));
         if (autoSave.value) {
             console.log('zapisujemy');
             autoSaveRef.value?.setCookie(
                 'last_save',
-                JSON.stringify(
-                    exportRef.value?.createFlashcardObject(name.value, author.value, sideName.value, flashcards.value)
-                ),
+                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
                 7
             );
         }
@@ -121,8 +117,8 @@
     function moveToNextFlashcard(id: number) {
         console.log('siema11');
         console.log(id);
-        console.log(flashcards.value.length - 1);
-        if (id < flashcards.value.length - 1) {
+        console.log(flashcardsSet.value.flashcards.length - 1);
+        if (id < flashcardsSet.value.flashcards.length - 1) {
             console.log('siema12');
             if (newFlashcardRef.value != null) {
                 console.log('siema13');
@@ -137,35 +133,35 @@
         }
     }
     function deleteFlashcard(id: number) {
-        if (flashcards.value.length <= 1) return;
-        flashcards.value.splice(id, 1);
+        if (flashcardsSet.value.flashcards.length <= 1) return;
+        flashcardsSet.value.flashcards.splice(id, 1);
     }
     function setAuthor(author_a: string) {
-        author.value = author_a;
+        flashcardsSet.value.author = author_a;
     }
     function setName(name_a: string) {
-        name.value = name_a;
+        flashcardsSet.value.name = name_a;
     }
     function setFrontSide(frontSide: string) {
-        sideName.value.front = frontSide;
+        flashcardsSet.value.sideName.front = frontSide;
     }
     function setBackSide(backSide: string) {
-        sideName.value.back = backSide;
+        flashcardsSet.value.sideName.back = backSide;
     }
     function inputFrontChanged(value: string, id: number) {
         if (value.slice(-1) == '/' && value.length > 1) {
-            flashcards.value[id].front.push('');
+            flashcardsSet.value.flashcards[id].front.push('');
         } else if (value.slice(-1) != '/') {
-            const lastIndex = flashcards.value[id].front.length - 1;
-            flashcards.value[id].front[lastIndex] = value;
+            const lastIndex = flashcardsSet.value.flashcards[id].front.length - 1;
+            flashcardsSet.value.flashcards[id].front[lastIndex] = value;
         }
     }
     function inputBackChanged(value: string, id: number) {
         if (value.slice(-1) == '/' && value.length > 1) {
-            flashcards.value[id].back.push('');
+            flashcardsSet.value.flashcards[id].back.push('');
         } else if (value.slice(-1) != '/') {
-            const lastIndex = flashcards.value[id].back.length - 1;
-            flashcards.value[id].back[lastIndex] = value;
+            const lastIndex = flashcardsSet.value.flashcards[id].back.length - 1;
+            flashcardsSet.value.flashcards[id].back[lastIndex] = value;
         }
     }
 
@@ -173,7 +169,7 @@
 
     onMounted(() => {
         console.log('siemaneczko');
-        console.log(flashcards);
+        console.log(flashcardsSet.value.flashcards);
         const data = autoSaveRef.value?.getCookie('last_save');
         if (data != null) {
             autoSave.value = true;
@@ -187,30 +183,23 @@
                 autoSaveRef.value?.deleteCookie('last_save');
                 autoSaveRef.value?.setCookie(
                     'last_save',
-                    JSON.stringify(
-                        exportRef.value?.createFlashcardObject(
-                            name.value,
-                            author.value,
-                            sideName.value,
-                            flashcards.value
-                        )
-                    ),
+                    JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
                     7
                 );
             }
 
-            if (dataJSON.name != undefined) name.value = dataJSON.name;
-            if (dataJSON.author != undefined) author.value = dataJSON.author;
+            if (dataJSON.name != undefined) flashcardsSet.value.name = dataJSON.name;
+            if (dataJSON.author != undefined) flashcardsSet.value.author = dataJSON.author;
             if (dataJSON.sideName != undefined) {
-                if (dataJSON.sideName.front != undefined) sideName.value.front = dataJSON.sideName.front;
-                if (dataJSON.sideName.back != undefined) sideName.value.back = dataJSON.sideName.back;
+                if (dataJSON.sideName.front != undefined) flashcardsSet.value.sideName.front = dataJSON.sideName.front;
+                if (dataJSON.sideName.back != undefined) flashcardsSet.value.sideName.back = dataJSON.sideName.back;
             }
             if (dataJSON.flashcards != undefined) {
                 if (Array.isArray(dataJSON.flashcards)) {
-                    flashcards.value = [];
+                    flashcardsSet.value.flashcards = [];
                     dataJSON.flashcards.forEach(
                         (value: {front: Array<string> | undefined; back: Array<string> | undefined}) => {
-                            flashcards.value.push(
+                            flashcardsSet.value.flashcards.push(
                                 new Flashcard(
                                     value.front != undefined ? value.front : [],
                                     value.back != undefined ? value.back : []
@@ -262,6 +251,14 @@
     .flex-wrap {
         display: flex;
         flex-wrap: wrap;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    h3 {
+        text-align: center;
     }
 
     input,

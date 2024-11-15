@@ -30,7 +30,9 @@
         background-color: #35155d;
         font-size: 30px;
         border-radius: 0 10px 10px 10px;
+        box-sizing: border-box;
         padding: 10px;
+        width: 100%;
     }
 
     .text-input-name {
@@ -44,5 +46,6 @@
         flex-direction: column;
         align-items: flex-start;
         margin: 10px;
+        max-width: 92vw;
     }
 </style>

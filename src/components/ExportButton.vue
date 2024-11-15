@@ -8,23 +8,16 @@
 </template>
 
 <script setup lang="ts">
-    import type Flashcard from '@/utils/Flashcard';
+    // import type Flashcard from '@/utils/Flashcard';
+    import type {FlashcardsSet} from '@/utils/FlashcardsSet';
+    import {ReadyToBeExported} from '@/utils/SetOfFlashcardsValidators';
+    import * as st from 'simple-runtypes';
 
     function exportFlashcards() {
-        if (name === '') return;
-        if (author === '') return;
-        if (sideName.front === '') return;
-        if (sideName.back === '') return;
-        let empty = false;
-        flashcards.forEach((flashcard) => {
-            if (flashcard.front.length === 0 || flashcard.back.length === 0) {
-                empty = true;
-                return;
-            }
-        });
-        if (empty) return;
-
-        const objectToExport = createFlashcardObject(name, author, sideName, flashcards);
+        if (!st.use(ReadyToBeExported, flashcardsSet).ok) {
+            return;
+        }
+        const objectToExport = createFlashcardObject(flashcardsSet);
 
         const downloadAnchorNode = document.createElement('a');
         const file = new Blob([JSON.stringify(objectToExport)], {type: 'text/plain'});
@@ -34,32 +27,14 @@
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
     }
-    function createFlashcardObject(
-        name: string,
-        author: string,
-        sideName: {front: string; back: string},
-        flashcards: Array<Flashcard>
-    ) {
+    function createFlashcardObject(flashcardsSet: FlashcardsSet) {
         return {
-            name: name,
-            author: author,
-            sideName: {
-                ...sideName,
-            },
+            ...flashcardsSet,
             version: '0.1',
-            flashcards: flashcards.map((flashcard) => {
-                return {
-                    front: [...flashcard.front],
-                    back: [...flashcard.back],
-                };
-            }),
         };
     }
-    const {name, author, sideName, flashcards} = defineProps<{
-        name: string;
-        author: string;
-        sideName: {front: string; back: string};
-        flashcards: Array<Flashcard>;
+    const {flashcardsSet} = defineProps<{
+        flashcardsSet: FlashcardsSet;
     }>();
 
     defineExpose({

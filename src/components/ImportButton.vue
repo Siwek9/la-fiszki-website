@@ -3,7 +3,7 @@
         class="text-button"
         @click="OpenImportDialog"
     >
-        Import Cardboard
+        Import Set
     </button>
 </template>
 
