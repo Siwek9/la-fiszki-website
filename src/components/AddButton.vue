@@ -4,7 +4,7 @@
         @click="addButton"
         tabindex="1"
     >
-        +
+        <div class="plus-icon"></div>
     </div>
 </template>
 
@@ -32,5 +32,15 @@
 
     .add-button:hover {
         cursor: pointer;
+    }
+
+    .plus-icon {
+        background-image: url(../assets/add_button.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 85%;
+
+        width: clamp(47px, 3vw, 60px);
+        height: clamp(47px, 3vw, 60px);
     }
 </style>
