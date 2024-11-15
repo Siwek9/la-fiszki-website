@@ -162,9 +162,9 @@
         height: 100%;
         width: min(50px, 10vw);
         background-color: #fd000066;
-        position: absolute;
-        top: 0;
-        right: 0;
+        /* position: absolute; */
+        /* top: 0;
+        right: 0; */
         background-image: url(../assets/delete.svg);
         background-repeat: no-repeat;
         background-position: 33% center;
@@ -173,7 +173,8 @@
     }
 
     .cardboard-input .input-field {
-        width: 200px;
+        padding: max(0.5em, 1vw);
+        width: 150px;
         max-width: 36vw;
         font-size: max(1.2em, 1.5vw);
         outline: none;
@@ -187,7 +188,7 @@
     }
 
     .cardboard-input .input-field-background {
-        padding: max(0.5em, 1vw);
+        /* padding: max(0.5em, 1vw); */
         border-radius: 1.5em;
         background-color: #512b81;
         margin-bottom: 1.25em;
