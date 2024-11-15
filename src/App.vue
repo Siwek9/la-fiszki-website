@@ -64,6 +64,7 @@
     import SetOfFlashcardsVersion from './utils/SetOfFlashcardsVersion';
     import calculateVersion from './utils/CalculateVersion';
     import type {FlashcardsSet} from './utils/FlashcardsSet';
+    import fixOutdatedSets from './utils/FixOutdatedSets';
 
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
     type ExportButtonType = InstanceType<typeof ExportButton>;
@@ -93,22 +94,20 @@
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;
         if (autoSave.value) {
-            autoSaveRef.value?.setCookie(
+            localStorage.setItem(
                 'last_save',
-                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
-                7
+                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value))
             );
         } else {
-            autoSaveRef.value?.deleteCookie('last_save');
+            localStorage.removeItem('last_save');
         }
     }
     function createNewFlashcard() {
         flashcardsSet.value.flashcards.push(new Flashcard([''], ['']));
         if (autoSave.value) {
-            autoSaveRef.value?.setCookie(
+            localStorage.setItem(
                 'last_save',
-                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
-                7
+                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value))
             );
         }
     }
@@ -160,20 +159,24 @@
     const currentVersion: SetOfFlashcardsVersion = SetOfFlashcardsVersion.Version0_1;
 
     onMounted(() => {
-        const data = autoSaveRef.value?.getCookie('last_save');
+        const cookieData = autoSaveRef.value?.getCookie('last_save');
+
+        if (cookieData != null) {
+            localStorage.setItem('last_save', cookieData);
+            autoSaveRef.value?.deleteCookie('last_save');
+        }
+
+        const data = localStorage.getItem('last_save');
+
         if (data != null) {
             autoSave.value = true;
-            const dataJSON = JSON.parse(data);
+            let dataJSON = JSON.parse(data);
 
             const version = calculateVersion(data);
 
             if (version != currentVersion) {
-                autoSaveRef.value?.deleteCookie('last_save');
-                autoSaveRef.value?.setCookie(
-                    'last_save',
-                    JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value)),
-                    7
-                );
+                dataJSON = fixOutdatedSets(dataJSON, currentVersion);
+                localStorage.setItem('last_save', JSON.stringify(dataJSON));
             }
 
             if (dataJSON.name != undefined) flashcardsSet.value.name = dataJSON.name;
