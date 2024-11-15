@@ -162,19 +162,15 @@
         height: 100%;
         width: min(50px, 10vw);
         background-color: #fd000066;
-        /* position: absolute; */
-        /* top: 0;
-        right: 0; */
         background-image: url(../assets/delete.svg);
         background-repeat: no-repeat;
         background-position: 33% center;
         background-size: 65%;
-        /* transition: 0.5s; */
     }
 
     .flashcard-input .input-field {
         padding: max(0.5em, 1vw);
-        width: 150px;
+        width: min(150px, 25vw);
         max-width: 36vw;
         font-size: max(1.2em, 1.5vw);
         outline: none;
@@ -215,7 +211,7 @@
         background-image: url(../assets/delete.svg);
         background-repeat: no-repeat;
         background-position: center center;
-        background-size: 85%;
+        background-size: 70%;
         user-select: none;
         background-color: #fd000066;
         width: 50px;
