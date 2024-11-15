@@ -62,8 +62,6 @@
 
 <script setup lang="ts">
     import type Flashcard from '@/utils/Flashcard';
-    // import type HTMLFocusEvent from '@/utils/HTMLFocusEvent';
-    // import type HTMLInputEvent from '@/utils/HTMLInputEvent';
     import {onBeforeMount, onMounted, onUpdated, useTemplateRef} from 'vue';
 
     const frontRefs = useTemplateRef<Array<HTMLDivElement>>('front_refs');
@@ -85,12 +83,14 @@
     function frontSideMoveTab(event: Event) {
         if ((event.currentTarget as HTMLInputElement).value != '') {
             if (backRefs.value != null) {
-                backRefs.value[0].focus();
+                (backRefs.value[0].firstChild! as HTMLDivElement).focus();
             }
         }
     }
     function backSideMoveTab(event: Event) {
+        console.log('lolololololololololo');
         if ((event.currentTarget as HTMLInputElement).value != '') {
+            console.log('siema10');
             emit('nextCardboard', flashcardElement.id);
         }
     }
@@ -116,9 +116,13 @@
         flashcardElement: {data: Flashcard; id: number};
         sideName: {front: string; back: string};
     }>();
+    defineExpose({frontRefs, backRefs});
     onMounted(() => {
+        console.log('powstalem lol');
         if (frontRefs.value != null) {
-            frontRefs.value[0].focus();
+            console.log('hhahahah');
+            console.log(frontRefs.value[0].firstChild! as HTMLDivElement);
+            (frontRefs.value[0].firstChild! as HTMLDivElement).focus();
         }
     });
     onBeforeMount(() => {
@@ -132,10 +136,10 @@
     onUpdated(() => {
         if (frontRefs.value == null || backRefs.value == null) return;
         if (frontRefs.value.length > frontElementNumber) {
-            frontRefs.value[frontRefs.value.length - 1].focus();
+            (frontRefs.value[frontRefs.value.length - 1].firstChild! as HTMLDivElement).focus();
             frontElementNumber++;
         } else if (backRefs.value.length > backElementNumber) {
-            backRefs.value[backRefs.value.length - 1].focus();
+            (backRefs.value[backRefs.value.length - 1].firstChild! as HTMLDivElement).focus();
             backElementNumber++;
         }
     });
