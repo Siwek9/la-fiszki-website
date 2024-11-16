@@ -127,15 +127,27 @@
         flashcardsSet.value.flashcards.splice(id, 1);
     }
     function inputFrontChanged(value: string, idFlashcard: number, idText: number) {
-        if (value.slice(-1) == '/' && value.length > 1) {
-            flashcardsSet.value.flashcards[idFlashcard].front.splice(idText + 1, 0, '');
+        const positionOfSlash = value.indexOf('/');
+        if (positionOfSlash != -1 && value.length > 1) {
+            let contentToMove = '';
+            if (positionOfSlash != value.length - 1) {
+                contentToMove = value.slice(positionOfSlash + 1);
+            }
+            flashcardsSet.value.flashcards[idFlashcard].front[idText] = value.slice(0, positionOfSlash);
+            flashcardsSet.value.flashcards[idFlashcard].front.splice(idText + 1, 0, contentToMove);
         } else if (value.slice(-1) != '/') {
             flashcardsSet.value.flashcards[idFlashcard].front[idText] = value;
         }
     }
     function inputBackChanged(value: string, idFlashcard: number, idText: number) {
-        if (value.slice(-1) == '/' && value.length > 1) {
-            flashcardsSet.value.flashcards[idFlashcard].back.splice(idText + 1, 0, '');
+        const positionOfSlash = value.indexOf('/');
+        if (positionOfSlash != -1 && value.length > 1) {
+            let contentToMove = '';
+            if (positionOfSlash != value.length - 1) {
+                contentToMove = value.slice(positionOfSlash + 1);
+            }
+            flashcardsSet.value.flashcards[idFlashcard].back[idText] = value.slice(0, positionOfSlash);
+            flashcardsSet.value.flashcards[idFlashcard].back.splice(idText + 1, 0, contentToMove);
         } else if (value.slice(-1) != '/') {
             flashcardsSet.value.flashcards[idFlashcard].back[idText] = value;
         }

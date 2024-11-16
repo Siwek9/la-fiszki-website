@@ -82,7 +82,7 @@
     }
 
     .flashcard-input .input-field {
-        padding: max(0.5em, 1vw);
+        padding: clamp(0.5em, 1vw, 0.7em);
         width: min(150px, 25vw);
         max-width: 36vw;
         font-size: clamp(1.2em, 1.5vw, 1.8em);
