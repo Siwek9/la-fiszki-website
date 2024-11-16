@@ -118,7 +118,7 @@
     function moveToNextFlashcard(id: number) {
         if (id < flashcardsSet.value.flashcards.length - 1) {
             if (newFlashcardRef.value != null) {
-                const frontRef = newFlashcardRef.value[id + 1].frontRefs;
+                const frontRef = newFlashcardRef.value[id + 1].frontRef?.inputRefs;
                 if (frontRef != null) {
                     frontRef[0].focus();
                 }
@@ -143,20 +143,18 @@
     function setBackSide(backSide: string) {
         flashcardsSet.value.sideName.back = backSide;
     }
-    function inputFrontChanged(value: string, id: number) {
+    function inputFrontChanged(value: string, idFlashcard: number, idText: number) {
         if (value.slice(-1) == '/' && value.length > 1) {
-            flashcardsSet.value.flashcards[id].front.push('');
+            flashcardsSet.value.flashcards[idFlashcard].front.splice(idText + 1, 0, '');
         } else if (value.slice(-1) != '/') {
-            const lastIndex = flashcardsSet.value.flashcards[id].front.length - 1;
-            flashcardsSet.value.flashcards[id].front[lastIndex] = value;
+            flashcardsSet.value.flashcards[idFlashcard].front[idText] = value;
         }
     }
-    function inputBackChanged(value: string, id: number) {
+    function inputBackChanged(value: string, idFlashcard: number, idText: number) {
         if (value.slice(-1) == '/' && value.length > 1) {
-            flashcardsSet.value.flashcards[id].back.push('');
+            flashcardsSet.value.flashcards[idFlashcard].back.splice(idText + 1, 0, '');
         } else if (value.slice(-1) != '/') {
-            const lastIndex = flashcardsSet.value.flashcards[id].back.length - 1;
-            flashcardsSet.value.flashcards[id].back[lastIndex] = value;
+            flashcardsSet.value.flashcards[idFlashcard].back[idText] = value;
         }
     }
 
