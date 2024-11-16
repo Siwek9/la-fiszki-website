@@ -1,15 +1,15 @@
 <template>
     <button
         class="text-button"
-        @click="OpenImportDialog"
+        @click="emit('onClick')"
     >
-        Import Flashcard
+        {{ text }}
     </button>
 </template>
 
 <script setup lang="ts">
-    function OpenImportDialog() {}
-    // props: ['name', 'author', 'sideName', 'flashcards'],
+    const {text} = defineProps<{text: string}>();
+    const emit = defineEmits<{onClick: []}>();
 </script>
 
 <style>

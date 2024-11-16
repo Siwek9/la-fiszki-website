@@ -6,8 +6,10 @@
         ref="auto_save"
         :isAutoSaveOn="autoSave"
     />
-    <ImportButton />
-    <!-- <ImportDialog v-if="importDialogOpen" /> -->
+    <TextButton
+        @on-click="openDialog"
+        text="Import Set"
+    />
     <TextInput
         :max-length="70"
         name="Set Name"
@@ -44,9 +46,9 @@
         :flashcard-element="{data: flashcard, id: index}"
     />
     <AddButton @newFlashcard="createNewFlashcard" />
-    <ExportButton
-        :flashcards-set="flashcardsSet"
-        ref="export"
+    <TextButton
+        @on-click="exportFlashcards"
+        text="Export Set"
     />
 </template>
 
@@ -56,22 +58,21 @@
     import TextInput from './components/TextInput.vue';
     import NewFlashcard from './components/NewFlashcard.vue';
     import AddButton from './components/AddButton.vue';
-    import ExportButton from './components/ExportButton.vue';
     import AutoSaveButton from './components/AutoSaveButton.vue';
-    import ImportButton from './components/ImportButton.vue';
     // import ImportDialog from './components/ImportDialog.vue';
     import SetOfFlashcardsVersion from './utils/SetOfFlashcardsVersion';
     import calculateVersion from './utils/CalculateVersion';
     import type {FlashcardsSet} from './utils/FlashcardsSet';
     import fixOutdatedSets from './utils/FixOutdatedSets';
+    import TextButton from './components/TextButton.vue';
+    import * as st from 'simple-runtypes';
+    import {ReadyToBeExported} from './utils/SetOfFlashcardsValidators';
 
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
-    type ExportButtonType = InstanceType<typeof ExportButton>;
     type NewFlashcardType = InstanceType<typeof NewFlashcard>;
 
     const autoSaveRef = useTemplateRef<AutoSaveButtonType>('auto_save');
-    const exportRef = useTemplateRef<ExportButtonType>('export');
-    const newFlashcardRef = useTemplateRef<Array<NewFlashcardType>>('flashcard_array_object');
+    const newFlashcardRef = useTemplateRef<Array<NewFlashcardType>>('flashcard-array-object');
 
     const autoSave = ref(false);
     const flashcardsSet = ref<FlashcardsSet>({
@@ -93,10 +94,7 @@
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;
         if (autoSave.value) {
-            localStorage.setItem(
-                'last_save',
-                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value))
-            );
+            localStorage.setItem('last_save', JSON.stringify(createFlashcardObject(flashcardsSet.value)));
         } else {
             localStorage.removeItem('last_save');
         }
@@ -104,10 +102,7 @@
     function createNewFlashcard() {
         flashcardsSet.value.flashcards.push({front: [''], back: ['']});
         if (autoSave.value) {
-            localStorage.setItem(
-                'last_save',
-                JSON.stringify(exportRef.value?.createFlashcardObject(flashcardsSet.value))
-            );
+            localStorage.setItem('last_save', JSON.stringify(createFlashcardObject(flashcardsSet.value)));
         }
     }
     function moveToNextFlashcard(id: number) {
@@ -151,6 +146,28 @@
         } else if (value.slice(-1) != '/') {
             flashcardsSet.value.flashcards[idFlashcard].back[idText] = value;
         }
+    }
+
+    function exportFlashcards() {
+        if (!st.use(ReadyToBeExported, flashcardsSet.value).ok) {
+            return;
+        }
+        const objectToExport = ReadyToBeExported(createFlashcardObject(flashcardsSet.value));
+        console.log(objectToExport);
+
+        const downloadAnchorNode = document.createElement('a');
+        const file = new Blob([JSON.stringify(objectToExport)], {type: 'text/plain'});
+        downloadAnchorNode.href = URL.createObjectURL(file);
+        downloadAnchorNode.download = objectToExport.name += '.json';
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+    function createFlashcardObject(flashcardsSet: FlashcardsSet) {
+        return {
+            ...flashcardsSet,
+            version: '0.1',
+        };
     }
 
     const currentVersion: SetOfFlashcardsVersion = SetOfFlashcardsVersion.Version0_1;
