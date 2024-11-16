@@ -30,6 +30,7 @@
 
     function deleteField(index: number) {
         emit('deleteField', index);
+        inputFieldsNumber.value--;
     }
 
     function inputChanged(event: Event, index: number) {
