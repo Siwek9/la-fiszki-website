@@ -64,7 +64,6 @@
     import AutoSaveButton from './components/AutoSaveButton.vue';
     import ImportButton from './components/ImportButton.vue';
     // import ImportDialog from './components/ImportDialog.vue';
-    import Flashcard from './utils/Flashcard';
     import SetOfFlashcardsVersion from './utils/SetOfFlashcardsVersion';
     import calculateVersion from './utils/CalculateVersion';
     import type {FlashcardsSet} from './utils/FlashcardsSet';
@@ -107,7 +106,7 @@
         }
     }
     function createNewFlashcard() {
-        flashcardsSet.value.flashcards.push(new Flashcard([''], ['']));
+        flashcardsSet.value.flashcards.push({front: [''], back: ['']});
         if (autoSave.value) {
             localStorage.setItem(
                 'last_save',
@@ -192,12 +191,10 @@
                     flashcardsSet.value.flashcards = [];
                     dataJSON.flashcards.forEach(
                         (value: {front: Array<string> | undefined; back: Array<string> | undefined}) => {
-                            flashcardsSet.value.flashcards.push(
-                                new Flashcard(
-                                    value.front != undefined ? value.front : [],
-                                    value.back != undefined ? value.back : []
-                                )
-                            );
+                            flashcardsSet.value.flashcards.push({
+                                front: value.front != undefined ? value.front : [''],
+                                back: value.back != undefined ? value.back : [''],
+                            });
                         }
                     );
                 }

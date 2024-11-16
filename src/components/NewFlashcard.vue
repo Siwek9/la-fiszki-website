@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
     import FlashcardInput from './FlashcardInput.vue';
-    import type Flashcard from '@/utils/Flashcard';
+    import type {Flashcard} from '@/utils/Flashcard';
     import {onMounted, useTemplateRef} from 'vue';
 
     type FlashcardInputType = InstanceType<typeof FlashcardInput>;

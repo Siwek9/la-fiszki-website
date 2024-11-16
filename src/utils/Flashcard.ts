@@ -1,8 +1,4 @@
-export default class Flashcard {
-    constructor(front: Array<string>, back: Array<string>) {
-        this.front = front;
-        this.back = back;
-    }
+export type Flashcard = {
     front: Array<string>;
     back: Array<string>;
-}
+};
