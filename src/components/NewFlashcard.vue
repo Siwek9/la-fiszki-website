@@ -112,7 +112,7 @@
         background-position: center center;
         background-size: 70%;
         user-select: none;
-        background-color: #fd000066;
+        background-color: #99000066;
         width: 50px;
         height: 50px;
         border-radius: 50%;

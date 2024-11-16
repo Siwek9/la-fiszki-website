@@ -71,7 +71,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #ff0000;
+        background-color: #99000066;
         transition: 0.3s;
     }
 
@@ -88,7 +88,7 @@
     }
 
     input:checked + .slider {
-        background-color: #1f9900;
+        background-color: #1f990098;
     }
 
     input:focus + .slider {

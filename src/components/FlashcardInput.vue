@@ -74,7 +74,7 @@
         background-color: white;
         height: 100%;
         width: min(50px, 10vw);
-        background-color: #fd000066;
+        background-color: #99000066;
         background-image: url(../assets/delete.svg);
         background-repeat: no-repeat;
         background-position: 33% center;
