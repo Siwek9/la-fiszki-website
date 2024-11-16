@@ -85,7 +85,7 @@
         padding: max(0.5em, 1vw);
         width: min(150px, 25vw);
         max-width: 36vw;
-        font-size: max(1.2em, 1.5vw);
+        font-size: clamp(1.2em, 1.5vw, 1.8em);
         outline: none;
         border: none;
         color: white;
