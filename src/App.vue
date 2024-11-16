@@ -11,27 +11,23 @@
     <TextInput
         :max-length="70"
         name="Set Name"
-        :value="flashcardsSet.name"
-        @valueChanged="setName"
+        v-model="flashcardsSet.name"
     />
     <TextInput
         :max-length="50"
         name="Set Author"
-        :value="flashcardsSet.author"
-        @valueChanged="setAuthor"
+        v-model="flashcardsSet.author"
     />
     <div class="center-center row flex-wrap">
         <TextInput
             :max-length="30"
             name="Front Side"
-            :value="flashcardsSet.sideName.front"
-            @valueChanged="setFrontSide"
+            v-model="flashcardsSet.sideName.front"
         />
         <TextInput
             :max-length="30"
             name="Back Side"
-            :value="flashcardsSet.sideName.back"
-            @valueChanged="setBackSide"
+            v-model="flashcardsSet.sideName.back"
         />
     </div>
     <NewFlashcard
@@ -129,18 +125,6 @@
     function deleteFlashcard(id: number) {
         if (flashcardsSet.value.flashcards.length <= 1) return;
         flashcardsSet.value.flashcards.splice(id, 1);
-    }
-    function setAuthor(author_a: string) {
-        flashcardsSet.value.author = author_a;
-    }
-    function setName(name_a: string) {
-        flashcardsSet.value.name = name_a;
-    }
-    function setFrontSide(frontSide: string) {
-        flashcardsSet.value.sideName.front = frontSide;
-    }
-    function setBackSide(backSide: string) {
-        flashcardsSet.value.sideName.back = backSide;
     }
     function inputFrontChanged(value: string, idFlashcard: number, idText: number) {
         if (value.slice(-1) == '/' && value.length > 1) {
