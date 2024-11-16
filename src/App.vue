@@ -171,8 +171,13 @@
 
             const version = calculateVersion(data);
 
+            if (version == undefined) {
+                localStorage.removeItem('last_save');
+                return;
+            }
+
             if (version != currentVersion) {
-                dataJSON = fixOutdatedSets(dataJSON, currentVersion);
+                dataJSON = fixOutdatedSets(dataJSON, version);
                 localStorage.setItem('last_save', JSON.stringify(dataJSON));
             }
 

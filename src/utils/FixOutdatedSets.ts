@@ -50,5 +50,6 @@ function upgradeToVersion0_1(setContent: {
         author: setContent.author,
         sideName: {...setContent.sideName},
         flashcards: [...setContent.cardboards],
+        version: '0.1',
     };
 }
