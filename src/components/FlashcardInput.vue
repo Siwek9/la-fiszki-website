@@ -34,7 +34,6 @@
     }
 
     function inputChanged(event: Event, index: number) {
-        console.log(inputRefs.value);
         emit('inputChanged', (event.currentTarget as HTMLInputElement).value, index);
     }
 
@@ -57,11 +56,10 @@
     const {label, values} = defineProps<{label: string; values: Array<string>}>();
     const inputFieldsNumber = ref(0);
 
+    // TODO fix going to last line after adding not at the end
     onUpdated(() => {
-        console.log('hahahahahhaha');
         if (inputRefs.value == null) return;
         if (inputRefs.value.length > inputFieldsNumber.value) {
-            console.log('przesuwam');
             inputRefs.value[inputRefs.value.length - 1].focus();
             inputFieldsNumber.value++;
         }

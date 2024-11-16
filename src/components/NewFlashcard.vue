@@ -62,8 +62,6 @@
         emit('deleteFlashcard', flashcardElement.id);
     }
     function inputFrontChanged(value: string, index: number) {
-        console.log(value);
-        console.log(index);
         emit('inputFrontChanged', value, flashcardElement.id, index);
     }
     function inputBackChanged(value: string, index: number) {
