@@ -16,7 +16,7 @@
                 id="la-fiszki"
                 v-model="inputType"
                 checked
-                class="import-type-input-radio"
+                class="first-import-type-input-radio import-type-input-radio"
             />
             <label
                 class="import-type-label"
@@ -43,21 +43,41 @@
             v-if="inputType == 'la-fiszki'"
             class="input-type-content"
         >
-            <input
-                type="file"
-                name=""
-                class="input-file"
-                @change="uploadFile"
-                id="import-la-fiszki"
-                accept=".json"
-            />
-            <label for="import-la-fiszki">Upload file</label>
-            <textarea
-                name=""
-                id=""
-                :value="JSON.stringify(JSON.parse(fileContent), null, 2)"
-            >
-            </textarea>
+            <div class="upload-file-container">
+                <input
+                    type="file"
+                    name=""
+                    class="input-file"
+                    @change="uploadFile"
+                    id="import-la-fiszki"
+                    accept=".json"
+                />
+                <label
+                    for="import-la-fiszki"
+                    class="upload-file-button"
+                    >Upload file</label
+                >
+            </div>
+            <div class="json-data-preview-container">
+                <h2>File content</h2>
+                <ImportTextArea v-model="fileContent" />
+                <!-- <OverlayScrollbarsComponent
+                    class="json-data-preview"
+                    :value="JSON.stringify(JSON.parse(fileContent), null, 2)"
+                    element="textarea"
+                    :options="{showNativeOverlaidScrollbars: true}"
+                    :events="{
+                        scroll: () => {
+                            console.log('aaa');
+                        },
+                    }"
+                    defer
+                >
+                </OverlayScrollbarsComponent> -->
+            </div>
+            <div class="import-preview-container">
+                <h2>Import preview</h2>
+            </div>
         </div>
         <div
             v-else-if="inputType == 'csv'"
@@ -76,8 +96,9 @@
 
 <script setup lang="ts">
     import {ref, useTemplateRef} from 'vue';
-
-    // const formatter = new JSONFormatter(myJSON);
+    import 'overlayscrollbars/overlayscrollbars.css';
+    import ImportTextArea from './ImportTextArea.vue';
+    // import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
 
     function closeDialog() {
         dialogRef.value?.close();
@@ -153,6 +174,11 @@
         margin-bottom: 20px;
     }
 
+    h2 {
+        font-size: 20px;
+        margin: 0;
+    }
+
     .choose-input-type {
         display: flex;
         flex-direction: row;
@@ -174,9 +200,40 @@
         background-color: #35155d;
         padding: 20px;
         border-radius: 0 20px 20px 20px;
+        display: grid;
+        grid-template-areas:
+            'import-button import-preview'
+            'json-preview import-preview';
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100px 1fr;
+    }
+
+    .upload-file-container {
+        grid-area: import-button;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .input-file {
         display: none;
+    }
+
+    .upload-file-button {
+        background-color: #260f43;
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    .upload-file-button:hover {
+        cursor: pointer;
+    }
+
+    .json-data-preview-container {
+        grid-area: json-preview;
+    }
+
+    .import-preview-container {
+        grid-area: import-preview;
     }
 </style>
