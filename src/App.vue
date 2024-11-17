@@ -3,7 +3,7 @@
     <h3>by: {{ flashcardsSet.author }}</h3>
     <AutoSaveButton
         @autoSave="toggleAutoSave"
-        ref="auto_save"
+        ref="auto-save"
         :isAutoSaveOn="autoSave"
     />
     <TextButton
@@ -34,7 +34,7 @@
     </div>
     <NewFlashcard
         v-for="(flashcard, index) in flashcardsSet.flashcards"
-        ref="flashcard_array_object"
+        ref="flashcard-array-object"
         @deleteFlashcard="deleteFlashcard"
         @deleteFrontField="deleteFrontField"
         @deleteBackField="deleteBackField"
@@ -71,7 +71,7 @@
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
     type NewFlashcardType = InstanceType<typeof NewFlashcard>;
 
-    const autoSaveRef = useTemplateRef<AutoSaveButtonType>('auto_save');
+    const autoSaveRef = useTemplateRef<AutoSaveButtonType>('auto-save');
     const newFlashcardRef = useTemplateRef<Array<NewFlashcardType>>('flashcard-array-object');
 
     const autoSave = ref(false);

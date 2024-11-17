@@ -39,7 +39,7 @@
         right: -30px;
         height: 30px;
         width: 30px;
-        border-bottom-left-radius: 50%;
+        border-bottom-left-radius: 10px;
     }
 
     .text-input-name {

@@ -1,5 +1,5 @@
 <template>
-    <div class="row center-center">
+    <div class="row center-center auto-save-container">
         <label class="auto-save-label">Auto save</label>
         <label class="switch">
             <input
@@ -47,6 +47,10 @@
     const {isAutoSaveOn} = defineProps<{isAutoSaveOn: boolean}>();
 </script>
 <style>
+    .auto-save-container {
+        padding: 10px 0;
+    }
+
     .auto-save-label {
         margin-right: 2vw;
     }
