@@ -18,16 +18,16 @@
 
 <style>
     .add-button {
-        margin-top: 20px;
-        user-select: none;
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-top: 20px;
+        border-radius: 50%;
         background-color: #35155d;
         width: clamp(70px, 5vw, 90px);
         height: clamp(70px, 5vw, 90px);
         font-size: 35px;
-        border-radius: 50%;
+        user-select: none;
     }
 
     .add-button:hover {
@@ -36,9 +36,9 @@
 
     .plus-icon {
         background-image: url(../assets/add_button.svg);
-        background-repeat: no-repeat;
         background-position: center center;
         background-size: 85%;
+        background-repeat: no-repeat;
 
         width: clamp(47px, 3vw, 60px);
         height: clamp(47px, 3vw, 60px);

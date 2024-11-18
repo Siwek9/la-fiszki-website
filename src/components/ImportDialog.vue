@@ -133,34 +133,34 @@
 
 <style scoped>
     .import-dialog {
-        color: white;
-        padding: 40px 30px;
-        background-color: #512b81;
-        border-radius: 20px;
-        border: none;
-        padding-right: 100px;
         position: relative;
+        border: none;
+        border-radius: 20px;
+        background-color: #512b81;
+        padding: 40px 30px;
+        padding-right: 100px;
+        color: white;
     }
 
     .import-dialog::backdrop {
-        background-color: black;
         opacity: 0.7;
         backdrop-filter: blur(2px);
+        background-color: black;
     }
 
     .close_button {
-        background-image: url(../assets/close.svg);
-        background-size: 80%;
-        background-position: center center;
-        background-repeat: no-repeat;
+        position: absolute;
+        top: 20px;
+        right: 20px;
         border: none;
+        border-radius: 50%;
+        background-image: url(../assets/close.svg);
+        background-position: center center;
+        background-size: 80%;
+        background-repeat: no-repeat;
+        background-color: #35155d;
         width: 45px;
         height: 45px;
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        background-color: #35155d;
-        border-radius: 50%;
     }
 
     .close_button:hover {
@@ -168,15 +168,15 @@
     }
 
     h1 {
-        font-size: 25px;
         margin: 0;
         margin-top: 10px;
         margin-bottom: 20px;
+        font-size: 25px;
     }
 
     h2 {
+        margin: 10px;
         font-size: 20px;
-        margin: 0;
     }
 
     .choose-input-type {
@@ -197,20 +197,20 @@
     }
 
     .input-type-content {
-        background-color: #35155d;
-        padding: 20px;
-        border-radius: 0 20px 20px 20px;
         display: grid;
+        grid-template-rows: 100px 1fr;
+        grid-template-columns: 1fr 1fr;
         grid-template-areas:
             'import-button import-preview'
             'json-preview import-preview';
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 100px 1fr;
+        border-radius: 0 20px 20px 20px;
+        background-color: #35155d;
+        padding: 20px;
     }
 
     .upload-file-container {
-        grid-area: import-button;
         display: flex;
+        grid-area: import-button;
         justify-content: center;
         align-items: center;
     }
@@ -220,9 +220,9 @@
     }
 
     .upload-file-button {
+        border-radius: 15px;
         background-color: #260f43;
         padding: 10px;
-        border-radius: 15px;
     }
 
     .upload-file-button:hover {

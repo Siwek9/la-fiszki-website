@@ -23,30 +23,30 @@
 <style>
     .text-input-field {
         all: unset;
-        background-color: #35155d;
-        font-size: 30px;
-        border-radius: 0 10px 10px 10px;
         box-sizing: border-box;
+        border-radius: 0 10px 10px 10px;
+        background-color: #35155d;
         padding: 10px;
         width: 100%;
+        font-size: 30px;
     }
 
     .text-input-name:before {
-        content: '';
         position: absolute;
+        right: -30px;
         bottom: 0;
         box-shadow: -5px 5px 0 0 #35155d;
-        right: -30px;
-        height: 30px;
-        width: 30px;
         border-bottom-left-radius: 10px;
+        width: 30px;
+        height: 30px;
+        content: '';
     }
 
     .text-input-name {
+        position: relative;
+        border-radius: 10px 10px 0 0;
         background-color: #35155d;
         padding: 7px;
-        border-radius: 10px 10px 0 0;
-        position: relative;
     }
 
     .text-input-body {

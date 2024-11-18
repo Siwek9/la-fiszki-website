@@ -71,25 +71,25 @@
     }
 
     .flashcard-input .delete-input-field {
-        background-color: white;
-        height: 100%;
-        width: min(50px, 10vw);
-        background-color: #99000066;
         background-image: url(../assets/delete.svg);
-        background-repeat: no-repeat;
         background-position: 33% center;
         background-size: 65%;
+        background-repeat: no-repeat;
+        background-color: white;
+        background-color: #99000066;
+        width: min(50px, 10vw);
+        height: 100%;
     }
 
     .flashcard-input .input-field {
+        outline: none;
+        border: none;
+        background-color: transparent;
         padding: clamp(0.5em, 1vw, 0.7em);
         width: min(150px, 25vw);
         max-width: 36vw;
-        font-size: clamp(1.2em, 1.5vw, 1.8em);
-        outline: none;
-        border: none;
         color: white;
-        background-color: transparent;
+        font-size: clamp(1.2em, 1.5vw, 1.8em);
     }
 
     .flashcard-input .input-name {
@@ -99,13 +99,13 @@
     }
 
     .flashcard-input .input-field-background {
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        margin-bottom: 1.25em;
         border-radius: 1.5em;
         background-color: #512b81;
-        margin-bottom: 1.25em;
-        display: flex;
-        flex-direction: row;
         overflow: hidden;
-        position: relative;
     }
 
     .flashcard-input {

@@ -93,30 +93,30 @@
 
 <style>
     .fields-divider {
+        margin: min(15px, 1.5vw);
         font-weight: bold;
         font-size: min(2em, 3vw);
-        margin: min(15px, 1.5vw);
         white-space: nowrap;
     }
 
     .flashcard {
+        margin: 10px min(10px, 2vw);
         border-radius: 15px;
         background-color: #35155d;
         padding: 15px 3vw;
-        margin: 10px min(10px, 2vw);
     }
 
     .delete-button {
+        border-radius: 50%;
         background-image: url(../assets/delete.svg);
-        background-repeat: no-repeat;
         background-position: center center;
         background-size: 70%;
-        user-select: none;
+        background-repeat: no-repeat;
         background-color: #99000066;
+        aspect-ratio: 1/1;
         width: 50px;
         height: 50px;
-        border-radius: 50%;
-        aspect-ratio: 1/1;
+        user-select: none;
     }
 
     @media only screen and (min-width: 600px) {

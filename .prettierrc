@@ -11,5 +11,6 @@
     "arrowParens": "always",
     "endOfLine": "auto",
     "singleAttributePerLine": true,
-    "vueIndentScriptAndStyle": true
+    "vueIndentScriptAndStyle": true,
+    "plugins": ["prettier-plugin-css-order"]
 }

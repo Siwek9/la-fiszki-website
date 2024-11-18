@@ -56,8 +56,8 @@
     }
 
     .switch {
-        position: relative;
         display: inline-block;
+        position: relative;
         width: 60px;
         height: 34px;
     }
@@ -70,25 +70,25 @@
 
     .slider {
         position: absolute;
-        cursor: pointer;
         top: 0;
-        left: 0;
         right: 0;
         bottom: 0;
-        background-color: #99000066;
+        left: 0;
         transition: 0.3s;
+        cursor: pointer;
+        background-color: #99000066;
     }
 
     .slider:before {
         position: absolute;
-        content: '';
-        height: 26px;
-        width: 26px;
-        left: 4px;
         bottom: 4px;
-        background-color: #512b81;
+        left: 4px;
         -webkit-transition: 0.3s;
         transition: 0.3s;
+        background-color: #512b81;
+        width: 26px;
+        height: 26px;
+        content: '';
     }
 
     input:checked + .slider {
