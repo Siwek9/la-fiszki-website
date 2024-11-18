@@ -55,25 +55,15 @@
                 <label
                     for="import-la-fiszki"
                     class="upload-file-button"
-                    >Upload file</label
+                    >Upload file...</label
                 >
             </div>
             <div class="json-data-preview-container">
                 <h2>File content</h2>
-                <ImportTextArea v-model="fileContent" />
-                <!-- <OverlayScrollbarsComponent
-                    class="json-data-preview"
-                    :value="JSON.stringify(JSON.parse(fileContent), null, 2)"
-                    element="textarea"
-                    :options="{showNativeOverlaidScrollbars: true}"
-                    :events="{
-                        scroll: () => {
-                            console.log('aaa');
-                        },
-                    }"
-                    defer
-                >
-                </OverlayScrollbarsComponent> -->
+                <ImportTextArea
+                    placeholder="...or paste its content here"
+                    v-model="fileContent"
+                />
             </div>
             <div class="import-preview-container">
                 <h2>Import preview</h2>
@@ -95,14 +85,17 @@
 </template>
 
 <script setup lang="ts">
-    import {ref, useTemplateRef} from 'vue';
+    import {onUnmounted, ref, useTemplateRef} from 'vue';
     import 'overlayscrollbars/overlayscrollbars.css';
     import ImportTextArea from './ImportTextArea.vue';
-    // import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
 
     function closeDialog() {
         dialogRef.value?.close();
     }
+
+    onUnmounted(() => {
+        closeDialog();
+    });
 
     function uploadFile(event: Event) {
         const files = (event.currentTarget as HTMLInputElement).files;
@@ -118,7 +111,7 @@
             }
         };
     }
-    const fileContent = ref('{}');
+    const fileContent = ref('');
 
     const inputType = defineModel({
         set(value) {

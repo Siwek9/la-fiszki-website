@@ -232,13 +232,13 @@
 <style>
     html,
     body {
-        padding: 0;
         margin: 0;
+        background-color: #512b81;
+        padding: 0;
         max-width: 100%;
         min-height: 100%;
-        background-color: #512b81;
-        color: white;
         overflow-x: hidden;
+        color: white;
     }
 
     #app {
