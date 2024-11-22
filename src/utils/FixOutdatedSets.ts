@@ -46,10 +46,15 @@ function upgradeToVersion0_1(setContent: {
     cardboards: Array<{front: Array<string>; back: Array<string>}>;
 }) {
     return {
-        name: setContent.name,
-        author: setContent.author,
-        sideName: {...setContent.sideName},
-        flashcards: [...setContent.cardboards],
+        name: setContent.name.substring(0, 70),
+        author: setContent.author.substring(0, 50),
+        sideName: {front: setContent.sideName.front.substring(0, 30), back: setContent.sideName.back.substring(0, 30)},
+        flashcards: [
+            ...setContent.cardboards.map((cardboard) => {
+                front: cardboard.front.map((front) => front.substring(0, 300));
+                back: cardboard.back.map((back) => back.substring(0, 300));
+            }),
+        ],
         version: '0.1',
     };
 }
