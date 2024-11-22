@@ -61,9 +61,18 @@
             <div class="json-data-preview-container">
                 <h2>File content</h2>
                 <ImportTextArea
+                    @error="(message) => console.log(message)"
+                    :validateText="validateLaFiszki"
+                    :customHighlight="jsonHighlight"
                     placeholder="...or paste its content here"
                     v-model="fileContent"
                 />
+                <div
+                    v-if="validationWarningText != ''"
+                    class="validation-warning-text"
+                >
+                    {{ validationWarningText }}
+                </div>
             </div>
             <div class="import-preview-container">
                 <h2>Import preview</h2>
@@ -88,14 +97,70 @@
     import {onUnmounted, ref, useTemplateRef} from 'vue';
     import 'overlayscrollbars/overlayscrollbars.css';
     import ImportTextArea from './ImportTextArea.vue';
+    import calculateVersion from '@/utils/CalculateVersion';
+    import type {TextHighlight} from '@/utils/TextHighlight';
+    import SetOfFlashcardsVersion from '@/utils/SetOfFlashcardsVersion';
 
     function closeDialog() {
         dialogRef.value?.close();
     }
+    onUnmounted(closeDialog);
 
-    onUnmounted(() => {
-        closeDialog();
-    });
+    const jsonHighlight: TextHighlight = [
+        {
+            regex: /("(.*?)")(?=\s*:)/g, // key
+            style: {
+                color: '#007acc',
+            },
+        },
+        {
+            regex: /: ("(.*?)")/g, // string
+            style: {
+                color: '#d69d85',
+            },
+            replace: ': $1',
+        },
+        {
+            regex: /: (\d+)/g, // number
+            style: {
+                color: '#b5cea8',
+            },
+            replace: ': $1',
+        },
+        {
+            regex: /: (true|false)/g, // boolean
+            style: {
+                color: '#569cd6',
+            },
+            replace: ': $1',
+        },
+        {
+            regex: /: (null)/g, // null
+            style: {
+                color: '#9cdcfe',
+            },
+            replace: ': $1',
+        },
+    ];
+
+    function validateLaFiszki(text: string): boolean {
+        try {
+            JSON.parse(text);
+            const version = calculateVersion(text);
+            if (version != undefined) {
+                if (version == SetOfFlashcardsVersion.Version0_1) {
+                    validationWarningText.value = '';
+                } else {
+                    validationWarningText.value = 'This set will be upgraded to newer version while exporting';
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (_) {
+            return false;
+        }
+    }
 
     function uploadFile(event: Event) {
         const files = (event.currentTarget as HTMLInputElement).files;
@@ -112,6 +177,7 @@
         };
     }
     const fileContent = ref('');
+    const validationWarningText = ref('');
 
     const inputType = defineModel({
         set(value) {
@@ -126,7 +192,7 @@
 
 <style scoped>
     .import-dialog {
-        position: relative;
+        position: fixed;
         border: none;
         border-radius: 20px;
         background-color: #512b81;
@@ -224,9 +290,33 @@
 
     .json-data-preview-container {
         grid-area: json-preview;
+        width: min(450px, 40vw);
     }
 
     .import-preview-container {
         grid-area: import-preview;
+    }
+
+    .validation-warning-text {
+        position: relative;
+        margin: 10px;
+        padding-left: 35px;
+        color: yellow;
+        text-wrap: wrap;
+    }
+
+    .validation-warning-text:before {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        mask-image: url(../assets/warning.svg);
+        mask-position: center center;
+        mask-size: 90%;
+        mask-repeat: no-repeat;
+        background-color: yellow;
+        width: 30px;
+        height: 30px;
+        content: '';
     }
 </style>

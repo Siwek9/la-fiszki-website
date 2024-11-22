@@ -3,7 +3,6 @@
         class="custom-textarea-wrapper"
         element="div"
     >
-        <!-- Highlighted Content -->
         <div
             class="highlighted-content"
             ref="highlighted-content"
@@ -24,16 +23,24 @@
 </template>
 
 <script setup lang="ts">
+    import type {TextHighlight} from '@/utils/TextHighlight';
     import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
     import {onMounted, useTemplateRef} from 'vue';
 
     const model = defineModel({
         set(value) {
-            return value;
+            if (validateText != null && validateText(value)) {
+                return value;
+            } else {
+                emit('error', 'Text you try to parse here is not correct');
+            }
+            return '';
         },
         get(value) {
             try {
-                return JSON.stringify(JSON.parse(value), null, 2);
+                const formatedValue = JSON.stringify(JSON.parse(value), null, 2);
+                updateHighlighting(formatedValue);
+                return formatedValue;
             } catch (_) {
                 return value;
             }
@@ -41,14 +48,13 @@
         default: '',
     });
 
-    const props = defineProps<{
+    const {placeholder, customHighlight, validateText} = defineProps<{
         placeholder?: string;
+        customHighlight?: TextHighlight;
+        validateText?: (text: string) => boolean;
     }>();
 
-    const placeholder = props.placeholder || 'Paste JSON here...';
-
     const emit = defineEmits<{
-        (event: 'update:modelValue', value: string): void;
         (event: 'error', message: string): void;
     }>();
 
@@ -59,37 +65,38 @@
         updateHighlighting(model.value);
     });
 
-    const highlightJSON = (json: string): string => {
-        try {
-            const parsed = JSON.parse(json);
-            const formatted = JSON.stringify(parsed, null, 2);
-            return formatted
-                .replace(/("(.*?)")(?=\s*:)/g, '<span class="json-key">$1</span>') // Keys
-                .replace(/: ("(.*?)")/g, ': <span class="json-string">$1</span>') // Strings
-                .replace(/: (\d+)/g, ': <span class="json-number">$1</span>') // Numbers
-                .replace(/: (true|false)/g, ': <span class="json-boolean">$1</span>') // Booleans
-                .replace(/: (null)/g, ': <span class="json-null">$1</span>'); // Null
-        } catch {
-            return '';
+    const highlightText = (text: string): string => {
+        let toReturn = text;
+        console.log(customHighlight);
+        if (customHighlight != undefined) {
+            customHighlight.forEach((highlightRule) => {
+                const element = document.createElement('span');
+                element.textContent = '$1';
+
+                Object.entries(highlightRule.style).forEach(([style, styleValue]) => {
+                    if (styleValue != undefined) {
+                        element.style.setProperty(style, styleValue);
+                    }
+                });
+                console.log(element.outerHTML);
+                if (highlightRule.replace != null) {
+                    toReturn = toReturn.replace(
+                        highlightRule.regex,
+                        highlightRule.replace.replace('$1', element.outerHTML)
+                    );
+                } else {
+                    toReturn = toReturn.replace(highlightRule.regex, element.outerHTML);
+                }
+            });
         }
+        return toReturn;
     };
 
     const handlePaste = (event: ClipboardEvent) => {
         event.preventDefault();
-
         const text = event.clipboardData?.getData('text/plain') || '';
-        try {
-            JSON.parse(text);
 
-            model.value = text;
-            updateHighlighting(text);
-
-            if (editableDiv.value) {
-                editableDiv.value.innerText = text;
-            }
-        } catch {
-            emit('error', 'Invalid JSON format.');
-        }
+        model.value = text;
     };
 
     const handleFocus = () => {
@@ -146,7 +153,7 @@
 
     const updateHighlighting = (text: string) => {
         if (highlightedContent.value) {
-            highlightedContent.value.innerHTML = highlightJSON(text);
+            highlightedContent.value.innerHTML = highlightText(text);
         }
     };
 </script>
@@ -157,7 +164,6 @@
         margin: 10px;
         border-radius: 10px;
         background-color: #260f43;
-        width: min(400px, 40vw);
         min-height: 300px;
         max-height: 40vh;
         overflow: auto;
@@ -170,13 +176,14 @@
         appearance: textarea;
         -moz-appearance: textfield-multiline;
         -webkit-appearance: textarea;
-        z-index: 1;
+        z-index: 2;
         box-sizing: border-box;
         padding: 10px;
         width: 100%;
         height: 100%;
         overflow: visible;
         pointer-events: none;
+        color: rgb(184, 184, 184);
         font-weight: 500;
         font-size: 18px;
         font-family: 'DM Mono', monospace;
@@ -187,7 +194,7 @@
         appearance: textarea;
         -moz-appearance: textfield-multiline;
         -webkit-appearance: textarea;
-        z-index: 2;
+        z-index: 1;
         box-sizing: border-box;
         border: none;
         background: none;
@@ -216,31 +223,11 @@
     }
 
     .contenteditable-div::selection {
-        background-color: #2c430f;
-        color: rgb(145, 145, 145);
+        background-color: hsla(87, 100%, 20%, 0.589);
+        /* color: rgb(145, 145, 145); */
     }
 
     .custom-textarea-wrapper:focus-within {
         outline: none;
-    }
-
-    .json-key {
-        color: #007acc;
-    }
-
-    .json-string {
-        color: #d69d85;
-    }
-
-    .json-number {
-        color: #b5cea8;
-    }
-
-    .json-boolean {
-        color: #569cd6;
-    }
-
-    .json-null {
-        color: #9cdcfe;
     }
 </style>
