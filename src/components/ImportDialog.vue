@@ -1,5 +1,6 @@
 <template>
-    <dialog
+    <div class="import-dialog-background"></div>
+    <div
         ref="dialog-ref"
         class="import-dialog"
     >
@@ -90,11 +91,11 @@
             <label for="override-changes">Override Changes</label>
         </div>
         <button>Apply import</button>
-    </dialog>
+    </div>
 </template>
 
 <script setup lang="ts">
-    import {onUnmounted, ref, useTemplateRef} from 'vue';
+    import {onUnmounted, ref} from 'vue';
     import 'overlayscrollbars/overlayscrollbars.css';
     import ImportTextArea from './ImportTextArea.vue';
     import calculateVersion from '@/utils/CalculateVersion';
@@ -102,7 +103,7 @@
     import SetOfFlashcardsVersion from '@/utils/SetOfFlashcardsVersion';
 
     function closeDialog() {
-        dialogRef.value?.close();
+        emit('close');
     }
     onUnmounted(closeDialog);
 
@@ -186,13 +187,17 @@
         },
         default: 'la-fiszki',
     });
-    const dialogRef = useTemplateRef<HTMLDialogElement>('dialog-ref');
-    defineExpose({dialogRef});
+
+    const emit = defineEmits<{close: []}>();
 </script>
 
 <style scoped>
     .import-dialog {
         position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
         border: none;
         border-radius: 20px;
         background-color: #512b81;
@@ -201,10 +206,13 @@
         color: white;
     }
 
-    .import-dialog::backdrop {
+    .import-dialog-background {
+        position: fixed;
         opacity: 0.7;
         backdrop-filter: blur(2px);
+        inset: 0;
         background-color: black;
+        content: '';
     }
 
     .close_button {

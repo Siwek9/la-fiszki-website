@@ -10,7 +10,6 @@
         @on-click="openDialog"
         text="Import Set"
     />
-    <ImportDialog ref="import-dialog-ref" />
     <TextInput
         :max-length="70"
         name="Set Name"
@@ -71,11 +70,11 @@
 
     type AutoSaveButtonType = InstanceType<typeof AutoSaveButton>;
     type NewFlashcardType = InstanceType<typeof NewFlashcard>;
-    type ImportDialogType = InstanceType<typeof ImportDialog>;
+
+    const importDialogOpened = ref(false);
 
     const autoSaveRef = useTemplateRef<AutoSaveButtonType>('auto-save');
     const newFlashcardRef = useTemplateRef<Array<NewFlashcardType>>('flashcard-array-object');
-    const importDialogRef = useTemplateRef<ImportDialogType>('import-dialog-ref');
 
     const autoSave = ref(false);
     const flashcardsSet = ref<FlashcardsSet>({
@@ -87,7 +86,11 @@
 
     function openDialog() {
         console.log('łotwieram');
-        importDialogRef.value?.dialogRef?.showModal();
+        importDialogOpened.value = true;
+    }
+    function closeDialog() {
+        console.log('zamykom');
+        importDialogOpened.value = false;
     }
 
     function deleteFrontField(flashcardID: number, fieldID: number) {
