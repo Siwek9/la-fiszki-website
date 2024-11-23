@@ -34,4 +34,5 @@ export default function calculateVersion(set_of_flashcards: string): SetOfFlashc
         }
         return undefined;
     }
+    return undefined;
 }

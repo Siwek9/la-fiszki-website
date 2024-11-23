@@ -37,6 +37,10 @@
             return '';
         },
         get(value) {
+            if ((validateText == null || !validateText(value)) && value != '') {
+                emit('error', 'Text you try to parse here is not correct');
+                return '';
+            }
             try {
                 const formatedValue = JSON.stringify(JSON.parse(value), null, 2);
                 updateHighlighting(formatedValue);
@@ -125,14 +129,11 @@
         }
 
         if (event.ctrlKey && event.key === 'v') {
+        } else if (event.ctrlKey && event.key === 'v') {
             return;
-        }
-
-        if (event.ctrlKey && event.key === 'c') {
+        } else if (event.ctrlKey && event.key === 'c') {
             return;
-        }
-
-        if (event.key === 'Delete' || event.key === 'Backspace') {
+        } else if (event.key === 'Delete' || event.key === 'Backspace') {
             event.preventDefault();
 
             const selection = window.getSelection();
@@ -146,6 +147,8 @@
                     updateHighlighting('');
                 }
             }
+        } else {
+            emit('error', 'You cannot write text here.');
         }
 
         event.preventDefault();

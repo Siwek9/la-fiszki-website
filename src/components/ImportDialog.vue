@@ -1,6 +1,10 @@
 <template>
     <div class="import-dialog-background"></div>
     <div
+        class="import-dialog-background"
+        @click="closeDialog"
+    ></div>
+    <div
         ref="dialog-ref"
         class="import-dialog"
     >
@@ -159,6 +163,9 @@
                 return false;
             }
         } catch (_) {
+            if (text === '') {
+                validationWarningText.value = '';
+            }
             return false;
         }
     }
@@ -172,10 +179,13 @@
         reader.readAsText(files[0], 'UTF-8');
         reader.onload = function (evt) {
             const value = evt.target?.result;
+        reader.onload = function (event) {
+            const value = event.target?.result;
             if (typeof value == 'string') {
                 fileContent.value = value as unknown as string;
             }
         };
+        (event.currentTarget as HTMLInputElement).value = '';
     }
     const fileContent = ref('');
     const validationWarningText = ref('');
@@ -209,6 +219,7 @@
     .import-dialog-background {
         position: fixed;
         opacity: 0.7;
+        z-index: 1000;
         backdrop-filter: blur(2px);
         inset: 0;
         background-color: black;
@@ -243,7 +254,7 @@
 
     h2 {
         margin: 10px;
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .choose-input-type {
@@ -258,7 +269,9 @@
     .import-type-label {
         display: block;
         padding: 10px;
+        font-size: 20px;
     }
+
     .import-type-input-radio:checked + .import-type-label {
         background-image: linear-gradient(180deg, #512b81 0%, #35155d 100%);
     }
@@ -287,9 +300,10 @@
     }
 
     .upload-file-button {
-        border-radius: 15px;
+        border-radius: 30px;
         background-color: #260f43;
-        padding: 10px;
+        padding: 25px 50px;
+        font-size: 18px;
     }
 
     .upload-file-button:hover {

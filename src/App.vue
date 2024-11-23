@@ -10,6 +10,10 @@
         @on-click="openDialog"
         text="Import Set"
     />
+    <ImportDialog
+        v-if="importDialogOpened"
+        @close="closeDialog"
+    />
     <TextInput
         :max-length="70"
         name="Set Name"
