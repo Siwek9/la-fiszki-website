@@ -68,7 +68,7 @@
     }
 
     .flashcard-input .delete-input-field {
-        background-image: url(../assets/delete.svg);
+        background-image: url(@/assets/delete.svg);
         background-position: 33% center;
         background-size: 65%;
         background-repeat: no-repeat;

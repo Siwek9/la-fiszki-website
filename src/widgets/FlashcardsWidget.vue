@@ -3,7 +3,6 @@
         v-for="(_, index) in flashcards"
         @deleteFlashcard="deleteFlashcard(index)"
         @move-focus="moveToNextFlashcard(index)"
-        :index="index"
         :side-name="sideNames"
         :key="index"
         ref="new-flashcard-ref"

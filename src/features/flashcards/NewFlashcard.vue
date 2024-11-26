@@ -43,12 +43,6 @@
         frontRef.value.focus();
     }
 
-    defineExpose({focus});
-    // import FlashcardInput from './FlashcardInput.vue';
-    // import type {Flashcard} from '@/shared/lib/Flashcard';
-    // import {onMounted, useTemplateRef} from 'vue';
-
-    // type FlashcardInputType = InstanceType<typeof FlashcardInput>;
     const frontRef = useTemplateRef<ComponentExposed<typeof FlashcardSide>>('front-ref');
     const backRef = useTemplateRef<ComponentExposed<typeof FlashcardSide>>('back-ref');
     const emit = defineEmits<{moveFocus: []; deleteFlashcard: []}>();
@@ -56,49 +50,14 @@
     function deleteFlashcard() {
         emit('deleteFlashcard');
     }
-    // function deleteFrontField(flashcardID: number, fieldID: number) {
-    //     if (flashcard.value.front.length <= 1) return;
-    //     flashcard.value.front.splice(fieldID, 1);
-    // }
-    // function deleteBackField(index: number) {
-    //     if (flashcard.value.front.length <= 1) return;
-    //     flashcard.value.front.splice(fieldID, 1);
-    // }
-    // function frontSideMoveTab(value: string) {
-    //     if (value != '') {
-    //         if (backRef.value != null) {
-    //             const inputRefs = backRef.value.inputRefs;
-    //             if (inputRefs != null) {
-    //                 inputRefs[0].focus();
-    //             }
-    //         }
-    //     }
-    // }
-    // function backSideMoveTab(value: string) {
-    //     if (value != '') {
-    //         // emit('nextFlashcard', flashcardElement.id);
-    //     }
-    // }
-    // function inputFrontChanged(value: string, index: number) {
-    //     emit('inputFrontChanged', value, flashcardElement.id, index);
-    // }
-    // // function inputBackChanged(value: string, index: number) {
-    // //     emit('inputBackChanged', value, flashcardElement.id, index);
-    // // }
-    // const emit = defineEmits<{
-    //     nextFlashcard: [flashcardID: number];
-    //     deleteFlashcard: [flashcardID: number];
-    //     // inputFrontChanged: [value: string, flashcardID: number, textID: number];
-    //     // inputBackChanged: [value: string, flashcardID: number, textID: number];
-    //     // deleteFrontField: [flashcardID: number, fieldID: number];
-    //     // deleteBackField: [flashcardID: number, fieldID: number];
-    // }>();
 
     const {sideName} = defineProps<{
         sideName: {front: string; back: string};
     }>();
 
     const flashcard = defineModel<Flashcard>({default: {front: [''], back: ['']}});
+
+    defineExpose({focus});
 </script>
 
 <style>
@@ -118,7 +77,7 @@
 
     .delete-button {
         border-radius: 50%;
-        background-image: url(../assets/delete.svg);
+        background-image: url(@/assets/delete.svg);
         background-position: center center;
         background-size: 70%;
         background-repeat: no-repeat;
