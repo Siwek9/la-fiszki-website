@@ -5,7 +5,7 @@
             class="auto-save-label"
             >Auto save</label
         >
-        <div class="switch">
+        <label class="switch">
             <input
                 id="auto-save-input"
                 type="checkbox"
@@ -13,7 +13,7 @@
                 :checked="isAutoSaveOn"
             />
             <span class="slider round"></span>
-        </div>
+        </label>
     </div>
 </template>
 
