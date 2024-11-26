@@ -1,14 +1,19 @@
 <template>
     <div class="auto-save-container">
-        <label class="auto-save-label">Auto save</label>
-        <label class="switch">
+        <label
+            for="auto-save-input"
+            class="auto-save-label"
+            >Auto save</label
+        >
+        <div class="switch">
             <input
+                id="auto-save-input"
                 type="checkbox"
                 @change="toggle"
                 :checked="isAutoSaveOn"
             />
             <span class="slider round"></span>
-        </label>
+        </div>
     </div>
 </template>
 
