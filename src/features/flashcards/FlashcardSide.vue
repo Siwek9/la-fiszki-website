@@ -15,6 +15,7 @@
 <script setup lang="ts">
     import {computed, nextTick, useTemplateRef} from 'vue';
     import FlashcardInput from './FlashcardInput.vue';
+    import type {ComponentExposed} from 'vue-component-type-helpers';
 
     function deleteField(index: number) {
         values.value.splice(index, 1);
@@ -33,9 +34,7 @@
         });
     }
 
-    type FlashcardInputType = InstanceType<typeof FlashcardInput>;
-
-    const flashcardInputRefs = useTemplateRef<Array<FlashcardInputType>>('flashcard-input-refs');
+    const flashcardInputRefs = useTemplateRef<Array<ComponentExposed<typeof FlashcardInput>>>('flashcard-input-refs');
 
     function moveFocus(inputIndex: number) {
         if (flashcardInputRefs.value == null || inputIndex + 1 > flashcardInputRefs.value.length) return;

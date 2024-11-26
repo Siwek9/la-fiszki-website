@@ -13,9 +13,10 @@
 </template>
 
 <script setup lang="ts">
+    import {getHTMLInputElement} from '@/shared/lib/get_html_input_element';
+
     function toggle(event: Event) {
-        const target = event.currentTarget as HTMLInputElement;
-        emit('autoSave', target.checked);
+        emit('autoSave', getHTMLInputElement(event).checked);
     }
 
     const emit = defineEmits<{autoSave: [status: boolean]}>();

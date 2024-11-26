@@ -76,9 +76,8 @@
         // deleteBackField: [flashcardID: number, fieldID: number];
     }>();
 
-    const {index, hasFocus, sideName} = defineProps<{
+    const {index, sideName} = defineProps<{
         index: number;
-        hasFocus: boolean;
         sideName: {front: string; back: string};
     }>();
 

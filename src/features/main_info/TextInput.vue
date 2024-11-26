@@ -12,10 +12,12 @@
 </template>
 
 <script setup lang="ts">
+    import {getHTMLInputElement} from '@/shared/lib/get_html_input_element';
+
     const model = defineModel();
 
-    function focusText(e: FocusEvent) {
-        (e.target as HTMLInputElement).select();
+    function focusText(event: FocusEvent) {
+        getHTMLInputElement(event).select();
     }
     const {name, maxLength} = defineProps<{name: string; maxLength: number}>();
 </script>

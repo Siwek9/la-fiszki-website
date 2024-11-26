@@ -19,6 +19,7 @@
     </div>
 </template>
 <script setup lang="ts">
+    import {getHTMLInputElement} from '@/shared/lib/get_html_input_element';
     import {useTemplateRef} from 'vue';
 
     function inputChanged(event: Event) {
@@ -37,8 +38,8 @@
         }
     }
 
-    function inputFocus(event: Event) {
-        (event.currentTarget! as HTMLInputElement).select();
+    function inputFocus(event: FocusEvent) {
+        getHTMLInputElement(event).select();
     }
 
     const inputRef = useTemplateRef<HTMLInputElement>('input-ref');
