@@ -5,6 +5,7 @@ export type FlashcardsSet = {
     name: string;
     author: string;
     sideName: SideName;
+    version: string;
     flashcards: Array<Flashcard>;
 };
 

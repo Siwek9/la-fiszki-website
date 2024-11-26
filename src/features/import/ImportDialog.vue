@@ -1,5 +1,4 @@
 <template>
-    <div class="import-dialog-background"></div>
     <div
         class="import-dialog-background"
         @click="closeDialog"
@@ -10,7 +9,7 @@
     >
         <button
             @click="closeDialog"
-            class="close_button"
+            class="close-button"
         ></button>
         <h1>Import Sets from multiple sources</h1>
         <div class="choose-input-type">
@@ -66,7 +65,7 @@
             <div class="json-data-preview-container">
                 <h2>File content</h2>
                 <ImportTextArea
-                    @error="(message) => console.log(message)"
+                    @error="showError"
                     :validateText="validateLaFiszki"
                     :customHighlight="jsonHighlight"
                     placeholder="...or paste its content here"
@@ -99,17 +98,17 @@
 </template>
 
 <script setup lang="ts">
-    import {onUnmounted, ref} from 'vue';
+    import {ref} from 'vue';
     import 'overlayscrollbars/overlayscrollbars.css';
-    import ImportTextArea from './ImportTextArea.vue';
-    import calculateVersion from '@/utils/CalculateVersion';
-    import type {TextHighlight} from '@/utils/TextHighlight';
-    import SetOfFlashcardsVersion from '@/utils/SetOfFlashcardsVersion';
+    import ImportTextArea from '@/features/import/ImportTextArea.vue';
+    import calculateVersion from '@/shared/lib/CalculateVersion';
+    import type {TextHighlight} from '@/shared/lib/TextHighlight';
+    import SetOfFlashcardsVersion from '@/shared/lib/SetOfFlashcardsVersion';
+    import {notify} from '@kyvg/vue3-notification';
 
     function closeDialog() {
         emit('close');
     }
-    onUnmounted(closeDialog);
 
     const jsonHighlight: TextHighlight = [
         {
@@ -148,6 +147,15 @@
         },
     ];
 
+    function showError(message: string) {
+        console.log(message);
+        notify({
+            title: 'Import error',
+            text: message,
+        });
+        fileContent.value = '';
+    }
+
     function validateLaFiszki(text: string): boolean {
         try {
             JSON.parse(text);
@@ -177,8 +185,6 @@
         }
         const reader = new FileReader();
         reader.readAsText(files[0], 'UTF-8');
-        reader.onload = function (evt) {
-            const value = evt.target?.result;
         reader.onload = function (event) {
             const value = event.target?.result;
             if (typeof value == 'string') {
@@ -192,7 +198,6 @@
 
     const inputType = defineModel({
         set(value) {
-            console.log(value);
             return value;
         },
         default: 'la-fiszki',
@@ -226,13 +231,13 @@
         content: '';
     }
 
-    .close_button {
+    .close-button {
         position: absolute;
         top: 20px;
         right: 20px;
         border: none;
         border-radius: 50%;
-        background-image: url(../assets/close.svg);
+        background-image: url(@/assets/close.svg);
         background-position: center center;
         background-size: 80%;
         background-repeat: no-repeat;
@@ -241,7 +246,7 @@
         height: 45px;
     }
 
-    .close_button:hover {
+    .close-button:hover {
         cursor: pointer;
     }
 
@@ -332,7 +337,7 @@
         top: 50%;
         left: 0;
         transform: translateY(-50%);
-        mask-image: url(../assets/warning.svg);
+        mask-image: url(@/assets/warning.svg);
         mask-position: center center;
         mask-size: 90%;
         mask-repeat: no-repeat;

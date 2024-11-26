@@ -1,7 +1,7 @@
 <template>
     <button
         class="text-button"
-        @click="emit('onClick')"
+        @click="emit('click')"
     >
         {{ text }}
     </button>
@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
     const {text} = defineProps<{text: string}>();
-    const emit = defineEmits<{onClick: []}>();
+    const emit = defineEmits<{click: []}>();
 </script>
 
 <style>

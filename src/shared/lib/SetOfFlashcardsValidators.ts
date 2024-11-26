@@ -37,7 +37,7 @@ export const Version0_1 = st.record({
         front: st.string(),
         back: st.string(),
     }),
-    version: st.optional(st.literal('0.1')),
+    version: st.literal('0.1'),
     flashcards: st.array(
         st.record({
             front: st.array(st.string()),
@@ -53,7 +53,7 @@ export const ReadyToBeExported = st.record({
         front: st.string({minLength: 1, maxLength: 30, trim: true}),
         back: st.string({minLength: 1, maxLength: 30, trim: true}),
     }),
-    version: st.optional(st.literal('0.1')),
+    version: st.literal('0.1'),
     flashcards: st.array(
         st.record({
             front: st.array(st.string({minLength: 1, maxLength: 300, trim: true}), {minLength: 1}),

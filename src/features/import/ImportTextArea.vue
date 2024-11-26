@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-    import type {TextHighlight} from '@/utils/TextHighlight';
+    import type {TextHighlight} from '@/shared/lib/TextHighlight';
     import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
     import {onMounted, useTemplateRef} from 'vue';
 
@@ -71,7 +71,6 @@
 
     const highlightText = (text: string): string => {
         let toReturn = text;
-        console.log(customHighlight);
         if (customHighlight != undefined) {
             customHighlight.forEach((highlightRule) => {
                 const element = document.createElement('span');
@@ -82,7 +81,6 @@
                         element.style.setProperty(style, styleValue);
                     }
                 });
-                console.log(element.outerHTML);
                 if (highlightRule.replace != null) {
                     toReturn = toReturn.replace(
                         highlightRule.regex,
@@ -95,6 +93,9 @@
         }
         return toReturn;
     };
+    onMounted(() => {
+        console.log('ale jak to dupa');
+    });
 
     const handlePaste = (event: ClipboardEvent) => {
         event.preventDefault();
@@ -126,9 +127,6 @@
             range.selectNodeContents(editableDiv.value);
             selection?.removeAllRanges();
             selection?.addRange(range);
-        }
-
-        if (event.ctrlKey && event.key === 'v') {
         } else if (event.ctrlKey && event.key === 'v') {
             return;
         } else if (event.ctrlKey && event.key === 'c') {
@@ -143,11 +141,10 @@
                 const selectedText = range.toString().trim();
                 if (selectedText === editableDiv.value.innerText.trim()) {
                     model.value = '';
-                    editableDiv.value.innerText = '';
-                    updateHighlighting('');
                 }
             }
-        } else {
+        } else if (event.key.length == 1) {
+            // hack to detect if user want to write a character and is not using special key
             emit('error', 'You cannot write text here.');
         }
 
