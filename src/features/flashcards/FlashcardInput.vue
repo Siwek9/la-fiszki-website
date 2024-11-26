@@ -23,7 +23,7 @@
     import {useTemplateRef} from 'vue';
 
     function inputChanged(event: Event) {
-        const value = (event.currentTarget! as HTMLInputElement).value;
+        const value = getHTMLInputElement(event).value;
         const positionOfSlash = value.indexOf('/');
         if (positionOfSlash != -1 && value.length > 1) {
             let contentToMove = '';
@@ -32,7 +32,7 @@
             }
             emit('splitInput', contentToMove);
             text.value = value.slice(0, positionOfSlash);
-            (event.currentTarget! as HTMLInputElement).value = value.slice(0, positionOfSlash);
+            getHTMLInputElement(event).value = value.slice(0, positionOfSlash);
         } else if (value.slice(-1) != '/') {
             text.value = value;
         }

@@ -3,14 +3,16 @@
         <div class="flashcard row center-middle">
             <FlashcardSide
                 :label="sideName.front"
-                :has-focus="focusPosition === 0"
                 v-model="flashcard.front"
+                ref="front-ref"
+                @move-tab="moveTabToBackSide"
             />
             <span class="fields-divider center-center">-></span>
             <FlashcardSide
                 :label="sideName.back"
-                :has-focus="focusPosition === 1"
                 v-model="flashcard.back"
+                ref="back-ref"
+                @move-tab="moveTabToNextFlashcard"
             />
         </div>
         <span
@@ -23,18 +25,37 @@
 <script setup lang="ts">
     import type {Flashcard} from '@/shared/lib/Flashcard';
     import FlashcardSide from './FlashcardSide.vue';
-    import {ref} from 'vue';
+    import type {ComponentExposed} from 'vue-component-type-helpers';
+    import {useTemplateRef} from 'vue';
 
-    const focusPosition = ref(0);
+    function moveTabToBackSide() {
+        if (backRef.value == null) return;
 
+        backRef.value.focus();
+    }
+    function moveTabToNextFlashcard() {
+        emit('moveFocus');
+    }
+
+    function focus() {
+        if (frontRef.value == null) return;
+
+        frontRef.value.focus();
+    }
+
+    defineExpose({focus});
     // import FlashcardInput from './FlashcardInput.vue';
     // import type {Flashcard} from '@/shared/lib/Flashcard';
     // import {onMounted, useTemplateRef} from 'vue';
 
     // type FlashcardInputType = InstanceType<typeof FlashcardInput>;
-    // const frontRef = useTemplateRef<FlashcardInputType>('front_ref');
-    // const backRef = useTemplateRef<FlashcardInputType>('back_ref');
+    const frontRef = useTemplateRef<ComponentExposed<typeof FlashcardSide>>('front-ref');
+    const backRef = useTemplateRef<ComponentExposed<typeof FlashcardSide>>('back-ref');
+    const emit = defineEmits<{moveFocus: []; deleteFlashcard: []}>();
 
+    function deleteFlashcard() {
+        emit('deleteFlashcard');
+    }
     // function deleteFrontField(flashcardID: number, fieldID: number) {
     //     if (flashcard.value.front.length <= 1) return;
     //     flashcard.value.front.splice(fieldID, 1);
@@ -58,39 +79,26 @@
     //         // emit('nextFlashcard', flashcardElement.id);
     //     }
     // }
-    function deleteFlashcard() {
-        emit('deleteFlashcard', index);
-    }
     // function inputFrontChanged(value: string, index: number) {
     //     emit('inputFrontChanged', value, flashcardElement.id, index);
     // }
     // // function inputBackChanged(value: string, index: number) {
     // //     emit('inputBackChanged', value, flashcardElement.id, index);
     // // }
-    const emit = defineEmits<{
-        nextFlashcard: [flashcardID: number];
-        deleteFlashcard: [flashcardID: number];
-        // inputFrontChanged: [value: string, flashcardID: number, textID: number];
-        // inputBackChanged: [value: string, flashcardID: number, textID: number];
-        // deleteFrontField: [flashcardID: number, fieldID: number];
-        // deleteBackField: [flashcardID: number, fieldID: number];
-    }>();
+    // const emit = defineEmits<{
+    //     nextFlashcard: [flashcardID: number];
+    //     deleteFlashcard: [flashcardID: number];
+    //     // inputFrontChanged: [value: string, flashcardID: number, textID: number];
+    //     // inputBackChanged: [value: string, flashcardID: number, textID: number];
+    //     // deleteFrontField: [flashcardID: number, fieldID: number];
+    //     // deleteBackField: [flashcardID: number, fieldID: number];
+    // }>();
 
-    const {index, sideName} = defineProps<{
-        index: number;
+    const {sideName} = defineProps<{
         sideName: {front: string; back: string};
     }>();
 
     const flashcard = defineModel<Flashcard>({default: {front: [''], back: ['']}});
-
-    // defineExpose({frontRef, backRef});
-    // onMounted(() => {
-    //     // if (frontRef.value != null && flashcard.id != 0) {
-    //     //     const frontRefs = frontRef.value.inputRefs;
-    //     //     if (frontRefs == null) return;
-    //     //     frontRefs[0].focus();
-    //     // }
-    // });
 </script>
 
 <style>

@@ -1,14 +1,12 @@
 <template>
     <NewFlashcard
         v-for="(_, index) in flashcards"
-        ref="flashcard-array-object"
-        @deleteFlashcard="deleteFlashcard"
-        @focus="focusPosition = index"
-        @lostfocus="onLostFocus"
+        @deleteFlashcard="deleteFlashcard(index)"
+        @move-focus="moveToNextFlashcard(index)"
         :index="index"
         :side-name="sideNames"
-        :has-focus="focusPosition == index"
         :key="index"
+        ref="new-flashcard-ref"
         v-model="flashcards[index]"
     />
     <AddButton @newFlashcard="createNewFlashcard" />
@@ -18,32 +16,33 @@
     import AddButton from '@/features/flashcards/AddButton.vue';
     import type {Flashcard} from '@/shared/lib/Flashcard';
     import type {SideName} from '@/shared/lib/SideName';
-    import {ref} from 'vue';
+    import {nextTick, useTemplateRef} from 'vue';
+    import type {ComponentExposed} from 'vue-component-type-helpers';
 
     const flashcards = defineModel<Array<Flashcard>>({default: [{front: [''], back: ['']}]});
+    const newFlashcardRefs = useTemplateRef<Array<ComponentExposed<typeof NewFlashcard>>>('new-flashcard-ref');
 
-    const focusPosition = ref(-1);
-
-    // function moveToNextFlashcard(id: number) {
-    //     if (id < flashcards.value.length - 1) {
-    //         focusPosition.value = id + 1;
-    //     } else {
-    //         createNewFlashcard();
-    //     }
-    // }
+    function moveToNextFlashcard(index: number) {
+        if (newFlashcardRefs.value == null || newFlashcardRefs.value.length == 0) return;
+        if (index < newFlashcardRefs.value.length - 1) {
+            console.log('lool');
+            newFlashcardRefs.value[index + 1].focus();
+        } else {
+            console.log('lool');
+            createNewFlashcard();
+        }
+    }
     function createNewFlashcard() {
         flashcards.value?.push({front: [''], back: ['']});
+        nextTick(() => {
+            if (newFlashcardRefs.value == null || newFlashcardRefs.value.length == 0) return;
+            newFlashcardRefs.value[newFlashcardRefs.value.length - 1].focus();
+        });
     }
 
     function deleteFlashcard(id: number) {
         if (flashcards.value.length <= 1) return;
         flashcards.value.splice(id, 1);
-    }
-
-    function onLostFocus(index: number) {
-        if (focusPosition.value == index) {
-            focusPosition.value = -1;
-        }
     }
 
     const {sideNames} = defineProps<{sideNames: SideName}>();
