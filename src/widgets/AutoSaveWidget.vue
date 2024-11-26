@@ -12,14 +12,14 @@
     import {getSetFromSave, removeSet, saveSet} from '@/entities/auto_save/auto_save';
 
     const autoSave = ref(false);
-    const emit = defineEmits<{autosaveloaded: [flashcardsSet: FlashcardsSet]}>();
-    const {flashcardsSet} = defineProps<{flashcardsSet: FlashcardsSet}>();
+    const flashcardsSet = defineModel<FlashcardsSet>();
 
     // THIS COULD BE UNEFFICIENT!
     // TODO: should be optimalized with changing only when user stops typing in textbox
     watch(
-        () => flashcardsSet,
+        flashcardsSet,
         (set) => {
+            if (set == undefined) return;
             if (autoSave.value) saveSet(set);
         },
         {deep: true}
@@ -28,7 +28,8 @@
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;
         if (toggle) {
-            saveSet(flashcardsSet);
+            if (flashcardsSet.value == undefined) return;
+            saveSet(flashcardsSet.value);
         } else {
             removeSet();
         }
@@ -38,7 +39,7 @@
         const set = getSetFromSave();
         if (set !== undefined) {
             autoSave.value = true;
-            emit('autosaveloaded', set);
+            flashcardsSet.value = set;
         }
     });
 </script>

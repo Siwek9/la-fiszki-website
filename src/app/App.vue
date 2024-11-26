@@ -7,6 +7,7 @@
         :flashcards-set="flashcardsSet"
         @autosaveloaded="changeFlashcardsSet"
     />
+    <AutoSaveWidget v-model="flashcardsSet" />
     <ImportWidget />
     <MainInfoEditorWidget v-model="flashcardsSet" />
     <FlashcardsWidget
@@ -34,7 +35,6 @@
     import ImportWidget from '@/widgets/ImportWidget.vue';
     import AutoSaveWidget from '@/widgets/AutoSaveWidget.vue';
     import MainInfoEditorWidget from '@/widgets/MainInfoEditorWidget.vue';
-    import {Notifications} from '@kyvg/vue3-notification';
     import {ref} from 'vue';
 
     // import NewFlashcard from '../features/flashcards/NewFlashcard.vue';
