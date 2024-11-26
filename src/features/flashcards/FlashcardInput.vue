@@ -9,8 +9,8 @@
             :value="text"
             @input.prevent="inputChanged"
             @focus="inputFocus"
-            @keyup.enter="emit('moveFocus')"
-            @keyup.tab.prevent="emit('moveFocus')"
+            @keydown.enter="emit('moveFocus')"
+            @keydown.tab.prevent="emit('moveFocus')"
         />
         <div
             class="delete-input-field"
@@ -68,7 +68,7 @@
     }
 
     .flashcard-input .delete-input-field {
-        background-image: url(@/assets/delete.svg);
+        background-image: url(@/assets/icons/delete.svg);
         background-position: 33% center;
         background-size: 65%;
         background-repeat: no-repeat;

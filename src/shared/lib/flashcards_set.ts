@@ -1,5 +1,5 @@
 import type {Flashcard} from './Flashcard';
-import type {SideName} from './SideName';
+import type {SideName} from './side_name';
 
 export type FlashcardsSet = {
     name: string;

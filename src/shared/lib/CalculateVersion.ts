@@ -1,5 +1,5 @@
-import {preCardboardArrayVersion, PreVersioningVersion, Version0_1} from './SetOfFlashcardsValidators';
-import SetOfFlashcardsVersion from './SetOfFlashcardsVersion';
+import {preCardboardArrayVersion, PreVersioningVersion, Version0_1} from './flashcards_set_validators';
+import SetOfFlashcardsVersion from './flashcards_set_version';
 import * as st from 'simple-runtypes';
 
 export default function calculateVersion(set_of_flashcards: string): SetOfFlashcardsVersion | undefined {

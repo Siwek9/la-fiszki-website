@@ -1,6 +1,6 @@
-import type {FlashcardsSet} from './FlashcardsSet';
-import {preCardboardArrayVersion, PreVersioningVersion} from './SetOfFlashcardsValidators';
-import SetOfFlashcardsVersion from './SetOfFlashcardsVersion';
+import type {FlashcardsSet} from './flashcards_set';
+import {preCardboardArrayVersion, PreVersioningVersion} from './flashcards_set_validators';
+import SetOfFlashcardsVersion from './flashcards_set_version';
 // import * as st from 'simple-runtypes';
 
 export default function fixOutdatedSets(

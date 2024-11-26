@@ -23,9 +23,9 @@
     </div>
 </template>
 <script setup lang="ts">
-    import TextInput from '@/features/main_info/TextInput.vue';
+    import TextInput from '@/features/main_info/MainInfoTextInput.vue';
     import createEmptyFlashcardsSet from '@/shared/lib/create_empty_flashcards_set';
-    import type {FlashcardsSet} from '@/shared/lib/FlashcardsSet';
+    import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 
     const set = defineModel<FlashcardsSet>({default: createEmptyFlashcardsSet()});
 </script>

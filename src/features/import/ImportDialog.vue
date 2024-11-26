@@ -102,8 +102,8 @@
     import 'overlayscrollbars/overlayscrollbars.css';
     import ImportTextArea from '@/features/import/ImportTextArea.vue';
     import calculateVersion from '@/shared/lib/CalculateVersion';
-    import type {TextHighlight} from '@/shared/lib/TextHighlight';
-    import SetOfFlashcardsVersion from '@/shared/lib/SetOfFlashcardsVersion';
+    import type {TextHighlight} from '@/shared/lib/text_highlight';
+    import SetOfFlashcardsVersion from '@/shared/lib/flashcards_set_version';
 
     function closeDialog() {
         emit('close');
@@ -233,7 +233,7 @@
         right: 20px;
         border: none;
         border-radius: 50%;
-        background-image: url(@/assets/close.svg);
+        background-image: url(@/assets/icons/close.svg);
         background-position: center center;
         background-size: 80%;
         background-repeat: no-repeat;
@@ -333,7 +333,7 @@
         top: 50%;
         left: 0;
         transform: translateY(-50%);
-        mask-image: url(@/assets/warning.svg);
+        mask-image: url(@/assets/icons/warning.svg);
         mask-position: center center;
         mask-size: 90%;
         mask-repeat: no-repeat;

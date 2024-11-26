@@ -35,7 +35,7 @@
     }
 
     .plus-icon {
-        background-image: url(@/assets/add_button.svg);
+        background-image: url(@/assets/icons/add_button.svg);
         background-position: center center;
         background-size: 85%;
         background-repeat: no-repeat;

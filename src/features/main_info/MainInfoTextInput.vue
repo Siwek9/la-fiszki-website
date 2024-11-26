@@ -22,7 +22,7 @@
     const {name, maxLength} = defineProps<{name: string; maxLength: number}>();
 </script>
 
-<style>
+<style scoped>
     .text-input-field {
         all: unset;
         box-sizing: border-box;

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-    import type {TextHighlight} from '@/shared/lib/TextHighlight';
+    import type {TextHighlight} from '@/shared/lib/text_highlight';
     import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
     import {onMounted, useTemplateRef} from 'vue';
 

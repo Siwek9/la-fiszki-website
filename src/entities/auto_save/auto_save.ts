@@ -1,6 +1,6 @@
 import calculateVersion from '@/shared/lib/CalculateVersion';
-import fixOutdatedSets from '@/shared/lib/FixOutdatedSets';
-import type {FlashcardsSet} from '@/shared/lib/FlashcardsSet';
+import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
+import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 
 const SAVE_NAME = 'last_save';
 

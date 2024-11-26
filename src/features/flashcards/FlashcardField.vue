@@ -77,7 +77,7 @@
 
     .delete-button {
         border-radius: 50%;
-        background-image: url(@/assets/delete.svg);
+        background-image: url(@/assets/icons/delete.svg);
         background-position: center center;
         background-size: 70%;
         background-repeat: no-repeat;

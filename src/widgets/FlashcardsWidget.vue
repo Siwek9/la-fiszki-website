@@ -11,10 +11,10 @@
     <AddButton @newFlashcard="createNewFlashcard" />
 </template>
 <script setup lang="ts">
-    import NewFlashcard from '@/features/flashcards/NewFlashcard.vue';
-    import AddButton from '@/features/flashcards/AddButton.vue';
+    import NewFlashcard from '@/features/flashcards/FlashcardField.vue';
+    import AddButton from '@/features/flashcards/CreateFlashcardButton.vue';
     import type {Flashcard} from '@/shared/lib/Flashcard';
-    import type {SideName} from '@/shared/lib/SideName';
+    import type {SideName} from '@/shared/lib/side_name';
     import {nextTick, useTemplateRef} from 'vue';
     import type {ComponentExposed} from 'vue-component-type-helpers';
 

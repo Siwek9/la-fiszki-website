@@ -1,4 +1,4 @@
-import type {FlashcardsSet} from './FlashcardsSet';
+import type {FlashcardsSet} from './flashcards_set';
 
 export default function createEmptyFlashcardsSet(): FlashcardsSet {
     return {

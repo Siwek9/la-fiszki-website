@@ -7,7 +7,7 @@
 <script setup lang="ts">
     import {onMounted, ref, watch} from 'vue';
     import AutoSaveButton from '@/features/auto_save/AutoSaveButton.vue';
-    import type {FlashcardsSet} from '@/shared/lib/FlashcardsSet';
+    import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 
     import {getSetFromSave, removeSet, saveSet} from '@/entities/auto_save/auto_save';
 

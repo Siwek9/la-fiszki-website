@@ -22,7 +22,7 @@
     import ExportWidget from '@/widgets/ExportWidget.vue';
 
     import {ref} from 'vue';
-    import type {FlashcardsSet} from '../shared/lib/FlashcardsSet';
+    import type {FlashcardsSet} from '../shared/lib/flashcards_set';
     import createEmptyFlashcardsSet from '@/shared/lib/create_empty_flashcards_set';
 
     const flashcardsSet = ref<FlashcardsSet>(createEmptyFlashcardsSet());

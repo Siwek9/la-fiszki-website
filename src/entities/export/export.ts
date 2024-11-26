@@ -1,6 +1,6 @@
-import type {FlashcardsSet} from '@/shared/lib/FlashcardsSet';
+import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 import * as st from 'simple-runtypes';
-import {ReadyToBeExported} from '@/shared/lib/SetOfFlashcardsValidators';
+import {ReadyToBeExported} from '@/shared/lib/flashcards_set_validators';
 
 export function exportSet(set: FlashcardsSet) {
     if (!st.use(ReadyToBeExported, set).ok) {

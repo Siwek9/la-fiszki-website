@@ -18,7 +18,9 @@
     import type {ComponentExposed} from 'vue-component-type-helpers';
 
     function deleteField(index: number) {
-        values.value.splice(index, 1);
+        if (values.value.length > 1) {
+            values.value.splice(index, 1);
+        }
     }
 
     const inputsCount = computed(() => {
