@@ -155,31 +155,6 @@
     button {
         font: inherit;
     }
-
-    .vue-notification {
-        border: none;
-        border-radius: 30px;
-        background-color: red;
-        padding: 10px 50px;
-        /* width: 500px; */
-        font-size: 18px;
-
-        .notification-title {
-            margin: 10px 0px;
-            font-variant: small-caps;
-            font-size: 22px;
-        }
-
-        .notification-content {
-            margin: 10px 0px;
-        }
-    }
-
-    @keyframes notification-fade-in-out {
-        from {
-            opacity: 0;
-        }
-        to {
             opacity: 1;
         }
     }

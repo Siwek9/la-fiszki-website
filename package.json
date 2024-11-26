@@ -13,7 +13,6 @@
         "format": "prettier --write src/"
     },
     "dependencies": {
-        "@kyvg/vue3-notification": "^3.4.1",
         "@types/overlayscrollbars": "^1.12.5",
         "overlayscrollbars": "^2.10.0",
         "overlayscrollbars-vue": "^0.5.9",

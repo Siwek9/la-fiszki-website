@@ -104,7 +104,6 @@
     import calculateVersion from '@/shared/lib/CalculateVersion';
     import type {TextHighlight} from '@/shared/lib/TextHighlight';
     import SetOfFlashcardsVersion from '@/shared/lib/SetOfFlashcardsVersion';
-    import {notify} from '@kyvg/vue3-notification';
 
     function closeDialog() {
         emit('close');
@@ -149,10 +148,7 @@
 
     function showError(message: string) {
         console.log(message);
-        notify({
-            title: 'Import error',
-            text: message,
-        });
+
         fileContent.value = '';
     }
 
