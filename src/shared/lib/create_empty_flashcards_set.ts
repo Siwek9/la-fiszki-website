@@ -6,8 +6,8 @@ export default function createEmptyFlashcardsSet(): FlashcardsSet {
         author: 'Unknown',
         version: '0.1',
         sideName: {
-            front: 'Unknown',
-            back: 'Unknown',
+            front: 'Default',
+            back: 'Default',
         },
         flashcards: [
             {
