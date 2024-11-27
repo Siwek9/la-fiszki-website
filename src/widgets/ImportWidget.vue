@@ -3,7 +3,7 @@
         @click="isOpen = true"
         text="Import Set"
     />
-    <ImportDialog
+    <ImportPanel
         @close="isOpen = false"
         v-if="isOpen"
     />
@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
     import TextButton from '@/shared/ui/TextButton.vue';
-    import ImportDialog from '@/features/import/ImportDialog.vue';
+    import ImportPanel from '@/features/import/ImportPanel.vue';
     import {ref} from 'vue';
 
     const isOpen = ref(false);

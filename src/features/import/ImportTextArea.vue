@@ -23,12 +23,14 @@
 </template>
 
 <script setup lang="ts">
+    import highlightText from '@/shared/lib/highlight_text';
     import type {TextHighlight} from '@/shared/lib/text_highlight';
     import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
     import {onMounted, useTemplateRef} from 'vue';
 
     const model = defineModel({
         set(value) {
+            updateHighlighting(value);
             if (validateText != null && validateText(value)) {
                 return value;
             } else {
@@ -69,30 +71,6 @@
         updateHighlighting(model.value);
     });
 
-    const highlightText = (text: string): string => {
-        let toReturn = text;
-        if (customHighlight != undefined) {
-            customHighlight.forEach((highlightRule) => {
-                const element = document.createElement('span');
-                element.textContent = '$1';
-
-                Object.entries(highlightRule.style).forEach(([style, styleValue]) => {
-                    if (styleValue != undefined) {
-                        element.style.setProperty(style, styleValue);
-                    }
-                });
-                if (highlightRule.replace != null) {
-                    toReturn = toReturn.replace(
-                        highlightRule.regex,
-                        highlightRule.replace.replace('$1', element.outerHTML)
-                    );
-                } else {
-                    toReturn = toReturn.replace(highlightRule.regex, element.outerHTML);
-                }
-            });
-        }
-        return toReturn;
-    };
     onMounted(() => {
         console.log('ale jak to dupa');
     });
@@ -153,7 +131,7 @@
 
     const updateHighlighting = (text: string) => {
         if (highlightedContent.value) {
-            highlightedContent.value.innerHTML = highlightText(text);
+            highlightedContent.value.innerHTML = highlightText(text, customHighlight);
         }
     };
 </script>
