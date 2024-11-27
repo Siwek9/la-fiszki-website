@@ -18,9 +18,7 @@
     const emit = defineEmits<{upload: [content: string]}>();
 
     async function uploadFile(event: Event) {
-        const zmienna = await readFileContent(event);
-        console.log(zmienna);
-        emit('upload', zmienna);
+        emit('upload', await readFileContent(event));
     }
 </script>
 <style>

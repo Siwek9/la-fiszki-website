@@ -18,13 +18,8 @@
             v-if="inputType == 'la-fiszki'"
             v-model="fileContent"
         />
-
         <div>
-            <input
-                type="checkbox"
-                id="override-changes"
-            />
-            <label for="override-changes">Override Changes</label>
+            <ToggleOverrideChanges v-model="overrideChanges" />
         </div>
         <button>Apply import</button>
     </MainDialog>
@@ -36,12 +31,15 @@
     import InputImportType from '@/features/import/InputImportType.vue';
     import MainDialog from '@/shared/ui/MainDialog.vue';
     import ImportLaFiszki from '@/features/import/ImportLaFiszki.vue';
+    import ToggleOverrideChanges from '@/features/import/ToggleOverrideChanges.vue';
 
     function closeDialog() {
         emit('close');
     }
 
     const fileContent = ref('');
+
+    const overrideChanges = ref(false);
 
     const inputType = ref<'la-fiszki' | 'csv'>('la-fiszki');
 
