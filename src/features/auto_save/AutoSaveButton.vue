@@ -1,11 +1,12 @@
 <template>
-    <div class="auto-save-container">
-        <label
+    <label class="auto-save-container">
+        <div
             for="auto-save-input"
             class="auto-save-label"
-            >Auto save</label
         >
-        <label class="switch">
+            Auto save
+        </div>
+        <div class="switch">
             <input
                 id="auto-save-input"
                 type="checkbox"
@@ -13,8 +14,8 @@
                 :checked="isAutoSaveOn"
             />
             <span class="slider round"></span>
-        </label>
-    </div>
+        </div>
+    </label>
 </template>
 
 <script setup lang="ts">
