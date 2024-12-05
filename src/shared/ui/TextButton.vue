@@ -15,7 +15,7 @@
 <style>
     .text-button {
         all: unset;
-        margin: 20px;
+        /* margin: 20px; */
         border-radius: 25px;
         background-color: #35155d;
         padding: clamp(15px, 3vw, 25px);

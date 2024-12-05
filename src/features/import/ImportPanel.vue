@@ -21,7 +21,8 @@
         <div>
             <ToggleOverrideChanges v-model="overrideChanges" />
         </div>
-        <button>Apply import</button>
+        <TextButton text="Apply Import" />
+        <!-- <button>Apply import</button> -->
     </MainDialog>
 </template>
 
@@ -32,6 +33,7 @@
     import MainDialog from '@/shared/ui/MainDialog.vue';
     import ImportLaFiszki from '@/features/import/ImportLaFiszki.vue';
     import ToggleOverrideChanges from '@/features/import/ToggleOverrideChanges.vue';
+    import TextButton from '@/shared/ui/TextButton.vue';
 
     function closeDialog() {
         emit('close');

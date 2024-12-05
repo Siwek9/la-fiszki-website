@@ -34,6 +34,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: 20px;
         padding: 10px 0;
     }
 

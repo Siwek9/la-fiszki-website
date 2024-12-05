@@ -16,17 +16,21 @@
         </div>
         <div class="import-preview-container">
             <h2>Import preview</h2>
+            <ImportPreview :import-content="flashcards" />
         </div>
     </div>
 </template>
 <script setup lang="ts">
+    import ImportPreview from '@/features/import/ImportPreview.vue';
     import ImportFileButton from '@/features/import/ImportFileButton.vue';
     import calculateVersion from '@/shared/lib/CalculateVersion';
     import SetOfFlashcardsVersion from '@/shared/lib/flashcards_set_version';
     import ImportTextArea from '@/features/import/ImportTextArea.vue';
     import jsonHighlight from '@/shared/lib/json_highlight';
     import WarningText from '@/features/import/WarningText.vue';
-    import {ref} from 'vue';
+    import {computed, ref} from 'vue';
+    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
 
     function showError(message: string) {
         console.log(message);
@@ -34,11 +38,22 @@
         fileContent.value = '';
     }
 
+    const flashcards = computed<Array<Flashcard> | undefined>(() => {
+        if (fileContent.value == '') return undefined;
+        const version = calculateVersion(fileContent.value);
+        if (version == undefined) return undefined;
+        const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
+        if (set == undefined) return undefined;
+        return set.flashcards;
+    });
+
     const validationWarningText = ref('');
 
     const fileContent = defineModel<string>({default: ''});
 
     function uploadFile(content: string) {
+        console.log('wee snaw');
+        console.log(content);
         fileContent.value = content;
     }
 
@@ -91,5 +106,6 @@
 
     .import-preview-container {
         grid-area: import-preview;
+        width: min(450px, 40vw);
     }
 </style>

@@ -20,7 +20,7 @@
         display: block;
         box-sizing: border-box;
         margin: 25px 0;
-        border: 6px solid #35155d;
+        /* border: 6px solid #35155d; */
         border-radius: 40px;
         padding: 15px 20px;
         width: max-content;
@@ -29,6 +29,7 @@
 
     .override-changes:hover {
         cursor: pointer;
+        background-color: #35155d;
     }
 
     .override-changes:has(.override-changes-checkbox:checked) {

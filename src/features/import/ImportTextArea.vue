@@ -142,6 +142,7 @@
         margin: 10px;
         border-radius: 10px;
         background-color: #260f43;
+        /* width: calc(100%); */
         min-height: 300px;
         max-height: 40vh;
         overflow: auto;

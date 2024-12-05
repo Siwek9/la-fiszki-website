@@ -21,7 +21,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 20px;
+        margin: 20px 0;
         border-radius: 50%;
         background-color: #35155d;
         width: clamp(70px, 5vw, 90px);
