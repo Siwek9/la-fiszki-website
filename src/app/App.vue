@@ -4,7 +4,7 @@
         :author="flashcardsSet.author"
     />
     <AutoSaveWidget v-model="flashcardsSet" />
-    <ImportWidget />
+    <ImportWidget v-model="flashcardsSet" />
     <MainInfoEditorWidget v-model="flashcardsSet" />
     <FlashcardsWidget
         :side-names="flashcardsSet.sideName"

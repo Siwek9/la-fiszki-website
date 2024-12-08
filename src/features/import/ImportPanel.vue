@@ -21,31 +21,73 @@
         <div>
             <ToggleOverrideChanges v-model="overrideChanges" />
         </div>
-        <TextButton text="Apply Import" />
-        <!-- <button>Apply import</button> -->
+        <TextButton
+            @click="importFlashcards"
+            :disabled="!isFileImportable"
+            text="Apply Import"
+        />
     </MainDialog>
 </template>
 
 <script setup lang="ts">
-    import {ref} from 'vue';
-    import 'overlayscrollbars/overlayscrollbars.css';
+    import {computed, ref} from 'vue';
     import InputImportType from '@/features/import/InputImportType.vue';
     import MainDialog from '@/shared/ui/MainDialog.vue';
     import ImportLaFiszki from '@/features/import/ImportLaFiszki.vue';
     import ToggleOverrideChanges from '@/features/import/ToggleOverrideChanges.vue';
     import TextButton from '@/shared/ui/TextButton.vue';
+    import createEmptyFlashcardsSet from '@/shared/lib/create_empty_flashcards_set';
+    import calculateVersion from '@/shared/lib/CalculateVersion';
+    import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
+    import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 
     function closeDialog() {
         emit('close');
     }
 
     const fileContent = ref('');
+    const isFileImportable = computed<boolean>(() => {
+        if (inputType.value == 'la-fiszki') {
+            if (fileContent.value == '') return false;
+            const version = calculateVersion(fileContent.value);
+            if (version == undefined) return false;
+            const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
+            if (set == undefined) return false;
+            return true;
+        } else if (inputType.value == 'csv') {
+            if (csvDelimeter == 'siema') {
+            }
+            return false;
+        }
+        return false;
+    });
 
-    const overrideChanges = ref(false);
+    const overrideChanges = ref(true);
 
     const inputType = ref<'la-fiszki' | 'csv'>('la-fiszki');
+    const csvDelimeter: string = '';
+    const splitFieldsOnSlash = true;
 
-    const emit = defineEmits<{close: []}>();
+    const emit = defineEmits<{close: []; import: [flashcardsSet: FlashcardsSet, overrideChanges: boolean]}>();
+
+    function importFlashcards() {
+        let flashcardsSetToImport = createEmptyFlashcardsSet();
+        if (inputType.value == 'la-fiszki') {
+            if (fileContent.value == '') return;
+            const version = calculateVersion(fileContent.value);
+            if (version == undefined) return;
+            const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
+            if (set == undefined) return;
+            flashcardsSetToImport = set;
+        } else if (inputType.value == 'csv') {
+            if (csvDelimeter == 'siema') {
+                console.log(splitFieldsOnSlash);
+            }
+        }
+
+        emit('import', flashcardsSetToImport, overrideChanges.value);
+        emit('close');
+    }
 </script>
 
 <style scoped>
