@@ -29,12 +29,12 @@
         display: flex;
         flex-direction: row;
         box-sizing: border-box;
-        /* height: px; */
         margin: 15px;
         border-radius: 10px;
         background-color: #260f43;
         padding: 10px;
         width: calc(100% - 30px);
+        overflow-x: hidden;
     }
 
     .text-side {
@@ -58,12 +58,4 @@
         font-size: 20px;
         text-align: center;
     }
-    /*
-    .left-side {
-        text-align: left;
-    }
-
-    .right-side {
-        text-align: right;
-    } */
 </style>
