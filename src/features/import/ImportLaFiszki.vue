@@ -45,6 +45,7 @@
         }
         errorStarted.value = true;
         errorTimeout.value = setTimeout(() => {
+            clearTimeout(errorTimeout.value);
             errorStarted.value = false;
             warningType.value = 'warning';
         }, 2000);
@@ -67,10 +68,31 @@
 
     const validationWarningText = ref('');
 
-    const fileContent = defineModel<string>({default: ''});
+    const fileContent = defineModel<string>({
+        set(value) {
+            if (validateLaFiszki(value)) {
+                return value;
+            } else if (value != '' && value != undefined) {
+                showError('Text you try to parse here is not correct');
+            }
+            return '';
+        },
+        get(value) {
+            if (!validateLaFiszki(value) && value != '' && value != undefined) {
+                showError('Text you try to parse here is not correct');
+                return '';
+            }
+            try {
+                const formatedValue = JSON.stringify(JSON.parse(value), null, 2);
+                return formatedValue;
+            } catch (_) {
+                return value;
+            }
+        },
+        default: '',
+    });
 
     function uploadFile(content: string) {
-        console.log('wee snaw');
         console.log(content);
         fileContent.value = content;
     }

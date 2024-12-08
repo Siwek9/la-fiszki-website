@@ -28,34 +28,17 @@
     import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
     import {onMounted, useTemplateRef} from 'vue';
 
-    const model = defineModel({
-        set(value) {
-            updateHighlighting(value);
-            if (validateText != null && validateText(value)) {
-                return value;
-            } else {
-                emit('error', 'Text you try to parse here is not correct');
-            }
-            return '';
-        },
+    const model = defineModel<string>({
+        set() {},
         get(value) {
-            if ((validateText == null || !validateText(value)) && value != '') {
-                emit('error', 'Text you try to parse here is not correct');
-                return '';
-            }
-            try {
-                const formatedValue = JSON.stringify(JSON.parse(value), null, 2);
-                updateHighlighting(formatedValue);
-                return formatedValue;
-            } catch (_) {
-                updateHighlighting('');
-                return value;
-            }
+            updateHighlighting(value);
+            return value;
         },
+
         default: '',
     });
 
-    const {placeholder, customHighlight, validateText} = defineProps<{
+    const {placeholder, customHighlight} = defineProps<{
         placeholder?: string;
         customHighlight?: TextHighlight;
         validateText?: (text: string) => boolean;
