@@ -40,14 +40,12 @@
         margin: 0 8px;
         box-shadow: 7px 7px 0px black;
         border: none;
-        border: 2px solid white;
-
+        border: 3px solid #512b81;
         border-radius: 10px;
         background-position: center center;
-        background-size: 75%;
+        background-size: 65%;
         background-repeat: no-repeat;
         background-color: transparent;
-        /* background-color: white; */
         width: 40px;
         height: 40px;
     }
