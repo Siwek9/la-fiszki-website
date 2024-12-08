@@ -4,7 +4,10 @@
             <ImportFileButton @upload="uploadFile" />
         </div>
         <div class="json-data-preview-container">
-            <h2>File content</h2>
+            <div class="json-data-header">
+                <h2>File content</h2>
+                <TextAreaButtons v-model="fileContent" />
+            </div>
             <ImportTextArea
                 @error="showError"
                 :validateText="validateLaFiszki"
@@ -12,7 +15,10 @@
                 placeholder="...or paste its content here"
                 v-model="fileContent"
             />
-            <WarningText :warningText="validationWarningText" />
+            <WarningText
+                :type="warningType"
+                :warningText="validationWarningText"
+            />
         </div>
         <div class="import-preview-container">
             <h2>Import preview</h2>
@@ -31,12 +37,24 @@
     import {computed, ref} from 'vue';
     import type {Flashcard} from '@/shared/lib/Flashcard';
     import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
+    import TextAreaButtons from '@/features/import/TextAreaButtons.vue';
 
     function showError(message: string) {
-        console.log(message);
-
-        fileContent.value = '';
+        if (errorStarted.value) {
+            clearTimeout(errorTimeout.value);
+        }
+        errorStarted.value = true;
+        errorTimeout.value = setTimeout(() => {
+            errorStarted.value = false;
+            warningType.value = 'warning';
+        }, 2000);
+        validationWarningText.value = message;
+        warningType.value = 'error';
     }
+    const errorTimeout = ref<number>(-1);
+    const errorStarted = ref<boolean>(false);
+
+    const warningType = ref<'error' | 'warning'>('warning');
 
     const flashcards = computed<Array<Flashcard> | undefined>(() => {
         if (fileContent.value == '') return undefined;
@@ -65,7 +83,10 @@
                 if (version == SetOfFlashcardsVersion.Version0_1) {
                     validationWarningText.value = '';
                 } else {
-                    validationWarningText.value = 'This set will be upgraded to newer version while exporting';
+                    if (!errorStarted.value) {
+                        warningType.value = 'warning';
+                        validationWarningText.value = 'This set will be upgraded to newer version while exporting';
+                    }
                 }
                 return true;
             } else {
@@ -73,7 +94,9 @@
             }
         } catch (_) {
             if (text === '') {
-                validationWarningText.value = '';
+                if (!errorStarted.value) {
+                    validationWarningText.value = '';
+                }
             }
             return false;
         }
@@ -90,6 +113,12 @@
         border-radius: 0 20px 20px 20px;
         background-color: #35155d;
         padding: 20px;
+    }
+
+    .json-data-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     .upload-file-container {

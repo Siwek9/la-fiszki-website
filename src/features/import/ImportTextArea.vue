@@ -48,6 +48,7 @@
                 updateHighlighting(formatedValue);
                 return formatedValue;
             } catch (_) {
+                updateHighlighting('');
                 return value;
             }
         },
@@ -69,10 +70,6 @@
 
     onMounted(() => {
         updateHighlighting(model.value);
-    });
-
-    onMounted(() => {
-        console.log('ale jak to dupa');
     });
 
     const handlePaste = (event: ClipboardEvent) => {
@@ -187,7 +184,6 @@
         font-weight: 500;
         font-size: 18px;
         font-family: 'DM Mono', monospace;
-
         white-space: pre;
     }
 
