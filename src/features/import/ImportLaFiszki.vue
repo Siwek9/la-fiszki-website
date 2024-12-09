@@ -135,6 +135,7 @@
         grid-template-areas:
             'import-button import-preview'
             'json-preview import-preview';
+        column-gap: 20px;
         border-radius: 0 20px 20px 20px;
         background-color: #35155d;
         padding: 20px;

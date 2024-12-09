@@ -5,6 +5,8 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
     if (highlight == undefined) {
         return toReturn;
     }
+    console.log('dostaje text');
+    console.log(text);
 
     highlight.forEach((highlightRule) => {
         const element = document.createElement('span');

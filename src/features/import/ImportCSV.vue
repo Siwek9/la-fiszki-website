@@ -15,6 +15,7 @@
                 @error="showError"
                 :validateText="validateCSV"
                 placeholder="...or paste its content here"
+                :customHighlight="csvHighlight()"
                 v-model="fileContent"
             />
             <WarningText
@@ -51,6 +52,7 @@
     import type {Flashcard} from '@/shared/lib/Flashcard';
     import TextAreaButtons from '@/features/import/TextAreaButtons.vue';
     import CsvSettingsButton from '@/features/import/CsvSettingsButton.vue';
+    import type {TextHighlight} from '@/shared/lib/text_highlight';
 
     function showError(message: string) {
         if (errorStarted.value) {
@@ -143,6 +145,33 @@
         fileContent.value = content;
     }
 
+    function csvHighlight(): TextHighlight {
+        console.log([
+            {
+                regex: RegExp(
+                    `${convertDelimiterToUse(rowDelimiter.value)}\n*.+${convertDelimiterToUse(delimiter.value)}`,
+                    'g'
+                ),
+                style: {
+                    color: '#007acc',
+                },
+                replace: `${convertDelimiterToUse(rowDelimiter.value)}$1${convertDelimiterToUse(delimiter.value)}`,
+            },
+        ]);
+        return [
+            {
+                regex: RegExp(
+                    `${convertDelimiterToUse(rowDelimiter.value)}\n*.+${convertDelimiterToUse(delimiter.value)}`,
+                    'g'
+                ),
+                style: {
+                    color: '#007acc',
+                },
+                replace: `${convertDelimiterToUse(rowDelimiter.value)}$1${convertDelimiterToUse(delimiter.value)}`,
+            },
+        ];
+    }
+
     function validateCSV(text: string): boolean {
         if (text == undefined) return false;
         const rows = text.split(convertDelimiterToUse(rowDelimiter.value));
@@ -175,6 +204,7 @@
         grid-template-areas:
             'import-button csv-settings'
             'json-preview import-preview';
+        column-gap: 20px;
         border-radius: 0 20px 20px 20px;
         background-color: #35155d;
         padding: 20px;

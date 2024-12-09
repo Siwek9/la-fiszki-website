@@ -119,7 +119,8 @@
 <style>
     .custom-textarea-wrapper {
         position: relative;
-        margin: 10px;
+        /* ma/srgin: 10px; */
+        /* margin-right: 20px; */
         border-radius: 10px;
         background-color: #260f43;
         min-height: 300px;
