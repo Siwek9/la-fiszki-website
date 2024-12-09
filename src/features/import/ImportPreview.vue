@@ -21,7 +21,7 @@
 </script>
 <style>
     .flashcard-preview-container {
-        max-height: 50vh;
+        max-height: 100%;
         overflow: auto;
     }
 </style>

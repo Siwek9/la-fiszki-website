@@ -1,7 +1,10 @@
 <template>
     <div class="input-type-content">
         <div class="upload-file-container">
-            <ImportFileButton @upload="uploadFile" />
+            <ImportFileButton
+                accept=".json"
+                @upload="uploadFile"
+            />
         </div>
         <div class="json-data-preview-container">
             <div class="json-data-header">
@@ -135,6 +138,7 @@
         border-radius: 0 20px 20px 20px;
         background-color: #35155d;
         padding: 20px;
+        max-height: 70vh;
     }
 
     .json-data-header {
@@ -158,5 +162,7 @@
     .import-preview-container {
         grid-area: import-preview;
         width: min(450px, 40vw);
+        max-height: 55vh;
+        overflow: hidden;
     }
 </style>

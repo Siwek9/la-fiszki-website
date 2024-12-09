@@ -7,7 +7,6 @@
             class="highlighted-content"
             ref="highlighted-content"
         ></div>
-
         <div
             class="contenteditable-div"
             contenteditable
@@ -103,6 +102,7 @@
             }
         } else if (event.key.length == 1) {
             // hack to detect if user want to write a character and is not using special key
+            console.log('dupa kupa lupa pupa');
             emit('error', 'You cannot write text here.');
         }
 
@@ -122,7 +122,6 @@
         margin: 10px;
         border-radius: 10px;
         background-color: #260f43;
-        /* width: calc(100%); */
         min-height: 300px;
         max-height: 40vh;
         overflow: auto;

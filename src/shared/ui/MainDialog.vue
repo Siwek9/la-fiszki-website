@@ -25,8 +25,9 @@
         border: none;
         border-radius: 20px;
         background-color: #512b81;
-        padding: 40px 30px;
+        padding: 40px 40px;
         padding-right: 100px;
+        max-height: 90vh;
         color: white;
     }
 

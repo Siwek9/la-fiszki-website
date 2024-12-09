@@ -18,6 +18,10 @@
             v-if="inputType == 'la-fiszki'"
             v-model="fileContent"
         />
+        <ImportCSV
+            v-if="inputType == 'csv'"
+            v-model="fileContent"
+        />
         <div>
             <ToggleOverrideChanges v-model="overrideChanges" />
         </div>
@@ -30,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-    import {computed, ref} from 'vue';
+    import {computed, ref, watch} from 'vue';
     import InputImportType from '@/features/import/InputImportType.vue';
     import MainDialog from '@/shared/ui/MainDialog.vue';
     import ImportLaFiszki from '@/features/import/ImportLaFiszki.vue';
@@ -40,6 +44,7 @@
     import calculateVersion from '@/shared/lib/CalculateVersion';
     import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
     import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
+    import ImportCSV from './ImportCSV.vue';
 
     function closeDialog() {
         emit('close');
@@ -65,6 +70,9 @@
     const overrideChanges = ref(true);
 
     const inputType = ref<'la-fiszki' | 'csv'>('la-fiszki');
+    watch(inputType, () => {
+        fileContent.value = '';
+    });
     const csvDelimeter: string = '';
     const splitFieldsOnSlash = true;
 

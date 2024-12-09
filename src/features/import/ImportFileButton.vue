@@ -4,7 +4,7 @@
         class="input-file"
         @change="uploadFile"
         id="import-file-button"
-        accept=".json"
+        :accept="accept"
     />
     <label
         for="import-file-button"
@@ -14,6 +14,8 @@
 </template>
 <script setup lang="ts">
     import readFileContent from '@/shared/lib/read_file_content';
+
+    const {accept} = defineProps<{accept: string}>();
 
     const emit = defineEmits<{upload: [content: string]}>();
 
