@@ -53,6 +53,7 @@
     import TextAreaButtons from '@/features/import/TextAreaButtons.vue';
     import CsvSettingsButton from '@/features/import/CsvSettingsButton.vue';
     import type {TextHighlight} from '@/shared/lib/text_highlight';
+    import escapeStringRegexp from 'escape-string-regexp';
 
     function showError(message: string) {
         if (errorStarted.value) {
@@ -118,7 +119,7 @@
         } else if (delimiter == '\\t') {
             return '\t';
         }
-        return delimiter;
+        return escapeStringRegexp(delimiter);
     }
 
     const validationWarningText = ref('');
@@ -146,28 +147,19 @@
     }
 
     function csvHighlight(): TextHighlight {
-        console.log([
-            {
-                regex: RegExp(
-                    `${convertDelimiterToUse(rowDelimiter.value)}\n*.+${convertDelimiterToUse(delimiter.value)}`,
-                    'g'
-                ),
-                style: {
-                    color: '#007acc',
-                },
-                replace: `${convertDelimiterToUse(rowDelimiter.value)}$1${convertDelimiterToUse(delimiter.value)}`,
-            },
-        ]);
+        console.log(
+            RegExp(`([^${convertDelimiterToUse(rowDelimiter.value)}${convertDelimiterToUse(delimiter.value)}]+)`, 'g')
+                .source
+        );
         return [
             {
                 regex: RegExp(
-                    `${convertDelimiterToUse(rowDelimiter.value)}\n*.+${convertDelimiterToUse(delimiter.value)}`,
+                    `([^${convertDelimiterToUse(rowDelimiter.value)}${convertDelimiterToUse(delimiter.value)}]+)`,
                     'g'
                 ),
                 style: {
                     color: '#007acc',
                 },
-                replace: `${convertDelimiterToUse(rowDelimiter.value)}$1${convertDelimiterToUse(delimiter.value)}`,
             },
         ];
     }

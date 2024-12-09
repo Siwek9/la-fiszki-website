@@ -14,6 +14,7 @@
     },
     "dependencies": {
         "@types/overlayscrollbars": "^1.12.5",
+        "escape-string-regexp": "^5.0.0",
         "overlayscrollbars": "^2.10.0",
         "overlayscrollbars-vue": "^0.5.9",
         "simple-runtypes": "^7.1.3",

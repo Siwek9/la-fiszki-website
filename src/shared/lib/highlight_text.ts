@@ -5,8 +5,8 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
     if (highlight == undefined) {
         return toReturn;
     }
-    console.log('dostaje text');
-    console.log(text);
+    // console.log('dostaje text');
+    // console.log(text);
 
     highlight.forEach((highlightRule) => {
         const element = document.createElement('span');
@@ -20,7 +20,7 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
         if (highlightRule.replace != null) {
             toReturn = toReturn.replace(highlightRule.regex, highlightRule.replace.replace('$1', element.outerHTML));
         } else {
-            toReturn = toReturn.replace(highlightRule.regex, element.outerHTML);
+            toReturn = toReturn.replace(highlightRule.regex, 'dupa$1dupa');
         }
     });
     return toReturn;
