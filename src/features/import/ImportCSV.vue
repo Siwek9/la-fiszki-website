@@ -140,14 +140,13 @@
     });
 
     function uploadFile(content: string) {
-        console.log(content);
         fileContent.value = content;
     }
 
     function csvHighlight(): TextHighlight {
         return [
             {
-                regex: RegExp(
+                detectRegex: RegExp(
                     `([^${convertDelimiterToUse(rowDelimiter.value)}].*${convertDelimiterToUse(delimiter.value)}.*${convertDelimiterToUse(delimiter.value)}.*)+`,
                     'g'
                 ),
@@ -157,7 +156,7 @@
                 },
             },
             {
-                regex: RegExp(
+                detectRegex: RegExp(
                     `([^${convertDelimiterToUse(rowDelimiter.value)}${convertDelimiterToUse(delimiter.value)}]+)`,
                     'g'
                 ),
@@ -166,7 +165,7 @@
                 },
             },
             {
-                regex: RegExp(`([${convertDelimiterToUse(delimiter.value)}]+)`, 'g'),
+                detectRegex: RegExp(`([${convertDelimiterToUse(delimiter.value)}]+)`, 'g'),
                 style: {
                     color: '#ff0000',
                 },
@@ -177,7 +176,6 @@
     function validateCSV(text: string): boolean {
         if (text == undefined) return false;
         const rows = text.split(convertDelimiterToUse(rowDelimiter.value));
-        console.log(rows);
         if (
             rows.every((row) => {
                 return (row.match(new RegExp(`${convertDelimiterToUse(delimiter.value)}`, 'g')) || []).length == 1;

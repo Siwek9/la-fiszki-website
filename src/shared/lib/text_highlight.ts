@@ -1,5 +1,6 @@
 export type TextHighlight = Array<{
-    regex: RegExp;
+    detectRegex: RegExp;
+    highlightRegex?: RegExp;
     style: {color?: string; 'background-color'?: string};
     replace?: string;
 }>;

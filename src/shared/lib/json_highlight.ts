@@ -2,38 +2,35 @@ import type {TextHighlight} from './text_highlight';
 
 const jsonHighlight: TextHighlight = [
     {
-        regex: /("(.*?)")(?=\s*:)/g, // key
+        detectRegex: /(".*?\s*:)/g, // key
+        highlightRegex: /(".*?")/g,
         style: {
             color: '#007acc',
         },
     },
     {
-        regex: /: ("(.*?)")/g, // string
+        detectRegex: /(".*?")/g, // string
         style: {
             color: '#d69d85',
         },
-        replace: ': $1',
     },
     {
-        regex: /: (\d+)/g, // number
+        detectRegex: /(\d+)/g, // number
         style: {
             color: '#b5cea8',
         },
-        replace: ': $1',
     },
     {
-        regex: /: (true|false)/g, // boolean
+        detectRegex: /(true|false)/g, // boolean
         style: {
             color: '#569cd6',
         },
-        replace: ': $1',
     },
     {
-        regex: /: (null)/g, // null
+        detectRegex: /(null)/g, // null
         style: {
             color: '#9cdcfe',
         },
-        replace: ': $1',
     },
 ];
 

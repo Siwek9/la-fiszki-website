@@ -60,8 +60,8 @@
             if (set == undefined) return false;
             return true;
         } else if (inputType.value == 'csv') {
-            if (csvDelimeter == 'siema') {
-            }
+            // if (csvDelimeter == 'siema') {
+            // }
             return false;
         }
         return false;
@@ -73,8 +73,8 @@
     watch(inputType, () => {
         fileContent.value = '';
     });
-    const csvDelimeter: string = '';
-    const splitFieldsOnSlash = true;
+    // const csvDelimeter: string = '';
+    // const splitFieldsOnSlash = true;
 
     const emit = defineEmits<{close: []; import: [flashcardsSet: FlashcardsSet, overrideChanges: boolean]}>();
 
@@ -88,9 +88,9 @@
             if (set == undefined) return;
             flashcardsSetToImport = set;
         } else if (inputType.value == 'csv') {
-            if (csvDelimeter == 'siema') {
-                console.log(splitFieldsOnSlash);
-            }
+            // if (csvDelimeter == 'siema') {
+            //     console.log(splitFieldsOnSlash);
+            // }
         }
 
         emit('import', flashcardsSetToImport, overrideChanges.value);

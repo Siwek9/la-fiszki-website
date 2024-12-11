@@ -6,7 +6,6 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
     if (highlight == undefined) {
         return toReturn;
     }
-
     const allChunks: Array<ChunkOfText> = [{text: text, isUsed: false, numberOfRegex: 0}];
     const replaceObjects: Array<string> = [];
 
@@ -14,8 +13,7 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
         for (let chunkIndex = 0; chunkIndex < allChunks.length; chunkIndex++) {
             const chunk = allChunks[chunkIndex];
             if (chunk.isUsed) continue;
-
-            const partsOfChunk = highlightWords({text: chunk.text, query: `/${highlightRule.regex.source}/`});
+            const partsOfChunk = highlightWords({text: chunk.text, query: `/${highlightRule.detectRegex.source}/`});
             allChunks.splice(
                 chunkIndex,
                 1,
@@ -25,7 +23,6 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
                     numberOfRegex: ruleIndex,
                 }))
             );
-
             chunkIndex += partsOfChunk.length;
         }
         const element = document.createElement('span');
@@ -45,15 +42,19 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
     const returnLol = allChunks
         .map((chunk) => {
             if (chunk.isUsed) {
-                chunk.text = chunk.text.replace(
-                    highlight[chunk.numberOfRegex].regex,
-                    replaceObjects[chunk.numberOfRegex]
-                );
+                const highlightRegex = highlight[chunk.numberOfRegex].highlightRegex;
+                if (highlightRegex != undefined) {
+                    chunk.text = chunk.text.replace(highlightRegex, replaceObjects[chunk.numberOfRegex]);
+                } else {
+                    chunk.text = chunk.text.replace(
+                        highlight[chunk.numberOfRegex].detectRegex,
+                        replaceObjects[chunk.numberOfRegex]
+                    );
+                }
             }
             return chunk.text;
         })
         .join('');
-
     return returnLol;
 }
 

@@ -96,7 +96,6 @@
     });
 
     function uploadFile(content: string) {
-        console.log(content);
         fileContent.value = content;
     }
 
