@@ -148,6 +148,16 @@
         return [
             {
                 regex: RegExp(
+                    `([^${convertDelimiterToUse(rowDelimiter.value)}].*${convertDelimiterToUse(delimiter.value)}.*${convertDelimiterToUse(delimiter.value)}.*)+`,
+                    'g'
+                ),
+                style: {
+                    color: 'white',
+                    'background-color': '#ff000088',
+                },
+            },
+            {
+                regex: RegExp(
                     `([^${convertDelimiterToUse(rowDelimiter.value)}${convertDelimiterToUse(delimiter.value)}]+)`,
                     'g'
                 ),
