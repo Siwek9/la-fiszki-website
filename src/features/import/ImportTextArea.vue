@@ -102,7 +102,6 @@
             }
         } else if (event.key.length == 1) {
             // hack to detect if user want to write a character and is not using special key
-            console.log('dupa kupa lupa pupa');
             emit('error', 'You cannot write text here.');
         }
 
@@ -123,6 +122,7 @@
         /* margin-right: 20px; */
         border-radius: 10px;
         background-color: #260f43;
+        /* height: 100%; */
         min-height: 300px;
         max-height: 40vh;
         overflow: auto;
