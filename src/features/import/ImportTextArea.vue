@@ -131,11 +131,8 @@
 <style>
     .custom-textarea-wrapper {
         position: relative;
-        /* ma/srgin: 10px; */
-        /* margin-right: 20px; */
         border-radius: 10px;
         background-color: #260f43;
-        /* height: 100%; */
         min-height: 300px;
         max-height: 40vh;
         overflow: auto;
@@ -195,10 +192,25 @@
 
     .contenteditable-div::selection {
         background-color: hsla(87, 100%, 20%, 0.589);
-        /* color: rgb(145, 145, 145); */
     }
 
     .custom-textarea-wrapper:focus-within {
         outline: none;
+    }
+    @media screen and (max-width: 800px) {
+        .custom-textarea-wrapper {
+            max-width: 80vw;
+            /* height: 100%; */
+            min-height: auto;
+            max-height: 10vh;
+        }
+
+        .highlighted-content {
+            font-size: 16px;
+        }
+
+        .contenteditable-div {
+            font-size: 16px;
+        }
     }
 </style>

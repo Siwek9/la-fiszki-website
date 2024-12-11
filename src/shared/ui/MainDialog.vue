@@ -22,13 +22,21 @@
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 1000;
+        box-sizing: border-box;
         border: none;
         border-radius: 20px;
         background-color: #512b81;
         padding: 40px 40px;
         padding-right: 100px;
+        max-width: 90vw;
         max-height: 90vh;
         color: white;
+    }
+    @media screen and (max-width: 800px) {
+        .import-dialog {
+            border-radius: 15px;
+            padding: 10px;
+        }
     }
 
     .import-dialog-background {

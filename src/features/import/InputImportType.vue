@@ -34,4 +34,11 @@
     .import-type-input-radio:checked + .import-type-label {
         background-image: linear-gradient(180deg, #512b81 0%, #35155d 100%);
     }
+
+    @media screen and (max-width: 800px) {
+        .import-type-label {
+            padding: 8px;
+            font-size: 16px;
+        }
+    }
 </style>

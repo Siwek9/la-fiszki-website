@@ -41,4 +41,17 @@
     .error {
         --text-color: red;
     }
+
+    @media screen and (max-width: 800px) {
+        .validation-text {
+            margin: 5px;
+            padding-left: 25px;
+            font-size: 12px;
+        }
+
+        .validation-text:before {
+            width: 20px;
+            height: 20px;
+        }
+    }
 </style>

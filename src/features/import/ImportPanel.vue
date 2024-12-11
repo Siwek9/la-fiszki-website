@@ -129,6 +129,13 @@
         font-size: 25px;
     }
 
+    @media screen and (max-width: 800px) {
+        h1 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+    }
+
     h2 {
         margin: 10px;
         font-size: 22px;

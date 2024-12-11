@@ -165,4 +165,40 @@
         max-height: 55vh;
         overflow: hidden;
     }
+    @media screen and (max-width: 800px) {
+        .input-type-content {
+            grid-template-rows: 1fr 3fr 3fr;
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                'import-button'
+                'import-preview'
+                'json-preview';
+            column-gap: 0;
+            box-sizing: border-box;
+            border-radius: 0 15px 15px 15px;
+            padding: 10px;
+            max-height: 50vh;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        .upload-file-container {
+            /* width: 100%; */
+            width: 100%;
+            /* width: max-content; */
+        }
+
+        .json-data-preview-container {
+            /* width: 100%; */
+            width: 100%;
+            max-height: none;
+        }
+
+        .import-preview-container {
+            width: 100%;
+            max-height: 10vh;
+        }
+    }
 </style>

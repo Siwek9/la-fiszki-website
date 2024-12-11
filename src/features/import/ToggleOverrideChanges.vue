@@ -64,4 +64,21 @@
     .override-changes-checkbox {
         display: none;
     }
+
+    @media screen and (max-width: 800px) {
+        .override-changes {
+            margin: 15px 0;
+        }
+
+        .override-changes-label {
+            margin-left: 25px;
+            font-size: 16px;
+        }
+
+        .override-changes-label:before {
+            left: -30px;
+            width: 20px;
+            height: 20px;
+        }
+    }
 </style>
