@@ -53,7 +53,7 @@
     import TextAreaButtons from '@/features/import/TextAreaButtons.vue';
     import CsvSettingsButton from '@/features/import/CsvSettingsButton.vue';
     import type {TextHighlight} from '@/shared/lib/text_highlight';
-    import escapeStringRegexp from 'escape-string-regexp';
+    import convertDelimiterToUse from '@/shared/lib/convert_delimiter_to_use';
 
     function showError(message: string) {
         if (errorStarted.value) {
@@ -77,6 +77,10 @@
     const errorTimeout = ref<number>(-1);
     const errorStarted = ref<boolean>(false);
 
+    const rowDelimiter = defineModel('rowDelimiter', {default: '\\r\\n'});
+    const delimiter = defineModel('delimiter', {default: ';'});
+    const wordsSeparator = defineModel('wordsSeparator', {default: '/'});
+
     const warningType = ref<'error' | 'warning'>('warning');
 
     const flashcards = computed<Array<Flashcard> | undefined>(() => {
@@ -99,10 +103,6 @@
         });
     });
 
-    const rowDelimiter = ref<string>('\\r\\n');
-    const delimiter = ref<string>(';');
-    const wordsSeparator = ref<string>('/');
-
     watch([rowDelimiter, delimiter, wordsSeparator], () => {
         if (!validateCSV(fileContent.value) && fileContent.value != '') {
             validationWarningText.value = 'This text is not valid CSV. If it is, try changing delimiters to match.';
@@ -112,13 +112,6 @@
             warningType.value = 'warning';
         }
     });
-
-    function convertDelimiterToUse(delimiter: string): string {
-        delimiter = delimiter.replaceAll('\\n', '\n');
-        delimiter = delimiter.replaceAll('\\r', '\r');
-        delimiter = delimiter.replaceAll('\\t', '\t');
-        return escapeStringRegexp(delimiter);
-    }
 
     const validationWarningText = ref('');
 

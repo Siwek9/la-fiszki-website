@@ -21,6 +21,9 @@
         <ImportCSV
             v-if="inputType == 'csv'"
             v-model="fileContent"
+            v-model:delimiter="delimiter"
+            v-model:row-delimiter="rowDelimiter"
+            v-model:word-separator="wordsSeparator"
         />
         <div>
             <ToggleOverrideChanges v-model="overrideChanges" />
@@ -45,6 +48,8 @@
     import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
     import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
     import ImportCSV from './ImportCSV.vue';
+    import convertDelimiterToUse from '@/shared/lib/convert_delimiter_to_use';
+    import type {Flashcard} from '@/shared/lib/Flashcard';
 
     function closeDialog() {
         emit('close');
@@ -60,9 +65,11 @@
             if (set == undefined) return false;
             return true;
         } else if (inputType.value == 'csv') {
-            // if (csvDelimeter == 'siema') {
-            // }
-            return false;
+            if (rowDelimiter.value == '' || delimiter.value == '') return false;
+
+            return fileContent.value.split(convertDelimiterToUse(rowDelimiter.value)).some((row) => {
+                return (row.match(new RegExp(`${convertDelimiterToUse(delimiter.value)}`, 'g')) || []).length > 1;
+            });
         }
         return false;
     });
@@ -73,8 +80,9 @@
     watch(inputType, () => {
         fileContent.value = '';
     });
-    // const csvDelimeter: string = '';
-    // const splitFieldsOnSlash = true;
+    const rowDelimiter = ref<string>('\\r\\n');
+    const delimiter = ref<string>(';');
+    const wordsSeparator = ref<string>('/');
 
     const emit = defineEmits<{close: []; import: [flashcardsSet: FlashcardsSet, overrideChanges: boolean]}>();
 
@@ -88,9 +96,24 @@
             if (set == undefined) return;
             flashcardsSetToImport = set;
         } else if (inputType.value == 'csv') {
-            // if (csvDelimeter == 'siema') {
-            //     console.log(splitFieldsOnSlash);
-            // }
+            if (wordsSeparator.value == '') {
+                flashcardsSetToImport.flashcards = fileContent.value
+                    .split(convertDelimiterToUse(rowDelimiter.value))
+                    .map<Flashcard>((row) => {
+                        const twoSides = row.split(convertDelimiterToUse(delimiter.value));
+                        return {front: [twoSides[0]], back: [twoSides[1]]};
+                    });
+            } else {
+                flashcardsSetToImport.flashcards = fileContent.value
+                    .split(convertDelimiterToUse(rowDelimiter.value))
+                    .map<Flashcard>((row) => {
+                        const twoSides = row.split(convertDelimiterToUse(delimiter.value));
+                        return {
+                            front: twoSides[0].split(convertDelimiterToUse(wordsSeparator.value)),
+                            back: twoSides[1].split(convertDelimiterToUse(wordsSeparator.value)),
+                        };
+                    });
+            }
         }
 
         emit('import', flashcardsSetToImport, overrideChanges.value);

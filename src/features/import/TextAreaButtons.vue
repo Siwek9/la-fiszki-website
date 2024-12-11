@@ -38,7 +38,7 @@
     .text-area-button {
         box-sizing: border-box;
         margin: 0 8px;
-        box-shadow: 7px 7px 0px black;
+        box-shadow: 7px 7px 0px #260f43;
         border: none;
         border: 3px solid #512b81;
         border-radius: 10px;

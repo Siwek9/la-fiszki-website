@@ -84,9 +84,22 @@
             range.selectNodeContents(editableDiv.value);
             selection?.removeAllRanges();
             selection?.addRange(range);
-        } else if (event.ctrlKey && event.key === 'v') {
+        } else if (
+            event.ctrlKey &&
+            (event.key === 'v' || event.key === 'c' || event.key === 'w' || event.key === 't')
+        ) {
             return;
-        } else if (event.ctrlKey && event.key === 'c') {
+        } else if (event.ctrlKey && event.key === 'x') {
+            const selection = window.getSelection();
+            const range = selection?.getRangeAt(0);
+
+            if (range && range.startContainer === editableDiv.value && range.endContainer === editableDiv.value) {
+                const selectedText = range.toString().trim();
+                if (selectedText === editableDiv.value.innerText.trim()) {
+                    navigator.clipboard.writeText(selectedText);
+                    model.value = '';
+                }
+            }
             return;
         } else if (event.key === 'Delete' || event.key === 'Backspace') {
             event.preventDefault();
