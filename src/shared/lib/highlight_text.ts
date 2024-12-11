@@ -8,13 +8,14 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
     }
 
     const allChunks: Array<ChunkOfText> = [{text: text, isUsed: false, numberOfRegex: 0}];
-    const replaceObjects: Array<HTMLElement> = [];
+    const replaceObjects: Array<string> = [];
 
     highlight.forEach((highlightRule, ruleIndex) => {
-        allChunks.forEach((chunk, chunkIndex) => {
-            if (chunk.isUsed) return;
-            const partsOfChunk = highlightWords({text: chunk.text, query: `/${highlightRule.regex.source}/`});
+        for (let chunkIndex = 0; chunkIndex < allChunks.length; chunkIndex++) {
+            const chunk = allChunks[chunkIndex];
+            if (chunk.isUsed) continue;
 
+            const partsOfChunk = highlightWords({text: chunk.text, query: `/${highlightRule.regex.source}/`});
             allChunks.splice(
                 chunkIndex,
                 1,
@@ -24,7 +25,9 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
                     numberOfRegex: ruleIndex,
                 }))
             );
-        });
+
+            chunkIndex += partsOfChunk.length;
+        }
         const element = document.createElement('span');
         if (highlightRule.replace != undefined) {
             element.textContent = highlightRule.replace;
@@ -36,7 +39,7 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
                 element.style.setProperty(style, styleValue);
             }
         });
-        replaceObjects.push(element);
+        replaceObjects.push(element.outerHTML);
     });
 
     const returnLol = allChunks
@@ -44,14 +47,12 @@ export default function highlightText(text: string, highlight?: TextHighlight): 
             if (chunk.isUsed) {
                 chunk.text = chunk.text.replace(
                     highlight[chunk.numberOfRegex].regex,
-                    replaceObjects[chunk.numberOfRegex].outerHTML
+                    replaceObjects[chunk.numberOfRegex]
                 );
             }
             return chunk.text;
         })
         .join('');
-    console.log(replaceObjects);
-    console.log(returnLol);
 
     return returnLol;
 }
