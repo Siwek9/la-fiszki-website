@@ -1,27 +1,63 @@
 import type {TextHighlight} from '@/shared/lib/text_highlight';
+import highlightWords from 'highlight-words';
 
 export default function highlightText(text: string, highlight?: TextHighlight): string {
-    let toReturn = text;
+    const toReturn = text;
     if (highlight == undefined) {
         return toReturn;
     }
-    // console.log('dostaje text');
-    // console.log(text);
 
-    highlight.forEach((highlightRule) => {
+    const allChunks: Array<ChunkOfText> = [{text: text, isUsed: false, numberOfRegex: 0}];
+    const replaceObjects: Array<HTMLElement> = [];
+
+    highlight.forEach((highlightRule, ruleIndex) => {
+        allChunks.forEach((chunk, chunkIndex) => {
+            if (chunk.isUsed) return;
+            const partsOfChunk = highlightWords({text: chunk.text, query: `/${highlightRule.regex.source}/`});
+
+            allChunks.splice(
+                chunkIndex,
+                1,
+                ...partsOfChunk.map<ChunkOfText>((part) => ({
+                    text: part.text,
+                    isUsed: part.match,
+                    numberOfRegex: ruleIndex,
+                }))
+            );
+        });
         const element = document.createElement('span');
-        element.textContent = '$1';
-
+        if (highlightRule.replace != undefined) {
+            element.textContent = highlightRule.replace;
+        } else {
+            element.textContent = '$1';
+        }
         Object.entries(highlightRule.style).forEach(([style, styleValue]) => {
             if (styleValue != undefined) {
                 element.style.setProperty(style, styleValue);
             }
         });
-        if (highlightRule.replace != null) {
-            toReturn = toReturn.replace(highlightRule.regex, highlightRule.replace.replace('$1', element.outerHTML));
-        } else {
-            toReturn = toReturn.replace(highlightRule.regex, 'dupa$1dupa');
-        }
+        replaceObjects.push(element);
     });
-    return toReturn;
+
+    const returnLol = allChunks
+        .map((chunk) => {
+            if (chunk.isUsed) {
+                chunk.text = chunk.text.replace(
+                    highlight[chunk.numberOfRegex].regex,
+                    replaceObjects[chunk.numberOfRegex].outerHTML
+                );
+            }
+            return chunk.text;
+        })
+        .join('');
+    console.log(replaceObjects);
+    console.log(returnLol);
+
+    return returnLol;
 }
+
+type ChunkOfText = {
+    text: string;
+    isUsed: boolean;
+    numberOfRegex: number;
+};

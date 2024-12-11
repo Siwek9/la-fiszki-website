@@ -99,7 +99,7 @@
         });
     });
 
-    const rowDelimiter = ref<string>('\\n');
+    const rowDelimiter = ref<string>('\\r\\n');
     const delimiter = ref<string>(';');
     const wordsSeparator = ref<string>('/');
 
@@ -114,11 +114,9 @@
     });
 
     function convertDelimiterToUse(delimiter: string): string {
-        if (delimiter == '\\n') {
-            return '\n';
-        } else if (delimiter == '\\t') {
-            return '\t';
-        }
+        delimiter = delimiter.replaceAll('\\n', '\n');
+        delimiter = delimiter.replaceAll('\\r', '\r');
+        delimiter = delimiter.replaceAll('\\t', '\t');
         return escapeStringRegexp(delimiter);
     }
 
@@ -147,10 +145,6 @@
     }
 
     function csvHighlight(): TextHighlight {
-        console.log(
-            RegExp(`([^${convertDelimiterToUse(rowDelimiter.value)}${convertDelimiterToUse(delimiter.value)}]+)`, 'g')
-                .source
-        );
         return [
             {
                 regex: RegExp(
@@ -159,6 +153,12 @@
                 ),
                 style: {
                     color: '#007acc',
+                },
+            },
+            {
+                regex: RegExp(`([${convertDelimiterToUse(delimiter.value)}]+)`, 'g'),
+                style: {
+                    color: '#ff0000',
                 },
             },
         ];
