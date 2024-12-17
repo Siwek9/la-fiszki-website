@@ -26,13 +26,13 @@
         border: none;
         border-radius: 20px;
         background-color: #512b81;
-        padding: 40px 40px;
-        padding-right: 100px;
-        max-width: 90vw;
-        max-height: 90vh;
+        padding: 40px;
+        max-width: 95vw;
+        max-height: 95vh;
         color: white;
     }
-    @media screen and (max-width: 800px) {
+
+    @media screen and (aspect-radio: 2/3) {
         .import-dialog {
             border-radius: 15px;
             padding: 10px;

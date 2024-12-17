@@ -1,6 +1,6 @@
 <template>
     <MainDialog @close="closeDialog">
-        <h1>Import Sets from multiple sources</h1>
+        <!-- <h1>Import Sets from multiple sources</h1>
         <div class="choose-input-type">
             <InputImportType
                 name="La Fiszki"
@@ -32,7 +32,7 @@
             @click="importFlashcards"
             :disabled="!isFileImportable"
             text="Apply Import"
-        />
+        /> -->
     </MainDialog>
 </template>
 

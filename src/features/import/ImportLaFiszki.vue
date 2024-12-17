@@ -138,7 +138,8 @@
         border-radius: 0 20px 20px 20px;
         background-color: #35155d;
         padding: 20px;
-        max-height: 70vh;
+        height: 100%;
+        max-height: 50vh;
     }
 
     .json-data-header {

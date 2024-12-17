@@ -19,7 +19,18 @@
         background-size: 80%;
         background-repeat: no-repeat;
         background-color: #35155d;
-        width: 45px;
-        height: 45px;
+        width: 40px;
+        height: 40px;
+    }
+
+    @media screen and (max-width: 800px) {
+      .close-button {
+        width: 20px;
+        height: 20px;
+        top: 0;
+        right: 0;
+        /* top: 5px; */
+        /* right: 5px; */
+      }
     }
 </style>

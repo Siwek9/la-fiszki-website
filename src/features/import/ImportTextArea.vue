@@ -130,11 +130,13 @@
 
 <style>
     .custom-textarea-wrapper {
+        --font-size: 18px;
         position: relative;
         border-radius: 10px;
         background-color: #260f43;
-        min-height: 300px;
-        max-height: 40vh;
+        min-height: var(--font-size);
+        /* min-height: 300px;
+        max-height: 40vh; */
         overflow: auto;
     }
 
@@ -154,7 +156,7 @@
         pointer-events: none;
         color: rgb(184, 184, 184);
         font-weight: 500;
-        font-size: 18px;
+        font-size: var(--font-size);
         font-family: 'DM Mono', monospace;
         white-space: pre;
     }
@@ -175,7 +177,7 @@
         color: transparent;
         caret-color: white;
         font-weight: 500;
-        font-size: 18px;
+        font-size: var(--font-size);
         font-family: 'DM Mono', monospace;
         white-space: pre;
     }
@@ -199,10 +201,10 @@
     }
     @media screen and (max-width: 800px) {
         .custom-textarea-wrapper {
-            max-width: 80vw;
-            /* height: 100%; */
+            /* max-width: 80vw;
             min-height: auto;
-            max-height: 10vh;
+            max-height: 10vh; */
+            --font-size: 16px;
         }
 
         .highlighted-content {
