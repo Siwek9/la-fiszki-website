@@ -1,12 +1,12 @@
 <template>
     <div class="input-type-content">
-        <div class="upload-file-container">
+        <div class="part-of-import upload-file-container">
             <ImportFileButton
                 accept=".json"
                 @upload="uploadFile"
             />
         </div>
-        <div class="json-data-preview-container">
+        <!-- <div class="json-data-preview-container">
             <div class="json-data-header">
                 <h2>File content</h2>
                 <TextAreaButtons v-model="fileContent" />
@@ -26,7 +26,7 @@
         <div class="import-preview-container">
             <h2>Import preview</h2>
             <ImportPreview :import-content="flashcards" />
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup lang="ts">
@@ -129,77 +129,33 @@
 <style scoped>
     .input-type-content {
         display: grid;
-        grid-template-rows: 100px 1fr;
+        grid-template-rows: max-content 1fr;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             'import-button import-preview'
             'json-preview import-preview';
         column-gap: 20px;
         border-radius: 0 20px 20px 20px;
-        background-color: #35155d;
+        background-color: var(--second-background-color);
         padding: 20px;
         height: 100%;
-        max-height: 50vh;
     }
 
-    .json-data-header {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+    .part-of-import {
+        width: max-content;
+        max-width: 40vw;
+        height: max-content;
     }
 
     .upload-file-container {
-        display: flex;
         grid-area: import-button;
-        justify-content: center;
-        align-items: center;
     }
 
     .json-data-preview-container {
         grid-area: json-preview;
-        width: min(450px, 40vw);
     }
 
     .import-preview-container {
         grid-area: import-preview;
-        width: min(450px, 40vw);
-        max-height: 55vh;
-        overflow: hidden;
-    }
-    @media screen and (max-width: 800px) {
-        .input-type-content {
-            grid-template-rows: 1fr 3fr 3fr;
-            grid-template-columns: 1fr;
-            grid-template-areas:
-                'import-button'
-                'import-preview'
-                'json-preview';
-            column-gap: 0;
-            box-sizing: border-box;
-            border-radius: 0 15px 15px 15px;
-            padding: 10px;
-            max-height: 50vh;
-        }
-
-        h2 {
-            font-size: 20px;
-        }
-
-        .upload-file-container {
-            /* width: 100%; */
-            width: 100%;
-            /* width: max-content; */
-        }
-
-        .json-data-preview-container {
-            /* width: 100%; */
-            width: 100%;
-            max-height: none;
-        }
-
-        .import-preview-container {
-            width: 100%;
-            max-height: 10vh;
-        }
     }
 </style>

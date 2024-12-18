@@ -27,18 +27,11 @@
 
     .import-type-label {
         display: block;
-        padding: 10px;
-        font-size: 20px;
+        padding: clamp(6px, 1vw, 10px);
+        font-size: clamp(18px, 2.5vw, 20px);
     }
 
     .import-type-input-radio:checked + .import-type-label {
         background-image: linear-gradient(180deg, #512b81 0%, #35155d 100%);
-    }
-
-    @media screen and (max-width: 800px) {
-        .import-type-label {
-            padding: 8px;
-            font-size: 16px;
-        }
     }
 </style>

@@ -19,11 +19,12 @@
         border-radius: 25px;
         background-color: #35155d;
         padding: clamp(15px, 3vw, 25px);
+        text-align: center;
     }
 
     .text-button:disabled {
         cursor: not-allowed;
-        background-color: hsl(267, 23%, 22%);
+        background-color: var(--red-accent);
     }
 
     .text-button:hover:not(:disabled) {

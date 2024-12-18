@@ -29,6 +29,15 @@
 </script>
 
 <style>
+    :root {
+        --first-background-color: #512b81;
+        --second-background-color: #35155d;
+        --third-background-color: #260f43;
+        --red-accent: #99000066;
+        --green-accent: #1f990098;
+        --text-color: white;
+    }
+
     html,
     body {
         margin: 0;

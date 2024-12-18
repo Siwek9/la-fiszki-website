@@ -1,6 +1,6 @@
 <template>
     <MainDialog @close="closeDialog">
-        <!-- <h1>Import Sets from multiple sources</h1>
+        <h1>Import Sets from multiple sources</h1>
         <div class="choose-input-type">
             <InputImportType
                 name="La Fiszki"
@@ -18,13 +18,13 @@
             v-if="inputType == 'la-fiszki'"
             v-model="fileContent"
         />
-        <ImportCSV
+        <!-- <ImportCSV
             v-if="inputType == 'csv'"
             v-model="fileContent"
             v-model:delimiter="delimiter"
             v-model:row-delimiter="rowDelimiter"
             v-model:word-separator="wordsSeparator"
-        />
+        />-->
         <div>
             <ToggleOverrideChanges v-model="overrideChanges" />
         </div>
@@ -32,7 +32,7 @@
             @click="importFlashcards"
             :disabled="!isFileImportable"
             text="Apply Import"
-        /> -->
+        />
     </MainDialog>
 </template>
 
@@ -124,21 +124,10 @@
 <style scoped>
     h1 {
         margin: 0;
-        margin-top: 10px;
+        margin-right: 50px;
         margin-bottom: 20px;
-        font-size: 25px;
-    }
-
-    @media screen and (max-width: 800px) {
-        h1 {
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-    }
-
-    h2 {
-        margin: 10px;
-        font-size: 22px;
+        width: fit-content;
+        font-size: clamp(20px, 3vw, 25px);
     }
 
     .choose-input-type {

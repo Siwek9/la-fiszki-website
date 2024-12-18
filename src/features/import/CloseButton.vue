@@ -9,9 +9,6 @@
 </script>
 <style scoped>
     .close-button {
-        position: absolute;
-        top: 20px;
-        right: 20px;
         border: none;
         border-radius: 50%;
         background-image: url(@/assets/icons/close.svg);
@@ -23,14 +20,7 @@
         height: 40px;
     }
 
-    @media screen and (max-width: 800px) {
-      .close-button {
-        width: 20px;
-        height: 20px;
-        top: 0;
-        right: 0;
-        /* top: 5px; */
-        /* right: 5px; */
-      }
+    .close-button:hover {
+        cursor: pointer;
     }
 </style>

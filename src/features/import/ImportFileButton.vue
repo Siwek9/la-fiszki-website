@@ -38,12 +38,4 @@
     .upload-file-button:hover {
         cursor: pointer;
     }
-
-    @media screen and (max-width: 800px) {
-        .upload-file-button {
-            border-radius: 20px;
-            padding: 15px 20px;
-            font-size: 16px;
-        }
-    }
 </style>

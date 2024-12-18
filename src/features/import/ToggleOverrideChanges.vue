@@ -19,8 +19,7 @@
     .override-changes {
         display: block;
         box-sizing: border-box;
-        margin: 25px 0;
-        /* border: 6px solid #35155d; */
+        margin: clamp(10px, 2vh, 25px) 0;
         border-radius: 40px;
         padding: 15px 20px;
         width: max-content;
@@ -38,22 +37,22 @@
 
     .override-changes-label {
         position: relative;
-        margin-left: 40px;
-        font-size: 24px;
+        margin-left: clamp(30px, 4vw, 40px);
+        font-size: clamp(17px, 2.4vw, 24px);
     }
 
     .override-changes-label:before {
         position: absolute;
         top: 50%;
-        left: -40px;
+        left: calc(-1 * clamp(30px, 4vw, 40px));
         transform: translateY(-50%);
         mask-image: url(@/assets/icons/checkbox_empty.svg);
         mask-position: center center;
         mask-size: 100%;
         mask-repeat: no-repeat;
-        background-color: white;
-        width: 35px;
-        height: 35px;
+        background-color: var(--text-color);
+        width: clamp(25px, 3.5vw, 35px);
+        height: clamp(25px, 3.5vw, 35px);
         pointer-events: none;
         content: '';
     }
@@ -65,7 +64,7 @@
         display: none;
     }
 
-    @media screen and (max-width: 800px) {
+    /* @media screen and (max-width: 800px) {
         .override-changes {
             margin: 15px 0;
         }
@@ -80,5 +79,5 @@
             width: 20px;
             height: 20px;
         }
-    }
+    } */
 </style>
