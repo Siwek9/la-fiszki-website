@@ -22,14 +22,17 @@
         position: fixed;
         top: 50%;
         left: 50%;
+        /* column-gap: 100px; */
         transform: translate(-50%, -50%);
         z-index: 1000;
         box-sizing: border-box;
         border: none;
         border-radius: 20px;
         background-color: #512b81;
-        padding: clamp(10px, 5vh, 40px) clamp(10px, 5vw, 40px);
-        max-width: 95vw;
+        padding: clamp(10px, min(5vw, 5vh), 40px);
+        width: fit-content;
+        min-width: 0;
+        max-width: 92vw;
         max-height: 95vh;
         color: white;
     }

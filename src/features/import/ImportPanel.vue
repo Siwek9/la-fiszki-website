@@ -1,44 +1,34 @@
 <template>
     <MainDialog @close="closeDialog">
-        <h1>Import Sets from multiple sources</h1>
+        <h1>Import Sets from sources</h1>
         <div class="choose-input-type">
-            <InputImportType
+            <ImportTypeButton
                 name="La Fiszki"
                 value="la-fiszki"
                 v-model="inputType"
                 checked
             />
-            <InputImportType
+            <ImportTypeButton
                 name="CSV"
                 value="csv"
                 v-model="inputType"
             />
         </div>
-        <ImportLaFiszki
-            v-if="inputType == 'la-fiszki'"
-            v-model="fileContent"
-        />
-        <!-- <ImportCSV
-            v-if="inputType == 'csv'"
-            v-model="fileContent"
-            v-model:delimiter="delimiter"
-            v-model:row-delimiter="rowDelimiter"
-            v-model:word-separator="wordsSeparator"
-        />-->
-        <div>
+        <div class="bottom-buttons">
             <ToggleOverrideChanges v-model="overrideChanges" />
+            <TextButton
+                @click="importFlashcards"
+                :disabled="!isFileImportable"
+                text="Apply Import"
+            />
         </div>
-        <TextButton
-            @click="importFlashcards"
-            :disabled="!isFileImportable"
-            text="Apply Import"
-        />
     </MainDialog>
 </template>
 
 <script setup lang="ts">
     import {computed, ref, watch} from 'vue';
-    import InputImportType from '@/features/import/InputImportType.vue';
+    import ImportType from '@/entities/import/import_type';
+    import ImportTypeButton from '@/features/import/ImportTypeButton.vue';
     import MainDialog from '@/shared/ui/MainDialog.vue';
     import ImportLaFiszki from '@/features/import/ImportLaFiszki.vue';
     import ToggleOverrideChanges from '@/features/import/ToggleOverrideChanges.vue';
@@ -57,14 +47,14 @@
 
     const fileContent = ref('');
     const isFileImportable = computed<boolean>(() => {
-        if (inputType.value == 'la-fiszki') {
+        if (inputType.value == ImportType.LaFiszki) {
             if (fileContent.value == '') return false;
             const version = calculateVersion(fileContent.value);
             if (version == undefined) return false;
             const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
             if (set == undefined) return false;
             return true;
-        } else if (inputType.value == 'csv') {
+        } else if (inputType.value == ImportType.Csv) {
             if (rowDelimiter.value == '' || delimiter.value == '') return false;
 
             return fileContent.value.split(convertDelimiterToUse(rowDelimiter.value)).some((row) => {
@@ -76,7 +66,7 @@
 
     const overrideChanges = ref(true);
 
-    const inputType = ref<'la-fiszki' | 'csv'>('la-fiszki');
+    const inputType = ref<ImportType>(ImportType.LaFiszki);
     watch(inputType, () => {
         fileContent.value = '';
     });
@@ -88,14 +78,14 @@
 
     function importFlashcards() {
         let flashcardsSetToImport = createEmptyFlashcardsSet();
-        if (inputType.value == 'la-fiszki') {
+        if (inputType.value == ImportType.LaFiszki) {
             if (fileContent.value == '') return;
             const version = calculateVersion(fileContent.value);
             if (version == undefined) return;
             const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
             if (set == undefined) return;
             flashcardsSetToImport = set;
-        } else if (inputType.value == 'csv') {
+        } else if (inputType.value == ImportType.Csv) {
             if (wordsSeparator.value == '') {
                 flashcardsSetToImport.flashcards = fileContent.value
                     .split(convertDelimiterToUse(rowDelimiter.value))
@@ -123,15 +113,32 @@
 
 <style scoped>
     h1 {
+        box-sizing: border-box;
         margin: 0;
-        margin-right: 50px;
-        margin-bottom: 20px;
-        width: fit-content;
-        font-size: clamp(20px, 3vw, 25px);
+        margin-bottom: 10px;
+        padding-right: 50px;
+        width: max-content;
+        max-width: 100%;
+        font-size: 25px;
     }
 
     .choose-input-type {
         display: flex;
         flex-direction: row;
+    }
+
+    .bottom-buttons {
+        display: flex;
+        row-gap: 10px;
+        flex-direction: column;
+        margin: 10px 0;
+    }
+
+    @media screen and (max-height: 500px) {
+        .bottom-buttons {
+            column-gap: 10px;
+            row-gap: 0;
+            flex-direction: row-reverse;
+        }
     }
 </style>
