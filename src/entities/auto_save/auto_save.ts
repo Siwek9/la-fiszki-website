@@ -1,4 +1,4 @@
-import calculateVersion from '@/shared/lib/CalculateVersion';
+import calculateVersion from '@/shared/lib/calculate_version';
 import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
 import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 

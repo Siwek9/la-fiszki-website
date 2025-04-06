@@ -65,13 +65,4 @@
     .paste {
         background-image: url(@/assets/icons/paste.svg);
     }
-
-    @media screen and (max-width: 800px) {
-        .text-area-button {
-            margin: 0 5px;
-            border-width: 2.5px;
-            width: 30px;
-            height: 30px;
-        }
-    }
 </style>

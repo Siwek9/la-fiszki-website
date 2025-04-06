@@ -13,7 +13,7 @@
 <script setup lang="ts">
     import NewFlashcard from '@/features/flashcards/FlashcardField.vue';
     import AddButton from '@/features/flashcards/CreateFlashcardButton.vue';
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
     import type {SideName} from '@/shared/lib/side_name';
     import {nextTick, useTemplateRef} from 'vue';
     import type {ComponentExposed} from 'vue-component-type-helpers';
@@ -24,10 +24,8 @@
     function moveToNextFlashcard(index: number) {
         if (newFlashcardRefs.value == null || newFlashcardRefs.value.length == 0) return;
         if (index < newFlashcardRefs.value.length - 1) {
-            console.log('lool');
             newFlashcardRefs.value[index + 1].focus();
         } else {
-            console.log('lool');
             createNewFlashcard();
         }
     }

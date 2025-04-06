@@ -18,7 +18,7 @@
 <script setup lang="ts">
     import type ImportType from '@/entities/import/import_type';
 
-    const {value, name, checked} = defineProps<{value: string; name: string; checked?: boolean}>();
+    const {value, name, checked} = defineProps<{value: ImportType; name: string; checked?: boolean}>();
 
     const model = defineModel<ImportType>();
 </script>

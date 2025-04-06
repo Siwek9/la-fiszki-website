@@ -13,7 +13,7 @@
     </OverlayScrollbarsComponent>
 </template>
 <script setup lang="ts">
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
     import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue';
     import FlashcardPreview from '@/features/import/FlashcardPreview.vue';
 

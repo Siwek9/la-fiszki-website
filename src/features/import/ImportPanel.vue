@@ -4,16 +4,20 @@
         <div class="choose-input-type">
             <ImportTypeButton
                 name="La Fiszki"
-                value="la-fiszki"
+                :value="ImportType.LaFiszki"
                 v-model="inputType"
                 checked
             />
             <ImportTypeButton
                 name="CSV"
-                value="csv"
+                :value="ImportType.Csv"
                 v-model="inputType"
             />
         </div>
+        <ImportLaFiszki
+            v-if="inputType == ImportType.LaFiszki"
+            v-model="fileContent"
+        />
         <div class="bottom-buttons">
             <ToggleOverrideChanges v-model="overrideChanges" />
             <TextButton
@@ -34,12 +38,12 @@
     import ToggleOverrideChanges from '@/features/import/ToggleOverrideChanges.vue';
     import TextButton from '@/shared/ui/TextButton.vue';
     import createEmptyFlashcardsSet from '@/shared/lib/create_empty_flashcards_set';
-    import calculateVersion from '@/shared/lib/CalculateVersion';
+    import calculateVersion from '@/shared/lib/calculate_version';
     import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
     import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
-    import ImportCSV from './ImportCSV.vue';
+    import ImportCSV from '@/features/import/ImportCSV.vue';
     import convertDelimiterToUse from '@/shared/lib/convert_delimiter_to_use';
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
 
     function closeDialog() {
         emit('close');
@@ -125,6 +129,8 @@
     .choose-input-type {
         display: flex;
         flex-direction: row;
+        /* max-height: 100%; */
+        /* overflow: hidden; */
     }
 
     .bottom-buttons {

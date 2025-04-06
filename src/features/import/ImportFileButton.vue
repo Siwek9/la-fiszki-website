@@ -21,6 +21,7 @@
 
     async function uploadFile(event: Event) {
         emit('upload', await readFileContent(event));
+        // event.preventDefault();
     }
 </script>
 <style>
@@ -29,9 +30,11 @@
     }
 
     .upload-file-button {
+        display: block;
+        box-sizing: border-box;
         border-radius: 30px;
         background-color: #260f43;
-        padding: 25px 50px;
+        padding: 20px 40px;
         font-size: 18px;
     }
 

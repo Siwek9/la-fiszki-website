@@ -1,4 +1,4 @@
-import type {Flashcard} from './Flashcard';
+import type {Flashcard} from './flashcard';
 import type {SideName} from './side_name';
 
 export type FlashcardsSet = {

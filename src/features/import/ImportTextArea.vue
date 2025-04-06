@@ -135,8 +135,6 @@
         border-radius: 10px;
         background-color: #260f43;
         min-height: var(--font-size);
-        /* min-height: 300px;
-        max-height: 40vh; */
         overflow: auto;
     }
 
@@ -201,18 +199,7 @@
     }
     @media screen and (max-width: 800px) {
         .custom-textarea-wrapper {
-            /* max-width: 80vw;
-            min-height: auto;
-            max-height: 10vh; */
-            --font-size: 16px;
-        }
-
-        .highlighted-content {
-            font-size: 16px;
-        }
-
-        .contenteditable-div {
-            font-size: 16px;
+            --font-size: 15px;
         }
     }
 </style>

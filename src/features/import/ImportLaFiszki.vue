@@ -6,41 +6,58 @@
                 @upload="uploadFile"
             />
         </div>
-        <!-- <div class="json-data-preview-container">
-            <div class="json-data-header">
-                <h2>File content</h2>
-                <TextAreaButtons v-model="fileContent" />
-            </div>
-            <ImportTextArea
-                @error="showError"
-                :validateText="validateLaFiszki"
-                :customHighlight="jsonHighlight"
-                placeholder="...or paste its content here"
-                v-model="fileContent"
-            />
+        <div
+            v-if="isThin"
+            class="part-of-import preview-buttons-container"
+        >
+            <PreviewButton v-model="currentPreview" />
+        </div>
+        <div class="part-of-import json-data-preview-container">
+            <template v-if="currentPreview == PreviewType.FileContent || !isThin">
+                <div class="json-data-header">
+                    <h2 v-if="!isThin">File content</h2>
+                    <TextAreaButtons v-model="fileContent" />
+                </div>
+                <ImportTextArea
+                    @error="showError"
+                    :validateText="validateLaFiszki"
+                    :customHighlight="jsonHighlight"
+                    placeholder="...or paste its content here"
+                    v-model="fileContent"
+                />
+            </template>
+            <template v-else>
+                <ImportPreview :import-content="flashcards" />
+            </template>
             <WarningText
                 :type="warningType"
                 :warningText="validationWarningText"
             />
         </div>
-        <div class="import-preview-container">
+        <div
+            v-if="!isThin"
+            class="import-preview-container"
+        >
             <h2>Import preview</h2>
             <ImportPreview :import-content="flashcards" />
-        </div> -->
+        </div>
     </div>
 </template>
 <script setup lang="ts">
     import ImportPreview from '@/features/import/ImportPreview.vue';
     import ImportFileButton from '@/features/import/ImportFileButton.vue';
-    import calculateVersion from '@/shared/lib/CalculateVersion';
+    import calculateVersion from '@/shared/lib/calculate_version';
     import SetOfFlashcardsVersion from '@/shared/lib/flashcards_set_version';
     import ImportTextArea from '@/features/import/ImportTextArea.vue';
     import jsonHighlight from '@/shared/lib/json_highlight';
     import WarningText from '@/features/import/WarningText.vue';
     import {computed, ref} from 'vue';
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
     import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
     import TextAreaButtons from '@/features/import/TextAreaButtons.vue';
+    import PreviewButton from '@/features/import/PreviewButton.vue';
+    import {useMediaQuery} from '@vueuse/core';
+    import PreviewType from '@/entities/import/preview_type';
 
     function showError(message: string) {
         if (errorStarted.value) {
@@ -58,6 +75,8 @@
     const errorTimeout = ref<number>(-1);
     const errorStarted = ref<boolean>(false);
 
+    const isThin = useMediaQuery('screen and (max-width:800px)');
+
     const warningType = ref<'error' | 'warning'>('warning');
 
     const flashcards = computed<Array<Flashcard> | undefined>(() => {
@@ -68,6 +87,8 @@
         if (set == undefined) return undefined;
         return set.flashcards;
     });
+
+    const currentPreview = ref<PreviewType>(PreviewType.ImportPreview);
 
     const validationWarningText = ref('');
 
@@ -129,33 +150,60 @@
 <style scoped>
     .input-type-content {
         display: grid;
-        grid-template-rows: max-content 1fr;
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-            'import-button import-preview'
-            'json-preview import-preview';
-        column-gap: 20px;
+        grid-template-areas: 'import-button' 'preview-buttons' 'json-preview';
+        row-gap: 10px;
         border-radius: 0 20px 20px 20px;
         background-color: var(--second-background-color);
         padding: 20px;
-        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
     }
 
     .part-of-import {
-        width: max-content;
+        /* width: 400px; */
+        max-width: 500px;
+        /* width: max-content;
         max-width: 40vw;
-        height: max-content;
+        height: max-content; */
     }
 
     .upload-file-container {
         grid-area: import-button;
     }
 
+    .preview-buttons-container {
+        grid-area: preview-buttons;
+    }
+
     .json-data-preview-container {
+        display: flex;
         grid-area: json-preview;
+        flex-direction: column;
+        overflow: hidden;
+        /* max-height: 100%; */
     }
 
     .import-preview-container {
         grid-area: import-preview;
+    }
+
+    .json-data-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        /* width: 100%; */
+    }
+
+    @media screen and (max-width: 1200px) {
+        .input-type-content {
+            grid-template-areas:
+                'import-button' 'json-preview'
+                'import-preview' 'import-preview';
+        }
+        /* .preview-buttons-container {
+              display: none;
+          } */
     }
 </style>
