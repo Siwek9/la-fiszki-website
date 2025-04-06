@@ -36,7 +36,7 @@
         </div>
         <div
             v-if="!isThin"
-            class="import-preview-container"
+            class="part-of-import import-preview-container"
         >
             <h2>Import preview</h2>
             <ImportPreview :import-content="flashcards" />
@@ -75,7 +75,7 @@
     const errorTimeout = ref<number>(-1);
     const errorStarted = ref<boolean>(false);
 
-    const isThin = useMediaQuery('screen and (max-width:800px)');
+    const isThin = useMediaQuery('screen and not (min-width: 1200px)');
 
     const warningType = ref<'error' | 'warning'>('warning');
 
@@ -151,20 +151,26 @@
     .input-type-content {
         display: grid;
         grid-template-areas: 'import-button' 'preview-buttons' 'json-preview';
+        column-gap: 20px;
         row-gap: 10px;
         border-radius: 0 20px 20px 20px;
         background-color: var(--second-background-color);
         padding: 20px;
+        /* grid-template-columns: minmax(1fr, 450px); */
+        width: 450px;
+        /* width: max-content; */
+        max-width: 100%;
         max-height: 100%;
         overflow: hidden;
     }
 
     .part-of-import {
-        /* width: 400px; */
-        max-width: 500px;
-        /* width: max-content;
-        max-width: 40vw;
-        height: max-content; */
+        /* flex-shrink: 1; */
+        /* flex: 1 1 450px; */
+        /* width: 450px; */
+        /* width: min(450px, 100%); */
+        /* width: 450px;
+        max-width: 100%; */
     }
 
     .upload-file-container {
@@ -193,14 +199,15 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 10px;
-        /* width: 100%; */
     }
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (min-width: 1200px) {
         .input-type-content {
+            grid-template-columns: 1fr 1fr;
             grid-template-areas:
-                'import-button' 'json-preview'
-                'import-preview' 'import-preview';
+                'import-button import-preview'
+                'json-preview import-preview';
+            width: 920px;
         }
         /* .preview-buttons-container {
               display: none;

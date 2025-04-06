@@ -140,11 +140,12 @@
         margin: 10px 0;
     }
 
-    @media screen and (max-height: 500px) {
+    @media screen and (max-height: 700px) {
         .bottom-buttons {
             column-gap: 10px;
             row-gap: 0;
             flex-direction: row-reverse;
+            justify-content: left;
         }
     }
 </style>
