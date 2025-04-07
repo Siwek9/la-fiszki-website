@@ -153,12 +153,11 @@
         grid-template-areas: 'import-button' 'preview-buttons' 'json-preview';
         column-gap: 20px;
         row-gap: 10px;
+        box-sizing: border-box;
         border-radius: 0 20px 20px 20px;
         background-color: var(--second-background-color);
         padding: 20px;
-        /* grid-template-columns: minmax(1fr, 450px); */
         width: 450px;
-        /* width: max-content; */
         max-width: 100%;
         max-height: 100%;
         overflow: hidden;

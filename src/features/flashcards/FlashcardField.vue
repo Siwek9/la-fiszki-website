@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
     import FlashcardSide from './FlashcardSide.vue';
     import type {ComponentExposed} from 'vue-component-type-helpers';
     import {useTemplateRef} from 'vue';

@@ -20,7 +20,7 @@
     </div>
 </template>
 <script setup lang="ts">
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
 
     const {flashcard} = defineProps<{flashcard: Flashcard}>();
 </script>

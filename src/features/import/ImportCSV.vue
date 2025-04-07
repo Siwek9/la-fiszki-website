@@ -49,7 +49,7 @@
     import ImportTextArea from '@/features/import/ImportTextArea.vue';
     import WarningText from '@/features/import/WarningText.vue';
     import {computed, ref, watch} from 'vue';
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
     import TextAreaButtons from '@/features/import/TextAreaButtons.vue';
     import CsvSettingsButton from '@/features/import/CsvSettingsButton.vue';
     import type {TextHighlight} from '@/shared/lib/text_highlight';
