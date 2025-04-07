@@ -3,7 +3,12 @@
         class="flashcard-preview-container"
         element="div"
     >
-        <div v-if="importContent == undefined">You have no flashcards imported.</div>
+        <div
+            class="no-flashcards-info"
+            v-if="importContent == undefined"
+        >
+            You have no flashcards imported.
+        </div>
         <FlashcardPreview
             v-else
             v-for="(flashcard, index) in importContent"
@@ -23,5 +28,9 @@
     .flashcard-preview-container {
         max-height: 100%;
         overflow: auto;
+    }
+
+    .no-flashcards-info {
+        text-align: center;
     }
 </style>

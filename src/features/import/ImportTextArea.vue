@@ -73,6 +73,7 @@
     };
 
     const handleKeydown = (event: KeyboardEvent) => {
+        console.log('przycisk');
         if (!editableDiv.value) return;
 
         if (event.ctrlKey && event.key === 'a') {
@@ -88,6 +89,7 @@
             event.ctrlKey &&
             (event.key === 'v' || event.key === 'c' || event.key === 'w' || event.key === 't')
         ) {
+            console.log('siema :D');
             return;
         } else if (event.ctrlKey && event.key === 'x') {
             const selection = window.getSelection();
@@ -114,6 +116,7 @@
                 }
             }
         } else if (event.key.length == 1) {
+            console.log('siema pisze se');
             // hack to detect if user want to write a character and is not using special key
             emit('error', 'You cannot write text here.');
         }
@@ -129,12 +132,16 @@
 </script>
 
 <style>
+    /* TODO fix scaling when not enough space */
     .custom-textarea-wrapper {
         --font-size: 18px;
+        /* display: flex; */
         position: relative;
-        border-radius: 10px;
+        /* flex: 1; */
+        border-radius: 15px;
         background-color: #260f43;
-        min-height: var(--font-size);
+
+        height: calc(10 * var(--font-size));
         overflow: auto;
     }
 

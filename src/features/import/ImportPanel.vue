@@ -72,7 +72,7 @@
 
     const inputType = ref<ImportType>(ImportType.LaFiszki);
     watch(inputType, () => {
-        fileContent.value = '';
+        // fileContent.value = '';
     });
     const rowDelimiter = ref<string>('\\r\\n');
     const delimiter = ref<string>(';');

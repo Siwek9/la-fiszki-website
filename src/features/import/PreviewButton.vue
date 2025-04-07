@@ -40,7 +40,8 @@
     .preview-buttons-container {
         display: flex;
         flex-direction: row;
-        border-radius: 25px 25px 0 0;
+        border-radius: 15px;
+        /* border-radius: 25px 25px 0 0; */
         overflow: hidden;
     }
 

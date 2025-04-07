@@ -32,7 +32,8 @@
 </script>
 <style scoped>
     .text-area-buttons-container {
-        margin: 0 7px;
+        /* margin: 0 7px; */
+        margin-left: 7px;
     }
 
     .text-area-button {

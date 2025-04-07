@@ -32,10 +32,14 @@
     .upload-file-button {
         display: block;
         box-sizing: border-box;
-        border-radius: 30px;
-        background-color: #260f43;
-        padding: 20px 40px;
-        font-size: 18px;
+        margin: 0 15px;
+        /* margin-bottom: 20px; */
+        box-shadow: 7px 7px 0px #260f43;
+        border: none;
+        border: 3px solid #512b81;
+        border-radius: 10px;
+        padding: 15px 25px;
+        font-size: 20px;
     }
 
     .upload-file-button:hover {

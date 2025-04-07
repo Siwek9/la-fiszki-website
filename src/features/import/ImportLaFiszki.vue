@@ -6,12 +6,6 @@
                 @upload="uploadFile"
             />
         </div>
-        <div
-            v-if="isThin"
-            class="part-of-import preview-buttons-container"
-        >
-            <PreviewButton v-model="currentPreview" />
-        </div>
         <div class="part-of-import json-data-preview-container">
             <template v-if="currentPreview == PreviewType.FileContent || !isThin">
                 <div class="json-data-header">
@@ -33,6 +27,12 @@
                 :type="warningType"
                 :warningText="validationWarningText"
             />
+        </div>
+        <div
+            v-if="isThin"
+            class="part-of-import preview-buttons-container"
+        >
+            <PreviewButton v-model="currentPreview" />
         </div>
         <div
             v-if="!isThin"
@@ -150,7 +150,8 @@
 <style scoped>
     .input-type-content {
         display: grid;
-        grid-template-areas: 'import-button' 'preview-buttons' 'json-preview';
+        grid-template-rows: 70px 1fr;
+        grid-template-areas: 'import-button' 'json-preview' 'preview-buttons';
         column-gap: 20px;
         row-gap: 10px;
         box-sizing: border-box;
@@ -164,6 +165,8 @@
     }
 
     .part-of-import {
+        /* height: 100%; */
+        /* flex: 1; */
         /* flex-shrink: 1; */
         /* flex: 1 1 450px; */
         /* width: 450px; */
@@ -189,7 +192,10 @@
     }
 
     .import-preview-container {
+        display: flex;
         grid-area: import-preview;
+        flex-direction: column;
+        overflow: hidden;
     }
 
     .json-data-header {
@@ -206,10 +212,7 @@
             grid-template-areas:
                 'import-button import-preview'
                 'json-preview import-preview';
-            width: 920px;
+            width: 960px;
         }
-        /* .preview-buttons-container {
-              display: none;
-          } */
     }
 </style>
