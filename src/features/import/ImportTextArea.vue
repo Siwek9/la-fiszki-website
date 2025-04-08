@@ -15,6 +15,7 @@
             @focus="handleFocus"
             @keydown="handleKeydown"
             @paste="handlePaste"
+            @drop="handleDrop"
             ref="editable-div"
         >
             {{ model }}
@@ -30,13 +31,18 @@
 
     const model = defineModel<string>({
         set() {},
-        get(value) {
+        get(value: string) {
             updateHighlighting(value);
             return value;
         },
 
         default: '',
     });
+
+    const handleDrop = (event: DragEvent) => {
+        // TODO: handle drop event
+        event.preventDefault();
+    };
 
     const {placeholder, customHighlight} = defineProps<{
         placeholder?: string;
@@ -58,7 +64,8 @@
     const handlePaste = (event: ClipboardEvent) => {
         event.preventDefault();
         const text = event.clipboardData?.getData('text/plain') || '';
-
+        console.log('aaaa');
+        console.log(text);
         model.value = text;
     };
 
@@ -74,7 +81,7 @@
     };
 
     const handleKeydown = (event: KeyboardEvent) => {
-        console.log('przycisk');
+        // console.log('przycisk');
         if (!editableDiv.value) return;
 
         if (event.ctrlKey && event.key === 'a') {
@@ -86,11 +93,18 @@
             range.selectNodeContents(editableDiv.value);
             selection?.removeAllRanges();
             selection?.addRange(range);
-        } else if (
-            event.ctrlKey &&
-            (event.key === 'v' || event.key === 'c' || event.key === 'w' || event.key === 't')
-        ) {
-            console.log('siema :D');
+        } else if (event.ctrlKey && (event.key === 'c' || event.key === 'w' || event.key === 't')) {
+            return;
+        } else if (event.ctrlKey && event.key === 'v') {
+            // model.value = await navigator.clipboard.readText();
+            navigator.clipboard.readText().then((text) => {
+                model.value = text;
+                console.log('siema');
+            });
+            event.preventDefault();
+
+            // const text = event.clipboardData?.getData('text/plain') || '';
+            // model.value = text;
             return;
         } else if (event.ctrlKey && event.key === 'x') {
             const selection = window.getSelection();
@@ -117,7 +131,6 @@
                 }
             }
         } else if (event.key.length == 1) {
-            console.log('siema pisze se');
             // hack to detect if user want to write a character and is not using special key
             emit('error', 'You cannot write text here.');
         }
