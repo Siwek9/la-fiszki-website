@@ -2,6 +2,7 @@
     <OverlayScrollbarsComponent
         class="custom-textarea-wrapper"
         element="div"
+        :style="model.length <= 0 ? 'height: 200px;' : ''"
     >
         <div
             class="highlighted-content"
@@ -135,13 +136,14 @@
     /* TODO fix scaling when not enough space */
     .custom-textarea-wrapper {
         --font-size: 18px;
-        /* display: flex; */
         position: relative;
-        /* flex: 1; */
         border-radius: 15px;
         background-color: #260f43;
-
-        height: calc(10 * var(--font-size));
+        /* height: calc(15 * var(--font-size)); */
+        /* flex: 1 1 450px; */
+        height: max(max-content, 450px);
+        min-height: 0;
+        max-height: 100%;
         overflow: auto;
     }
 

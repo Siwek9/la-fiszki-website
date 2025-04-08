@@ -26,11 +26,16 @@
 </script>
 <style>
     .flashcard-preview-container {
+        min-height: 100px;
         max-height: 100%;
         overflow: auto;
     }
 
     .no-flashcards-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
         text-align: center;
     }
 </style>
