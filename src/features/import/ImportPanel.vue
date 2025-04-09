@@ -30,7 +30,8 @@
 </template>
 
 <script setup lang="ts">
-    import {computed, ref, watch} from 'vue';
+    // TODO merge ImportLaFiszki and ImportCSV because of their similaries
+    import {computed, ref} from 'vue';
     import ImportType from '@/entities/import/import_type';
     import ImportTypeButton from '@/features/import/ImportTypeButton.vue';
     import MainDialog from '@/shared/ui/MainDialog.vue';
@@ -71,9 +72,7 @@
     const overrideChanges = ref(true);
 
     const inputType = ref<ImportType>(ImportType.LaFiszki);
-    watch(inputType, () => {
-        // fileContent.value = '';
-    });
+
     const rowDelimiter = ref<string>('\\r\\n');
     const delimiter = ref<string>(';');
     const wordsSeparator = ref<string>('/');

@@ -143,7 +143,6 @@
 </script>
 
 <style>
-    /* TODO fix scaling when not enough space */
     .custom-textarea-wrapper {
         --font-size: 18px;
         position: relative;
