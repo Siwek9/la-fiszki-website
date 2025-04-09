@@ -92,10 +92,12 @@
             range.selectNodeContents(editableDiv.value);
             selection?.removeAllRanges();
             selection?.addRange(range);
-        } else if (event.ctrlKey && (event.key === 'c' || event.key === 'w' || event.key === 't')) {
+        } else if (
+            event.ctrlKey &&
+            (event.key.toLowerCase() === 'c' || event.key.toLowerCase() === 'w' || event.key.toLowerCase() === 't')
+        ) {
             return;
-        } else if (event.ctrlKey && event.key === 'v') {
-            // model.value = await navigator.clipboard.readText();
+        } else if (event.ctrlKey && event.key.toLowerCase() === 'v') {
             navigator.clipboard.readText().then((text) => {
                 model.value = text;
             });
