@@ -30,7 +30,9 @@
     import {onMounted, useTemplateRef} from 'vue';
 
     const model = defineModel<string>({
-        set() {},
+        set(value) {
+            return value;
+        },
         get(value: string) {
             updateHighlighting(value);
             return value;
@@ -64,8 +66,6 @@
     const handlePaste = (event: ClipboardEvent) => {
         event.preventDefault();
         const text = event.clipboardData?.getData('text/plain') || '';
-        console.log('aaaa');
-        console.log(text);
         model.value = text;
     };
 
@@ -81,7 +81,6 @@
     };
 
     const handleKeydown = (event: KeyboardEvent) => {
-        // console.log('przycisk');
         if (!editableDiv.value) return;
 
         if (event.ctrlKey && event.key === 'a') {
@@ -99,12 +98,8 @@
             // model.value = await navigator.clipboard.readText();
             navigator.clipboard.readText().then((text) => {
                 model.value = text;
-                console.log('siema');
             });
             event.preventDefault();
-
-            // const text = event.clipboardData?.getData('text/plain') || '';
-            // model.value = text;
             return;
         } else if (event.ctrlKey && event.key === 'x') {
             const selection = window.getSelection();
@@ -152,8 +147,6 @@
         position: relative;
         border-radius: 15px;
         background-color: #260f43;
-        /* height: calc(15 * var(--font-size)); */
-        /* flex: 1 1 450px; */
         height: max(max-content, 450px);
         min-height: 0;
         max-height: 100%;
