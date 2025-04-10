@@ -60,6 +60,7 @@
 <script setup lang="ts">
     import ImportPreview from '@/features/import/ImportPreview.vue';
     import ImportFileButton from '@/features/import/ImportFileButton.vue';
+    import PreviewButton from '@/features/import/PreviewButton.vue';
     import ImportTextArea from '@/features/import/ImportTextArea.vue';
     import WarningText from '@/features/import/WarningText.vue';
     import {computed, ref, watch} from 'vue';
@@ -142,6 +143,11 @@
             } else {
                 validationWarningText.value = '';
                 warningType.value = 'warning';
+            }
+            if (value.includes('\r') && rowDelimiter.value == '\\n') {
+                rowDelimiter.value = '\\r\\n';
+            } else if (rowDelimiter.value == '\\r\\n') {
+                rowDelimiter.value = '\\n';
             }
             return value;
         },
