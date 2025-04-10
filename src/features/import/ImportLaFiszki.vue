@@ -76,6 +76,7 @@
     const errorStarted = ref<boolean>(false);
 
     const isThin = useMediaQuery('screen and not (min-width: 1200px)');
+    const currentPreview = ref<PreviewType>(PreviewType.ImportPreview);
 
     const warningType = ref<'error' | 'warning'>('warning');
 
@@ -87,8 +88,6 @@
         if (set == undefined) return undefined;
         return set.flashcards;
     });
-
-    const currentPreview = ref<PreviewType>(PreviewType.ImportPreview);
 
     const validationWarningText = ref('');
 
@@ -164,16 +163,8 @@
         overflow: hidden;
     }
 
-    .part-of-import {
-        /* height: 100%; */
-        /* flex: 1; */
-        /* flex-shrink: 1; */
-        /* flex: 1 1 450px; */
-        /* width: 450px; */
-        /* width: min(450px, 100%); */
-        /* width: 450px;
-        max-width: 100%; */
-    }
+    /* .part-of-import {
+    } */
 
     .upload-file-container {
         grid-area: import-button;
@@ -188,7 +179,6 @@
         grid-area: json-preview;
         flex-direction: column;
         overflow: hidden;
-        /* max-height: 100%; */
     }
 
     .import-preview-container {

@@ -18,6 +18,10 @@
             v-if="inputType == ImportType.LaFiszki"
             v-model="fileContent"
         />
+        <ImportCSV
+            v-if="inputType == ImportType.Csv"
+            v-model="fileContent"
+        />
         <div class="bottom-buttons">
             <ToggleOverrideChanges v-model="overrideChanges" />
             <TextButton

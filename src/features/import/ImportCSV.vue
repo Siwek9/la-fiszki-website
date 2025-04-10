@@ -1,29 +1,34 @@
 <template>
     <div class="input-type-content">
-        <div class="upload-file-container">
+        <div class="part-of-import upload-file-container">
             <ImportFileButton
                 accept=".csv,.txt"
                 @upload="uploadFile"
             />
         </div>
-        <div class="json-data-preview-container">
-            <div class="json-data-header">
-                <h2>File content</h2>
-                <TextAreaButtons v-model="fileContent" />
-            </div>
-            <ImportTextArea
-                @error="showError"
-                :validateText="validateCSV"
-                placeholder="...or paste its content here"
-                :customHighlight="csvHighlight()"
-                v-model="fileContent"
-            />
+        <div class="part-of-import json-data-preview-container">
+            <template v-if="currentPreview == PreviewType.FileContent || !isThin">
+                <div class="json-data-header">
+                    <h2 v-if="!isThin">File content</h2>
+                    <TextAreaButtons v-model="fileContent" />
+                </div>
+                <ImportTextArea
+                    @error="showError"
+                    :validateText="validateCSV"
+                    placeholder="...or paste its content here"
+                    :customHighlight="csvHighlight()"
+                    v-model="fileContent"
+                />
+            </template>
+            <template v-else>
+                <ImportPreview :import-content="flashcards" />
+            </template>
             <WarningText
                 :type="warningType"
                 :warningText="validationWarningText"
             />
         </div>
-        <div class="csv-settings">
+        <div class="part-of-import csv-settings-container">
             <CsvSettingsButton
                 name="Delimiter"
                 v-model="delimiter"
@@ -37,7 +42,16 @@
                 v-model="wordsSeparator"
             />
         </div>
-        <div class="import-preview-container">
+        <div
+            v-if="isThin"
+            class="part-of-import preview-buttons-container"
+        >
+            <PreviewButton v-model="currentPreview" />
+        </div>
+        <div
+            v-if="!isThin"
+            class="import-preview-container"
+        >
             <h2>Import preview</h2>
             <ImportPreview :import-content="flashcards" />
         </div>
@@ -54,6 +68,8 @@
     import CsvSettingsButton from '@/features/import/CsvSettingsButton.vue';
     import type {TextHighlight} from '@/shared/lib/text_highlight';
     import convertDelimiterToUse from '@/shared/lib/convert_delimiter_to_use';
+    import {useMediaQuery} from '@vueuse/core';
+    import PreviewType from '@/entities/import/preview_type';
 
     function showError(message: string) {
         if (errorStarted.value) {
@@ -73,6 +89,9 @@
         validationWarningText.value = message;
         warningType.value = 'error';
     }
+
+    const isThin = useMediaQuery('screen and not (min-width: 1200px)');
+    const currentPreview = ref<PreviewType>(PreviewType.ImportPreview);
 
     const errorTimeout = ref<number>(-1);
     const errorStarted = ref<boolean>(false);
@@ -192,48 +211,66 @@
 <style scoped>
     .input-type-content {
         display: grid;
-        grid-template-rows: 100px 1fr;
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-            'import-button csv-settings'
-            'json-preview import-preview';
+        grid-template-rows: 70px 1fr;
+        grid-template-areas: 'import-button' 'csv-settings' 'json-preview' 'preview-buttons';
         column-gap: 20px;
+        row-gap: 10px;
+        box-sizing: border-box;
         border-radius: 0 20px 20px 20px;
-        background-color: #35155d;
+        background-color: var(--second-background-color);
         padding: 20px;
-        max-height: 58vh;
+        width: 450px;
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    .upload-file-container {
+        grid-area: import-button;
+    }
+
+    .preview-buttons-container {
+        grid-area: preview-buttons;
+    }
+
+    .json-data-preview-container {
+        display: flex;
+        grid-area: json-preview;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .import-preview-container {
+        display: flex;
+        grid-area: import-preview;
+        flex-direction: column;
+        overflow: hidden;
     }
 
     .json-data-header {
         display: flex;
         flex-direction: row;
-        align-items: center;
-    }
-
-    .upload-file-container {
-        display: flex;
-        grid-area: import-button;
         justify-content: center;
         align-items: center;
+        margin-bottom: 10px;
     }
 
-    .json-data-preview-container {
-        grid-area: json-preview;
-        width: min(450px, 40vw);
-    }
-
-    .import-preview-container {
-        grid-area: import-preview;
-        width: min(450px, 40vw);
-        overflow: hidden;
-    }
-
-    .csv-settings {
+    .csv-settings-container {
         display: flex;
         column-gap: 25px;
         grid-area: csv-settings;
         flex-direction: row;
         justify-content: space-between;
-        width: min(450px, 40vw);
+        /* width: min(450px, 40vw); */
+    }
+
+    @media screen and (min-width: 1200px) {
+        .input-type-content {
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+                'import-button csv-settings'
+                'json-preview import-preview';
+            width: 960px;
+        }
     }
 </style>
