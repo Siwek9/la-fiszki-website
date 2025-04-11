@@ -5,7 +5,7 @@
     />
 </template>
 <script setup lang="ts">
-    import {onMounted, ref, watch} from 'vue';
+    import {onBeforeUnmount, onMounted, ref, watch} from 'vue';
     import AutoSaveButton from '@/features/auto_save/AutoSaveButton.vue';
     import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
 
@@ -14,16 +14,34 @@
     const autoSave = ref(false);
     const flashcardsSet = defineModel<FlashcardsSet>();
 
+    const isDirty = ref(false);
+
     // THIS COULD BE UNEFFICIENT!
-    // TODO: should be optimalized with changing only when user stops typing in textbox
+    // TODO should be optimalized with changing only when user stops typing in textbox
     watch(
         flashcardsSet,
         (set) => {
             if (set == undefined) return;
-            if (autoSave.value) saveSet(set);
+            if (autoSave.value) {
+                saveSet(set);
+            }
+            isDirty.value = true;
         },
         {deep: true}
     );
+
+    const beforeUnloadHandler = (event: BeforeUnloadEvent) => {
+        if (!autoSave.value && isDirty.value) {
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    };
+
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    onBeforeUnmount(() => {
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
+    });
 
     function toggleAutoSave(toggle: boolean) {
         autoSave.value = toggle;
@@ -32,6 +50,7 @@
             saveSet(flashcardsSet.value);
         } else {
             removeSet();
+            isDirty.value = true;
         }
     }
 

@@ -18,7 +18,7 @@
         all: unset;
         border-radius: 25px;
         background-color: #35155d;
-        padding: clamp(15px, 3vw, 25px);
+        padding: 15px;
         text-align: center;
     }
 

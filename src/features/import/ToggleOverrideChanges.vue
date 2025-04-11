@@ -19,10 +19,11 @@
     .override-changes {
         display: block;
         box-sizing: border-box;
-        margin: clamp(10px, 2vh, 25px) 0;
+        /* margin: 10px 0; */
         border-radius: 40px;
         padding: 15px 20px;
         width: max-content;
+        max-width: calc(100% - 10px);
         user-select: none;
     }
 
@@ -36,23 +37,24 @@
     }
 
     .override-changes-label {
+        display: block;
         position: relative;
-        margin-left: clamp(30px, 4vw, 40px);
-        font-size: clamp(17px, 2.4vw, 24px);
+        margin-left: 30px;
+        font-size: 17px;
     }
 
     .override-changes-label:before {
         position: absolute;
         top: 50%;
-        left: calc(-1 * clamp(30px, 4vw, 40px));
+        left: -30px;
         transform: translateY(-50%);
         mask-image: url(@/assets/icons/checkbox_empty.svg);
         mask-position: center center;
         mask-size: 100%;
         mask-repeat: no-repeat;
         background-color: var(--text-color);
-        width: clamp(25px, 3.5vw, 35px);
-        height: clamp(25px, 3.5vw, 35px);
+        width: 25px;
+        height: 25px;
         pointer-events: none;
         content: '';
     }
@@ -63,21 +65,4 @@
     .override-changes-checkbox {
         display: none;
     }
-
-    /* @media screen and (max-width: 800px) {
-        .override-changes {
-            margin: 15px 0;
-        }
-
-        .override-changes-label {
-            margin-left: 25px;
-            font-size: 16px;
-        }
-
-        .override-changes-label:before {
-            left: -30px;
-            width: 20px;
-            height: 20px;
-        }
-    } */
 </style>

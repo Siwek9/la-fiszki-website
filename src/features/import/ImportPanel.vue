@@ -1,55 +1,54 @@
 <template>
     <MainDialog @close="closeDialog">
-        <h1>Import Sets from multiple sources</h1>
+        <h1>Import Sets from sources</h1>
         <div class="choose-input-type">
-            <InputImportType
+            <ImportTypeButton
                 name="La Fiszki"
-                value="la-fiszki"
+                :value="ImportType.LaFiszki"
                 v-model="inputType"
                 checked
             />
-            <InputImportType
+            <ImportTypeButton
                 name="CSV"
-                value="csv"
+                :value="ImportType.Csv"
                 v-model="inputType"
             />
         </div>
         <ImportLaFiszki
-            v-if="inputType == 'la-fiszki'"
+            v-if="inputType == ImportType.LaFiszki"
             v-model="fileContent"
         />
-        <!-- <ImportCSV
-            v-if="inputType == 'csv'"
+        <ImportCSV
+            v-if="inputType == ImportType.Csv"
             v-model="fileContent"
-            v-model:delimiter="delimiter"
-            v-model:row-delimiter="rowDelimiter"
-            v-model:word-separator="wordsSeparator"
-        />-->
-        <div>
+        />
+        <div class="bottom-buttons">
             <ToggleOverrideChanges v-model="overrideChanges" />
+            <TextButton
+                @click="importFlashcards"
+                :disabled="!isFileImportable"
+                text="Apply Import"
+            />
         </div>
-        <TextButton
-            @click="importFlashcards"
-            :disabled="!isFileImportable"
-            text="Apply Import"
-        />
     </MainDialog>
 </template>
 
 <script setup lang="ts">
-    import {computed, ref, watch} from 'vue';
-    import InputImportType from '@/features/import/InputImportType.vue';
+    // TODO merge ImportLaFiszki and ImportCSV because of their similaries
+    import {computed, ref} from 'vue';
+    import ImportType from '@/entities/import/import_type';
+    import ImportTypeButton from '@/features/import/ImportTypeButton.vue';
     import MainDialog from '@/shared/ui/MainDialog.vue';
     import ImportLaFiszki from '@/features/import/ImportLaFiszki.vue';
     import ToggleOverrideChanges from '@/features/import/ToggleOverrideChanges.vue';
     import TextButton from '@/shared/ui/TextButton.vue';
     import createEmptyFlashcardsSet from '@/shared/lib/create_empty_flashcards_set';
-    import calculateVersion from '@/shared/lib/CalculateVersion';
+    import calculateVersion from '@/shared/lib/calculate_version';
     import fixOutdatedSets from '@/shared/lib/fix_outdated_sets';
     import type {FlashcardsSet} from '@/shared/lib/flashcards_set';
-    import ImportCSV from './ImportCSV.vue';
+    import ImportCSV from '@/features/import/ImportCSV.vue';
     import convertDelimiterToUse from '@/shared/lib/convert_delimiter_to_use';
-    import type {Flashcard} from '@/shared/lib/Flashcard';
+    import type {Flashcard} from '@/shared/lib/flashcard';
 
     function closeDialog() {
         emit('close');
@@ -57,14 +56,14 @@
 
     const fileContent = ref('');
     const isFileImportable = computed<boolean>(() => {
-        if (inputType.value == 'la-fiszki') {
+        if (inputType.value == ImportType.LaFiszki) {
             if (fileContent.value == '') return false;
             const version = calculateVersion(fileContent.value);
             if (version == undefined) return false;
             const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
             if (set == undefined) return false;
             return true;
-        } else if (inputType.value == 'csv') {
+        } else if (inputType.value == ImportType.Csv) {
             if (rowDelimiter.value == '' || delimiter.value == '') return false;
 
             return fileContent.value.split(convertDelimiterToUse(rowDelimiter.value)).some((row) => {
@@ -76,10 +75,8 @@
 
     const overrideChanges = ref(true);
 
-    const inputType = ref<'la-fiszki' | 'csv'>('la-fiszki');
-    watch(inputType, () => {
-        fileContent.value = '';
-    });
+    const inputType = ref<ImportType>(ImportType.LaFiszki);
+
     const rowDelimiter = ref<string>('\\r\\n');
     const delimiter = ref<string>(';');
     const wordsSeparator = ref<string>('/');
@@ -88,14 +85,14 @@
 
     function importFlashcards() {
         let flashcardsSetToImport = createEmptyFlashcardsSet();
-        if (inputType.value == 'la-fiszki') {
+        if (inputType.value == ImportType.LaFiszki) {
             if (fileContent.value == '') return;
             const version = calculateVersion(fileContent.value);
             if (version == undefined) return;
             const set = fixOutdatedSets(JSON.parse(fileContent.value), version);
             if (set == undefined) return;
             flashcardsSetToImport = set;
-        } else if (inputType.value == 'csv') {
+        } else if (inputType.value == ImportType.Csv) {
             if (wordsSeparator.value == '') {
                 flashcardsSetToImport.flashcards = fileContent.value
                     .split(convertDelimiterToUse(rowDelimiter.value))
@@ -123,15 +120,35 @@
 
 <style scoped>
     h1 {
+        box-sizing: border-box;
         margin: 0;
-        margin-right: 50px;
-        margin-bottom: 20px;
-        width: fit-content;
-        font-size: clamp(20px, 3vw, 25px);
+        margin-bottom: 10px;
+        padding-right: 50px;
+        width: max-content;
+        max-width: 100%;
+        font-size: 25px;
     }
 
     .choose-input-type {
         display: flex;
         flex-direction: row;
+        /* max-height: 100%; */
+        /* overflow: hidden; */
+    }
+
+    .bottom-buttons {
+        display: flex;
+        row-gap: 10px;
+        flex-direction: column;
+        margin: 10px 0;
+    }
+
+    @media screen and (max-height: 700px) {
+        .bottom-buttons {
+            column-gap: 10px;
+            row-gap: 0;
+            flex-direction: row-reverse;
+            justify-content: left;
+        }
     }
 </style>

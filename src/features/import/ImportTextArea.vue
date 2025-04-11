@@ -2,6 +2,7 @@
     <OverlayScrollbarsComponent
         class="custom-textarea-wrapper"
         element="div"
+        :style="model.length <= 0 ? 'height: 200px;' : ''"
     >
         <div
             class="highlighted-content"
@@ -14,6 +15,7 @@
             @focus="handleFocus"
             @keydown="handleKeydown"
             @paste="handlePaste"
+            @drop="handleDrop"
             ref="editable-div"
         >
             {{ model }}
@@ -28,14 +30,21 @@
     import {onMounted, useTemplateRef} from 'vue';
 
     const model = defineModel<string>({
-        set() {},
-        get(value) {
+        set(value) {
+            return value;
+        },
+        get(value: string) {
             updateHighlighting(value);
             return value;
         },
 
         default: '',
     });
+
+    const handleDrop = (event: DragEvent) => {
+        // TODO: handle drop event
+        event.preventDefault();
+    };
 
     const {placeholder, customHighlight} = defineProps<{
         placeholder?: string;
@@ -57,7 +66,6 @@
     const handlePaste = (event: ClipboardEvent) => {
         event.preventDefault();
         const text = event.clipboardData?.getData('text/plain') || '';
-
         model.value = text;
     };
 
@@ -86,8 +94,14 @@
             selection?.addRange(range);
         } else if (
             event.ctrlKey &&
-            (event.key === 'v' || event.key === 'c' || event.key === 'w' || event.key === 't')
+            (event.key.toLowerCase() === 'c' || event.key.toLowerCase() === 'w' || event.key.toLowerCase() === 't')
         ) {
+            return;
+        } else if (event.ctrlKey && event.key.toLowerCase() === 'v') {
+            navigator.clipboard.readText().then((text) => {
+                model.value = text;
+            });
+            event.preventDefault();
             return;
         } else if (event.ctrlKey && event.key === 'x') {
             const selection = window.getSelection();
@@ -132,11 +146,11 @@
     .custom-textarea-wrapper {
         --font-size: 18px;
         position: relative;
-        border-radius: 10px;
+        border-radius: 15px;
         background-color: #260f43;
-        min-height: var(--font-size);
-        /* min-height: 300px;
-        max-height: 40vh; */
+        height: max(max-content, 450px);
+        min-height: 0;
+        max-height: 100%;
         overflow: auto;
     }
 
@@ -201,18 +215,7 @@
     }
     @media screen and (max-width: 800px) {
         .custom-textarea-wrapper {
-            /* max-width: 80vw;
-            min-height: auto;
-            max-height: 10vh; */
-            --font-size: 16px;
-        }
-
-        .highlighted-content {
-            font-size: 16px;
-        }
-
-        .contenteditable-div {
-            font-size: 16px;
+            --font-size: 15px;
         }
     }
 </style>

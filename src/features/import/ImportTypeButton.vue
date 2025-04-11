@@ -2,7 +2,7 @@
     <input
         type="radio"
         name="import-type"
-        :value="value"
+        :value
         :id="`${value}-input-type`"
         v-model="model"
         :checked
@@ -16,9 +16,11 @@
     </label>
 </template>
 <script setup lang="ts">
-    const {value, name, checked} = defineProps<{value: string; name: string; checked?: boolean}>();
+    import type ImportType from '@/entities/import/import_type';
 
-    const model = defineModel<string>();
+    const {value, name, checked} = defineProps<{value: ImportType; name: string; checked?: boolean}>();
+
+    const model = defineModel<ImportType>();
 </script>
 <style>
     .import-type-input-radio {
@@ -27,8 +29,8 @@
 
     .import-type-label {
         display: block;
-        padding: clamp(6px, 1vw, 10px);
-        font-size: clamp(18px, 2.5vw, 20px);
+        padding: 10px;
+        font-size: 20px;
     }
 
     .import-type-input-radio:checked + .import-type-label {
