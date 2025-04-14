@@ -20,6 +20,9 @@
         />
         <ImportCSV
             v-if="inputType == ImportType.Csv"
+            v-model:delimiter="delimiter"
+            v-model:row-delimiter="rowDelimiter"
+            v-model:words-separator="wordsSeparator"
             v-model="fileContent"
         />
         <div class="bottom-buttons">
@@ -66,8 +69,8 @@
         } else if (inputType.value == ImportType.Csv) {
             if (rowDelimiter.value == '' || delimiter.value == '') return false;
 
-            return fileContent.value.split(convertDelimiterToUse(rowDelimiter.value)).some((row) => {
-                return (row.match(new RegExp(`${convertDelimiterToUse(delimiter.value)}`, 'g')) || []).length > 1;
+            return fileContent.value.split(convertDelimiterToUse(rowDelimiter.value)).every((row) => {
+                return row.split(convertDelimiterToUse(delimiter.value)).length > 1;
             });
         }
         return false;
